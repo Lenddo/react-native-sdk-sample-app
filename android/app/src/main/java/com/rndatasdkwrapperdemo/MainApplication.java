@@ -1,15 +1,13 @@
-package lenddo.com.lenddoconnect;
+package com.rndatasdkwrapperdemo;
 
 import android.app.Application;
-import android.content.Context;
-import android.support.multidex.MultiDex;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.lenddodatasdk.RNDataSdkWrapperPackage;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,8 +22,7 @@ public class MainApplication extends Application implements ReactApplication {
         @Override
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
-                    new MainReactPackage(),
-                    new RNDataSdkWrapperPackage(getResources().getString(R.string.partner_script_id), getResources().getString(R.string.api_secret))
+                    new MainReactPackage()
             );
         }
 

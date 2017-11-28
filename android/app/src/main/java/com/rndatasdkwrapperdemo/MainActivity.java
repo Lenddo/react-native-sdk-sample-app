@@ -1,4 +1,4 @@
-package lenddo.com.lenddoconnect;
+package com.rndatasdkwrapperdemo;
 
 import com.facebook.react.ReactActivity;
 
@@ -12,6 +12,4 @@ public class MainActivity extends ReactActivity {
     protected String getMainComponentName() {
         return "RNDataSdkWrapperDemo";
     }
-
-
 }
