@@ -43,7 +43,6 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void test() {
-        Log.d("TEST", "test:: partnerScriptId:: " + partnerScriptId + ", apiSecret:: " + apiSecret);
         Log.d("TEST", "TEST HURRAY!");
     }
 
