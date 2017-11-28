@@ -18,8 +18,8 @@ export default class App extends Component<{}> {
     }
 
     onButtonPressed() {
-		    RNDataSdkWrapper.test();
         console.log("onButtonPressed");
+		RNDataSdkWrapper.startAndroidData();
     }
 
   render() {
@@ -27,7 +27,7 @@ export default class App extends Component<{}> {
        <View style = {styles.container}>
                 <TouchableOpacity onPress = {this.onButtonPressed}>
                     <View style = {styles.buttonWrapper}>
-                        <Text style = {styles.buttonText}>Click me!</Text>
+                        <Text style = {styles.buttonText}>Start Android Data</Text>
                     </View>
                 </TouchableOpacity>
             </View>

@@ -1,7 +1,6 @@
 package com.lenddodatasdk;
 
 
-import android.content.Context;
 import android.util.Log;
 
 import com.facebook.react.bridge.Callback;
@@ -9,6 +8,8 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.lenddo.data.AndroidData;
+import com.lenddo.data.models.ClientOptions;
+import java.util.UUID;
 
 public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
 
@@ -34,7 +35,9 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setup() {
         Log.d("TEST", "setup:: partnerScriptId:: " + partnerScriptId + ", apiSecret:: " + apiSecret);
-        AndroidData.setup(reactContext, partnerScriptId, apiSecret);
+        ClientOptions clientOptions = new ClientOptions();
+        clientOptions.enableLogDisplay(true);
+        AndroidData.setup(reactContext, partnerScriptId, apiSecret, clientOptions);
     }
 
 
@@ -42,5 +45,16 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
     public void test() {
         Log.d("TEST", "test:: partnerScriptId:: " + partnerScriptId + ", apiSecret:: " + apiSecret);
         Log.d("TEST", "TEST HURRAY!");
+    }
+
+
+    @ReactMethod
+    public void startAndroidData() {
+        AndroidData.startAndroidData(getCurrentActivity(), generateApplicationId());
+    }
+
+
+    private synchronized String generateApplicationId() {
+        return UUID.randomUUID().toString();
     }
 }
