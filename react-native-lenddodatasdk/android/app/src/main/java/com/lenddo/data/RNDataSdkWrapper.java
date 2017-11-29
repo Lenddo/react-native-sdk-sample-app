@@ -1,4 +1,4 @@
-package com.lenddodatasdk;
+package com.lenddo.data;
 
 
 import android.util.Log;

@@ -1,4 +1,4 @@
-package com.rndatasdkwrapperdemo;
+package lenddo.com.lenddoconnect;
 
 import com.facebook.react.ReactActivity;
 

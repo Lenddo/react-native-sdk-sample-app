@@ -1,4 +1,4 @@
-package com.lenddodatasdk;
+package com.lenddo.data;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;

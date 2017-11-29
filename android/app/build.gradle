@@ -106,20 +106,6 @@ android {
 //        incremental true
     }
 
-    signingConfigs {
-        debug {
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
-            storeFile file('debug.keystore')
-            storePassword 'android'
-        }
-        release {
-            keyAlias 'demoapp'
-            keyPassword 'Assm0408'
-            storeFile file('demoapp.jks')
-            storePassword 'Assm0408'
-        }
-    }
     defaultConfig {
         applicationId "lenddo.com.lenddoconnect"
         minSdkVersion 16
@@ -144,11 +130,10 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            multiDexEnabled true
         }
         debug {
             debuggable true
-            signingConfig signingConfigs.debug
             multiDexEnabled true
         }
     }
