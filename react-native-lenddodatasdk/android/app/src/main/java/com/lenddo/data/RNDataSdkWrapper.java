@@ -70,19 +70,19 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
                 public void onDataSendingSuccess() {
                     Log.d(TAG, "Send Partner Data Callback: Success!");
                     callback.invoke("Send Partner Data Callback: Success!");
-                });
+                }
 
                 @Override
                 public void onDataSendingError(int statusCode, final String errorMessage) {
                     Log.d(TAG, "Send Partner Data Callback: Error: " + errorMessage);
                     callback.invoke("Send Partner Data Callback: Error: " + errorMessage);
-                });
+                }
 
                 @Override
                 public void onDataSendingFailed(final Throwable t)  {
                     Log.d(TAG, "Send Partner Data Callback: Failed: " + t.getMessage());
                     callback.invoke("Send Partner Data Callback: Failed: " + t.getMessage());
-                });
+                }
             });
         } else {
             AndroidData.sendPartnerApplicationData(reactContext, payload, null);
