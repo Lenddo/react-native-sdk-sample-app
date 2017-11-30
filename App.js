@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import RNDataSdkWrapper from 'react-native-lenddodatasdk';
+import UUIDGenerator from 'react-native-uuid-generator';
 import {
   Platform,
   StyleSheet,
@@ -8,6 +9,16 @@ import {
   TouchableOpacity
 } from 'react-native';
 
+import t from 'tcomb-form-native';
+
+const Form = t.form.Form;
+
+const User = t.struct({
+  firstName: t.String,
+  middleName: t.maybe(t.String),
+  lastName: t.String
+});
+
 
 export default class App extends Component<{}> {
 
@@ -15,32 +26,44 @@ export default class App extends Component<{}> {
         super(props);
         this.onButtonPressed = this.onButtonPressed.bind(this);
         RNDataSdkWrapper.setup();
-		RNDataSdkWrapper.startAndroidData();
+        UUIDGenerator.getRandomUUID().then((uuid) => {
+            console.log('uuid: ', uuid);
+		    RNDataSdkWrapper.startAndroidData(uuid);
+        });
     }
 
     onButtonPressed() {
-        console.log("onButtonPressed");
+        const value = this._form.getValue(); // use that ref to get the form value
+        console.log('value: ', value);
+        if (this._form.validate().isValid()){
+            RNDataSdkWrapper.sendPartnerApplicationData(JSON.stringify(value));
+        }
+
     }
 
   render() {
     return (
        <View style = {styles.container}>
-                <TouchableOpacity onPress = {this.onButtonPressed}>
-                    <View style = {styles.buttonWrapper}>
-                        <Text style = {styles.buttonText}>Start Android Data</Text>
-                    </View>
-                </TouchableOpacity>
+         <Form
+            ref={c => this._form = c} // assign a ref
+            type={User}
+          />
+          <TouchableOpacity onPress = {this.onButtonPressed}>
+            <View style = {styles.buttonWrapper}>
+                <Text style = {styles.buttonText}>Submit</Text>
             </View>
+           </TouchableOpacity>
+       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#999999',
+      justifyContent: 'center',
+      marginTop: 50,
+      padding: 20,
+      backgroundColor: '#ffffff',
   },
   buttonWrapper: {
       marginTop: 70,

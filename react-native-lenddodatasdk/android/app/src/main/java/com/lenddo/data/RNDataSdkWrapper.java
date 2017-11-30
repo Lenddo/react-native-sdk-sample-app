@@ -9,10 +9,13 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.lenddo.data.AndroidData;
-import com.lenddo.data.listeners.OnDataSendingCompleteCallback;
 import com.lenddo.data.models.ClientOptions;
+import com.lenddo.data.models.ApplicationPartnerData;
 
-import java.util.UUID;
+
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+
 
 public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
     private static final String TAG = "RNDataSdkWrapper";
@@ -20,7 +23,6 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
     private ReactApplicationContext reactContext;
     private String partnerScriptId;
     private String apiSecret;
-    private String applicationId;
 
     public RNDataSdkWrapper(ReactApplicationContext reactContext, String partnerScriptId, String apiSecret) {
         super(reactContext);
@@ -31,9 +33,9 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setProviderAccessToken(@NonNull String provider, @NonNull String accessToken, @NonNull String providerId, Object extra_data, long expiration, OnDataSendingCompleteCallback callback) {
-        Log.d(TAG, "setProviderAccessToken:: provider:: " + provider + ", accessToken:: " + accessToken + ", providerId:: " + providerId + ", extra_data:: " + extra_data + ", callback:: " + callback);
-        AndroidData.setProviderAccessToken(reactContext, provider, accessToken, providerId, extra_data, expiration, callback);
+    public void setProviderAccessToken(@NonNull String provider, @NonNull String accessToken, @NonNull String providerId, Object extra_data, long expiration) {
+        Log.d(TAG, "setProviderAccessToken:: provider:: " + provider + ", accessToken:: " + accessToken + ", providerId:: " + providerId + ", extra_data:: " + extra_data);
+        AndroidData.setProviderAccessToken(reactContext, provider, accessToken, providerId, extra_data, expiration);
     }
 
     @ReactMethod
@@ -56,13 +58,8 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void sendPartnerApplicationData(String payload) {
-        sendPartnerApplicationData(payload, (OnDataSendingCompleteCallback) null);
-    }
-
-    @ReactMethod
-    public void sendPartnerApplicationData(String payload, OnDataSendingCompleteCallback callback) {
         Log.d(TAG, "sendPartnerApplicationData:: payload:: " + payload);
-        AndroidData.sendPartnerApplicationData(reactContext, payload, callback);
+        AndroidData.sendPartnerApplicationData(reactContext, payload, null);
     }
 
     @ReactMethod
@@ -85,18 +82,9 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void startAndroidData() {
-        applicationId = generateApplicationId();
+    public void startAndroidData(String applicationId) {
         Log.d(TAG, "startAndroidData:: applicationId:: " + applicationId);
         AndroidData.startAndroidData(getCurrentActivity(), applicationId);
     }
 
-    @ReactMethod
-    public void setProviderAccessToken(@NonNull String provider, @NonNull String accessToken, @NonNull String providerId, Object extra_data, long expiration) {
-        setProviderAccessToken(provider, accessToken, providerId, extra_data, expiration, null);
-    }
-
-    private synchronized String generateApplicationId() {
-        return UUID.randomUUID().toString();
-    }
 }
