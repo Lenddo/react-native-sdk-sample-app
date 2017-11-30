@@ -1,5 +1,5 @@
 
-# react-native-lenddodatasdk
+# RNDataSdkWrapper
 
 A React-native component for Android Lenddo Data SDK [https://www.lenddo.com/documentation/data_sdk.html].
 
