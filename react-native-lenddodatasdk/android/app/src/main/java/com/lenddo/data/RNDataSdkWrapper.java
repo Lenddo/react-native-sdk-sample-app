@@ -84,5 +84,17 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
         Log.d(TAG, "startAndroidData:: applicationId:: " + applicationId);
         AndroidData.startAndroidData(getCurrentActivity(), applicationId);
     }
+    @Override
+    public Map<String, Object> getConstants() {
+        final Map<String, Object> constants = new HashMap<>();
+        constants.put(PROVIDER_FACEBOOK, AndroidData.PROVIDER_FACEBOOK);
+        constants.put(PROVIDER_LINKEDIN, AndroidData.PROVIDER_LINKEDIN);
+        constants.put(PROVIDER_YAHOO, AndroidData.PROVIDER_YAHOO);
+        constants.put(PROVIDER_WINDOWSLIVE, AndroidData.PROVIDER_WINDOWSLIVE);
+        constants.put(PROVIDER_GOOGLE, AndroidData.PROVIDER_GOOGLE);
+        constants.put(PROVIDER_KAKAOTALK, AndroidData.PROVIDER_KAKAOTALK);
+        constants.put(PROVIDER_TWITTER, AndroidData.PROVIDER_TWITTER);
+        return constants;
+    }
 
 }
