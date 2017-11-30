@@ -24,6 +24,7 @@ export default class App extends Component<{}> {
 
     constructor(props) {
         super(props);
+        this.state = { val: "Start data collection" }
         this.onButtonPressed = this.onButtonPressed.bind(this);
         RNDataSdkWrapper.setup();
         UUIDGenerator.getRandomUUID().then((uuid) => {
@@ -33,6 +34,7 @@ export default class App extends Component<{}> {
     }
 
     onButtonPressed() {
+        this.setState({ val: "Started!" })
         const value = this._form.getValue(); // use that ref to get the form value
         console.log('value: ', value);
         if (this._form.validate().isValid()){
@@ -50,7 +52,7 @@ export default class App extends Component<{}> {
           />
           <TouchableOpacity onPress = {this.onButtonPressed}>
             <View style = {styles.buttonWrapper}>
-                <Text style = {styles.buttonText}>Submit</Text>
+                <Text style = {styles.buttonText}>{this.state.val}</Text>
             </View>
            </TouchableOpacity>
        </View>

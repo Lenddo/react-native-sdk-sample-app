@@ -26,7 +26,7 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
-            new RNUUIDGeneratorPackage(),
+                    new RNUUIDGeneratorPackage(),
                     new RNDataSdkWrapperPackage(getResources().getString(R.string.partner_script_id), getResources().getString(R.string.api_secret))
             );
         }
