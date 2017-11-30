@@ -9,12 +9,9 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.lenddo.data.AndroidData;
-import com.lenddo.data.models.ClientOptions;
-import com.lenddo.data.models.ApplicationPartnerData;
 
-
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
+import java.util.Map;
+import java.util.HashMap;
 
 
 public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
@@ -92,6 +89,7 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
         Log.d(TAG, "startAndroidData:: applicationId:: " + applicationId);
         AndroidData.startAndroidData(getCurrentActivity(), applicationId);
     }
+
     @Override
     public Map<String, Object> getConstants() {
         final Map<String, Object> constants = new HashMap<>();
