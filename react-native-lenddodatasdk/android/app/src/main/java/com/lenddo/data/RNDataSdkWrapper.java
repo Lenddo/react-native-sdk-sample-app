@@ -18,6 +18,14 @@ import com.google.gson.JsonObject;
 
 
 public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
+    public static final String PROVIDER_FACEBOOK = "facebook";
+    public static final String PROVIDER_LINKEDIN = "linkedin";
+    public static final String PROVIDER_YAHOO = "yahoo";
+    public static final String PROVIDER_WINDOWSLIVE = "windowslive";
+    public static final String PROVIDER_GOOGLE = "google";
+    public static final String PROVIDER_KAKAOTALK = "kakaostory";
+    public static final String PROVIDER_TWITTER = "twitter";
+
     private static final String TAG = "RNDataSdkWrapper";
     private static Callback requestCallback;
     private ReactApplicationContext reactContext;
