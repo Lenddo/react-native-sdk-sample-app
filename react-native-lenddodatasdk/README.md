@@ -95,6 +95,20 @@ setup () - initialize data collection
 
 startAndroidData (String applicationId) - start data collection
 
+setProviderAccessToken(String provider, String accessToken, String providerId, String extra_data, long expiration, Callback callback)
+
+statisticsEnabled()
+
+clear()
+
+getProfileType()
+
+sendPartnerApplicationData(String payload, Callback callback)
+
+submitFormFillingAnalytics
+
+
+
 ... (more methods to follow)
 
 
