@@ -96,6 +96,7 @@ public class MainApplication extends Application implements ReactApplication {
 ## API
 
 setup () - initialize data collection
+
 startAndroidData (String applicationId) - start data collection
 
 ... (more methods to follow)
