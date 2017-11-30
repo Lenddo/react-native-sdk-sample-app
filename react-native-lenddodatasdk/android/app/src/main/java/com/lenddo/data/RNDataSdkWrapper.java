@@ -38,9 +38,31 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setProviderAccessToken(@NonNull String provider, @NonNull String accessToken, @NonNull String providerId, Object extra_data, long expiration) {
-        Log.d(TAG, "setProviderAccessToken:: provider:: " + provider + ", accessToken:: " + accessToken + ", providerId:: " + providerId + ", extra_data:: " + extra_data);
-        AndroidData.setProviderAccessToken(reactContext, provider, accessToken, providerId, extra_data, expiration);
+    public void setProviderAccessToken(@NonNull String provider, @NonNull String accessToken, @NonNull String providerId, String extra_data, long expiration, final Callback callback) {
+        Log.d(TAG, "setProviderAccessToken:: provider:: " + provider + ", accessToken:: " + accessToken + ", providerId:: " + providerId + ", extra_data:: " + extra_data+ ", expiration:: " + expiration);
+        if (callback!=null) {
+            AndroidData.setProviderAccessToken(reactContext, provider, accessToken, providerId, extra_data, expiration, new OnDataSendingCompleteCallback() {
+                @Override
+                public void onDataSendingSuccess() {
+                    Log.d(TAG, "Send Partner Data Callback: Success!");
+                    callback.invoke("Send Partner Data Callback: Success!");
+                }
+
+                @Override
+                public void onDataSendingError(int statusCode, final String errorMessage) {
+                    Log.d(TAG, "Send Partner Data Callback: Error: " + errorMessage);
+                    callback.invoke("Send Partner Data Callback: Error: " + errorMessage);
+                }
+
+                @Override
+                public void onDataSendingFailed(final Throwable t)  {
+                    Log.d(TAG, "Send Partner Data Callback: Failed: " + t.getMessage());
+                    callback.invoke("Send Partner Data Callback: Failed: " + t.getMessage());
+                }
+            });
+        } else {
+            AndroidData.setProviderAccessToken(reactContext, provider, accessToken, providerId, extra_data, expiration);
+        }
     }
 
     @ReactMethod
