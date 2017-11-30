@@ -61,12 +61,6 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
         return AndroidData.getProfileType(reactContext);
     }
 
-
-    @ReactMethod
-    public void sendPartnerApplicationData(String payload) {
-        sendPartnerApplicationData(payload, null);
-    }
-
     @ReactMethod
     public void sendPartnerApplicationData(String payload, final Callback callback) {
         Log.d(TAG, "sendPartnerApplicationData:: payload:: " + payload);
