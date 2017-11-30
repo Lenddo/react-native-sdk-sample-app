@@ -1,12 +1,8 @@
 
 # react-native-lenddodatasdk
 
-A React-native component for android Lenddo Data SDK [https://www.lenddo.com/documentation/data_sdk.html].
+A React-native component for Android Lenddo Data SDK [https://www.lenddo.com/documentation/data_sdk.html].
 
-
-### Demo app
-
-<insert link of demo app here>
 
 ### Installation
 
@@ -101,6 +97,7 @@ startAndroidData (String applicationId) - start data collection
 
 ... (more methods to follow)
 
+
 ## Example
 ```javascript
 import React, { Component } from 'react';
@@ -113,48 +110,66 @@ import {
   View,
   TouchableOpacity
 } from 'react-native';
+import t from 'tcomb-form-native';
 
+const Form = t.form.Form;
+
+const User = t.struct({
+  firstName: t.String,
+  middleName: t.maybe(t.String),
+  lastName: t.String
+});
 
 
 export default class App extends Component<{}> {
 
     constructor(props) {
         super(props);
-        this.state = { val: "Start data collection" }
         this.onButtonPressed = this.onButtonPressed.bind(this);
-        RNDataSdkWrapper.setup(); //initialize data collection
+        RNDataSdkWrapper.setup();
+        UUIDGenerator.getRandomUUID().then((uuid) => {
+            console.log('uuid: ', uuid);
+		    RNDataSdkWrapper.startAndroidData(uuid);
+        });
     }
 
     onButtonPressed() {
-        this.setState({ val: "Started!" })
-        UUIDGenerator.getRandomUUID().then((uuid) => {
-            console.log(uuid);
-		    RNDataSdkWrapper.startAndroidData(uuid); //start data collection
-        });
+        const value = this._form.getValue(); // use that ref to get the form value
+        console.log('value: ', value);
+        if (this._form.validate().isValid()){
+            RNDataSdkWrapper.sendPartnerApplicationData(JSON.stringify(value), (msg) => {
+                                                                                   console.log(msg);
+                                                                                 });
+        }
+
     }
 
   render() {
     return (
        <View style = {styles.container}>
-                <TouchableOpacity onPress = {this.onButtonPressed}>
-                    <View style = {styles.buttonWrapper}>
-                        <Text style = {styles.buttonText}>{this.state.val}</Text>
-                    </View>
-                </TouchableOpacity>
+         <Form
+            ref={c => this._form = c} // assign a ref
+            type={User}
+          />
+          <TouchableOpacity onPress = {this.onButtonPressed}>
+            <View style = {styles.buttonWrapper}>
+                <Text style = {styles.buttonText}>Submit</Text>
             </View>
+           </TouchableOpacity>
+       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#999999',
+      justifyContent: 'center',
+      marginTop: 50,
+      padding: 20,
+      backgroundColor: '#ffffff',
   },
   buttonWrapper: {
-      marginTop: 70,
+      marginTop: 20,
       marginLeft: 20,
       marginRight:20,
       flexDirection: 'column',
@@ -171,4 +186,5 @@ const styles = StyleSheet.create({
       color: '#FFFFFF'
   }
 });
+
 

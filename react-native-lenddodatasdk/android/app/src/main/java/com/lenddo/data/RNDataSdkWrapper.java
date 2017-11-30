@@ -70,6 +70,7 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
                 public void onDataSendingSuccess() {
                     Log.d(TAG, "Send Partner Data Callback: Success!");
                     callback.invoke("Send Partner Data Callback: Success!");
+                    submitFormFillingAnalytics();
                 }
 
                 @Override

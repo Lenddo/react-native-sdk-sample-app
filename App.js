@@ -23,7 +23,6 @@ export default class App extends Component<{}> {
 
     constructor(props) {
         super(props);
-        this.state = { val: "Start data collection" }
         this.onButtonPressed = this.onButtonPressed.bind(this);
         RNDataSdkWrapper.setup();
         UUIDGenerator.getRandomUUID().then((uuid) => {
@@ -33,11 +32,12 @@ export default class App extends Component<{}> {
     }
 
     onButtonPressed() {
-        this.setState({ val: "Started!" })
         const value = this._form.getValue(); // use that ref to get the form value
         console.log('value: ', value);
         if (this._form.validate().isValid()){
-            RNDataSdkWrapper.sendPartnerApplicationData(JSON.stringify(value), null);
+            RNDataSdkWrapper.sendPartnerApplicationData(JSON.stringify(value), (msg) => {
+                                                                                   console.log(msg);
+                                                                                 });
         }
 
     }
@@ -51,7 +51,7 @@ export default class App extends Component<{}> {
           />
           <TouchableOpacity onPress = {this.onButtonPressed}>
             <View style = {styles.buttonWrapper}>
-                <Text style = {styles.buttonText}>{this.state.val}</Text>
+                <Text style = {styles.buttonText}>Submit</Text>
             </View>
            </TouchableOpacity>
        </View>
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#ffffff',
   },
   buttonWrapper: {
-      marginTop: 70,
+      marginTop: 20,
       marginLeft: 20,
       marginRight:20,
       flexDirection: 'column',
