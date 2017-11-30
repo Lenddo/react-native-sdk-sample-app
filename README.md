@@ -1,3 +1,3 @@
 # RNDataSDKWrapperDemo
 
-An example project to demonstrate RNDataSdkWrapper
+An sample app to demonstrate RNDataSdkWrapper
