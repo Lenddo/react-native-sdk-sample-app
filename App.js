@@ -8,7 +8,6 @@ import {
   View,
   TouchableOpacity
 } from 'react-native';
-
 import t from 'tcomb-form-native';
 
 const Form = t.form.Form;
