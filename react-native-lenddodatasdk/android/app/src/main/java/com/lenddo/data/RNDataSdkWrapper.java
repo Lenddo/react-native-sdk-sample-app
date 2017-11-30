@@ -8,6 +8,7 @@ import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.lenddo.data.listeners.OnDataSendingCompleteCallback;
 import com.lenddo.data.AndroidData;
 
 import java.util.Map;
@@ -24,7 +25,6 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
     public static final String PROVIDER_TWITTER = "twitter";
 
     private static final String TAG = "RNDataSdkWrapper";
-    private static Callback requestCallback;
     private ReactApplicationContext reactContext;
     private String partnerScriptId;
     private String apiSecret;
@@ -62,10 +62,33 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void sendPartnerApplicationData(String payload) {
+    public void sendPartnerApplicationData(String payload, Callback callback) {
         Log.d(TAG, "sendPartnerApplicationData:: payload:: " + payload);
-        AndroidData.sendPartnerApplicationData(reactContext, payload, null);
+        if (callback) {
+            AndroidData.sendPartnerApplicationData(reactContext, payload, new OnDataSendingCompleteCallback() {
+                @Override
+                public void onDataSendingSuccess() {
+                    Log.d(TAG, "Send Partner Data Callback: Success!"));
+                    callback.invoke("Send Partner Data Callback: Success!");
+                });
+
+                @Override
+                public void onDataSendingError(int statusCode, final String errorMessage) {
+                    Log.d(TAG, "Send Partner Data Callback: Error: " + errorMessage));
+                    callback.invoke("Send Partner Data Callback: Error: " + errorMessage);
+                });
+
+                @Override
+                public void onDataSendingFailed(final Throwable t)  {
+                    Log.d(TAG, "Send Partner Data Callback: Failed: " + t.getMessage()));
+                    callback.invoke("Send Partner Data Callback: Failed: " + t.getMessage());
+                });
+            });
+        } else {
+            AndroidData.sendPartnerApplicationData(reactContext, payload, null);
+        }
     }
+
 
     @ReactMethod
     public void submitFormFillingAnalytics() {
