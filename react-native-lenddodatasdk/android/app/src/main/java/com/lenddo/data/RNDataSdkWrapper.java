@@ -64,7 +64,7 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
     @ReactMethod
     public void sendPartnerApplicationData(String payload, Callback callback) {
         Log.d(TAG, "sendPartnerApplicationData:: payload:: " + payload);
-        if (callback) {
+        if (callback!=null) {
             AndroidData.sendPartnerApplicationData(reactContext, payload, new OnDataSendingCompleteCallback() {
                 @Override
                 public void onDataSendingSuccess() {
