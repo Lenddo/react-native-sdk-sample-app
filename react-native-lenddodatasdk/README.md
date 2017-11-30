@@ -35,6 +35,7 @@ dependencies {
 ```
 
 * register module on React Native >= 0.18 (in MainApplication.java)
+
 ```java
 package lenddo.com.lenddoconnect;
 
@@ -88,13 +89,15 @@ public class MainApplication extends Application implements ReactApplication {
 ```
 
 * register module on React Native < 0.18 (in MainApplication.java)
+
 ```java
 
 ```
-##API
+## API
 
 setup () - initialize data collection
 startAndroidData (String applicationId) - start data collection
+
 ... (more methods to follow)
 
 ## Example
