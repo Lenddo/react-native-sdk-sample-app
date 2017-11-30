@@ -37,7 +37,7 @@ export default class App extends Component<{}> {
         const value = this._form.getValue(); // use that ref to get the form value
         console.log('value: ', value);
         if (this._form.validate().isValid()){
-            RNDataSdkWrapper.sendPartnerApplicationData(JSON.stringify(value));
+            RNDataSdkWrapper.sendPartnerApplicationData(JSON.stringify(value), null);
         }
 
     }
