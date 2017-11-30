@@ -5,14 +5,17 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.GuardedRunnable;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.lenddo.data.listeners.OnDataSendingCompleteCallback;
+import com.facebook.react.bridge.UiThreadUtil;
 import com.lenddo.data.AndroidData;
+import com.lenddo.data.listeners.OnDataSendingCompleteCallback;
+import com.lenddo.data.models.ClientOptions;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 
 public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
@@ -39,25 +42,55 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setProviderAccessToken(@NonNull String provider, @NonNull String accessToken, @NonNull String providerId, String extra_data, long expiration, final Callback callback) {
-        Log.d(TAG, "setProviderAccessToken:: provider:: " + provider + ", accessToken:: " + accessToken + ", providerId:: " + providerId + ", extra_data:: " + extra_data+ ", expiration:: " + expiration);
-        if (callback!=null) {
+        Log.d(TAG, "setProviderAccessToken:: provider:: " + provider + ", accessToken:: " + accessToken + ", providerId:: " + providerId + ", extra_data:: " + extra_data + ", expiration:: " + expiration);
+        if (callback != null) {
             AndroidData.setProviderAccessToken(reactContext, provider, accessToken, providerId, extra_data, expiration, new OnDataSendingCompleteCallback() {
                 @Override
                 public void onDataSendingSuccess() {
-                    Log.d(TAG, "Send Partner Data Callback: Success!");
-                    callback.invoke("Send Partner Data Callback: Success!");
+                    UiThreadUtil.runOnUiThread(
+                            new GuardedRunnable(reactContext) {
+                                @Override
+                                public void runGuarded() {
+                                    try {
+                                        Log.d(TAG, "Send Partner Data Callback: Success!");
+                                        callback.invoke("Send Partner Data Callback: Success!");
+                                    } catch (Exception e) {
+                                        //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
+                                    }
+                                }
+                            });
                 }
 
                 @Override
                 public void onDataSendingError(int statusCode, final String errorMessage) {
-                    Log.d(TAG, "Send Partner Data Callback: Error: " + errorMessage);
-                    callback.invoke("Send Partner Data Callback: Error: " + errorMessage);
+                    UiThreadUtil.runOnUiThread(
+                            new GuardedRunnable(reactContext) {
+                                @Override
+                                public void runGuarded() {
+                                    try {
+                                        Log.d(TAG, "Send Partner Data Callback: Error: " + errorMessage);
+                                        callback.invoke("Send Partner Data Callback: Error: " + errorMessage);
+                                    } catch (Exception e) {
+                                        //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
+                                    }
+                                }
+                            });
                 }
 
                 @Override
-                public void onDataSendingFailed(final Throwable t)  {
-                    Log.d(TAG, "Send Partner Data Callback: Failed: " + t.getMessage());
-                    callback.invoke("Send Partner Data Callback: Failed: " + t.getMessage());
+                public void onDataSendingFailed(final Throwable t) {
+                    UiThreadUtil.runOnUiThread(
+                            new GuardedRunnable(reactContext) {
+                                @Override
+                                public void runGuarded() {
+                                    try {
+                                        Log.d(TAG, "Send Partner Data Callback: Failed: " + t.getMessage());
+                                        callback.invoke("Send Partner Data Callback: Failed: " + t.getMessage());
+                                    } catch (Exception e) {
+                                        //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
+                                    }
+                                }
+                            });
                 }
             });
         } else {
@@ -66,9 +99,13 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public boolean statisticsEnabled() {
+    public void statisticsEnabled(Callback callback) {
         Log.d(TAG, "statisticsEnabled");
-        return AndroidData.statisticsEnabled(reactContext);
+        try {
+            callback.invoke(AndroidData.statisticsEnabled(reactContext));
+        } catch (Exception e) {
+
+        }
     }
 
     @ReactMethod
@@ -78,33 +115,67 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public String getProfileType() {
+    public void getProfileType(Callback callback) {
         Log.d(TAG, "getProfileType");
-        return AndroidData.getProfileType(reactContext);
+        try {
+            callback.invoke(AndroidData.getProfileType(reactContext));
+        } catch (Exception e) {
+
+        }
     }
 
     @ReactMethod
     public void sendPartnerApplicationData(String payload, final Callback callback) {
         Log.d(TAG, "sendPartnerApplicationData:: payload:: " + payload);
-        if (callback!=null) {
+        if (callback != null) {
             AndroidData.sendPartnerApplicationData(reactContext, payload, new OnDataSendingCompleteCallback() {
                 @Override
                 public void onDataSendingSuccess() {
-                    Log.d(TAG, "Send Partner Data Callback: Success!");
-                    callback.invoke("Send Partner Data Callback: Success!");
-                    submitFormFillingAnalytics();
+                    UiThreadUtil.runOnUiThread(
+                            new GuardedRunnable(reactContext) {
+                                @Override
+                                public void runGuarded() {
+                                    try {
+                                        Log.d(TAG, "Send Partner Data Callback: Success!");
+                                        callback.invoke("Send Partner Data Callback: Success!");
+                                        submitFormFillingAnalytics();
+                                    } catch (Exception e) {
+                                        //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
+                                    }
+                                }
+                            });
                 }
 
                 @Override
                 public void onDataSendingError(int statusCode, final String errorMessage) {
-                    Log.d(TAG, "Send Partner Data Callback: Error: " + errorMessage);
-                    callback.invoke("Send Partner Data Callback: Error: " + errorMessage);
+                    UiThreadUtil.runOnUiThread(
+                            new GuardedRunnable(reactContext) {
+                                @Override
+                                public void runGuarded() {
+                                    try {
+                                        Log.d(TAG, "Send Partner Data Callback: Error: " + errorMessage);
+                                        callback.invoke("Send Partner Data Callback: Error: " + errorMessage);
+                                    } catch (Exception e) {
+                                        //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
+                                    }
+                                }
+                            });
                 }
 
                 @Override
-                public void onDataSendingFailed(final Throwable t)  {
-                    Log.d(TAG, "Send Partner Data Callback: Failed: " + t.getMessage());
-                    callback.invoke("Send Partner Data Callback: Failed: " + t.getMessage());
+                public void onDataSendingFailed(final Throwable t) {
+                    UiThreadUtil.runOnUiThread(
+                            new GuardedRunnable(reactContext) {
+                                @Override
+                                public void runGuarded() {
+                                    try {
+                                        Log.d(TAG, "Send Partner Data Callback: Failed: " + t.getMessage());
+                                        callback.invoke("Send Partner Data Callback: Failed: " + t.getMessage());
+                                    } catch (Exception e) {
+                                        //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
+                                    }
+                                }
+                            });
                 }
             });
         } else {
@@ -124,10 +195,155 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
         return "RNDataSdkWrapper";
     }
 
+
     @ReactMethod
     public void setup() {
-        Log.d(TAG, "setup:: partnerScriptId:: " + partnerScriptId + ", apiSecret:: " + apiSecret);
         AndroidData.setup(reactContext, partnerScriptId, apiSecret);
+    }
+
+    @ReactMethod
+    public void setup(final Callback callback) {
+        ClientOptions clientOptions = new ClientOptions();
+        clientOptions.registerDataSendingCompletionCallback(new OnDataSendingCompleteCallback() {
+            @Override
+            public void onDataSendingSuccess() {
+                UiThreadUtil.runOnUiThread(
+                        new GuardedRunnable(reactContext) {
+                            @Override
+                            public void runGuarded() {
+                                try {
+                                    callback.invoke("Data Sending Callback: Success");
+                                } catch (Exception e) {
+                                    //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
+                                }
+                            }
+                        });
+            }
+
+            @Override
+            public void onDataSendingError(int statusCode, final String errorMessage) {
+                UiThreadUtil.runOnUiThread(
+                        new GuardedRunnable(reactContext) {
+                            @Override
+                            public void runGuarded() {
+                                try {
+                                    callback.invoke("Data Sending Callback: Error: " + errorMessage);
+                                } catch (Exception e) {
+                                    //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
+                                }
+                            }
+                        });
+            }
+
+            @Override
+            public void onDataSendingFailed(final Throwable t) {
+                UiThreadUtil.runOnUiThread(
+                        new GuardedRunnable(reactContext) {
+                            @Override
+                            public void runGuarded() {
+                                try {
+                                    callback.invoke("Data Sending Callback: Failed: " + t.getMessage());
+                                } catch (Exception e) {
+                                    //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
+                                }
+                            }
+                        });
+            }
+        });
+        AndroidData.setup(reactContext, partnerScriptId, apiSecret, clientOptions);
+    }
+
+    @ReactMethod
+    public void setup(String gatewayUrl, boolean wifiOnly,
+                      boolean enableLogDisplay, boolean disableSms,
+                      boolean disableCallLog, boolean disableContact,
+                      boolean disableCalendarEvent, boolean disableInstalledApp,
+                      boolean disableBrowserHistory, boolean disableLocation,
+                      boolean disableBattCharge, boolean disableGalleryMetaData,
+                      boolean disableSmsBody, boolean enablePhoneNumber,
+                      boolean enableContactsName, boolean enableContactsEmail,
+                      boolean enableCalendarOrganizer, boolean enableCalendarDisplayName,
+                      boolean enableCalendarEmail, final Callback callback) {
+        Log.d(TAG, "setup:: partnerScriptId:: " + partnerScriptId + ", apiSecret:: " + apiSecret);
+
+        ClientOptions clientOptions = new ClientOptions();
+        // Hostname (Gateway)
+        if (gatewayUrl != null) {
+            clientOptions.setApiGatewayUrl(gatewayUrl);
+        }
+        // Upload Mode
+        clientOptions.setWifiOnly(wifiOnly);
+
+        // Debug Logs
+        clientOptions.enableLogDisplay(enableLogDisplay);
+
+        // Data types
+        if (disableSms) clientOptions.disableSMSDataCollection();
+        if (disableCallLog) clientOptions.disableCallLogDataCollection();
+        if (disableContact) clientOptions.disableContactDataCollection();
+        if (disableCalendarEvent) clientOptions.disableCalendarEventDataCollection();
+        if (disableInstalledApp) clientOptions.disableInstalledAppDataCollection();
+        if (disableBrowserHistory) clientOptions.disableBrowserHistoryDataCollection();
+        if (disableLocation) clientOptions.disableLocationDataCollection();
+        if (disableBattCharge) clientOptions.disableBattChargeDataCollection();
+        if (disableGalleryMetaData) clientOptions.disableGalleryMetaDataCollection();
+        // SMS Body Content
+        if (disableSmsBody) clientOptions.disableSMSBodyCollection();
+        //Data Hashing
+        if (enablePhoneNumber) clientOptions.enablePhoneNumberHashing();
+        if (enableContactsName) clientOptions.enableContactsNameHashing();
+        if (enableContactsEmail) clientOptions.enableContactsEmailHashing();
+        if (enableCalendarOrganizer) clientOptions.enableCalendarOrganizerHashing();
+        if (enableCalendarDisplayName) clientOptions.enableCalendarDisplayNameHashing();
+        if (enableCalendarEmail) clientOptions.enableCalendarEmailHashing();
+
+        clientOptions.registerDataSendingCompletionCallback(new OnDataSendingCompleteCallback() {
+            @Override
+            public void onDataSendingSuccess() {
+                UiThreadUtil.runOnUiThread(
+                        new GuardedRunnable(reactContext) {
+                            @Override
+                            public void runGuarded() {
+                                try {
+                                    callback.invoke("Data Sending Callback: Success");
+                                } catch (Exception e) {
+                                    //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
+                                }
+                            }
+                        });
+            }
+
+            @Override
+            public void onDataSendingError(int statusCode, final String errorMessage) {
+                UiThreadUtil.runOnUiThread(
+                        new GuardedRunnable(reactContext) {
+                            @Override
+                            public void runGuarded() {
+                                try {
+                                    callback.invoke("Data Sending Callback: Error: " + errorMessage);
+                                } catch (Exception e) {
+                                    //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
+                                }
+                            }
+                        });
+            }
+
+            @Override
+            public void onDataSendingFailed(final Throwable t) {
+                UiThreadUtil.runOnUiThread(
+                        new GuardedRunnable(reactContext) {
+                            @Override
+                            public void runGuarded() {
+                                try {
+                                    callback.invoke("Data Sending Callback: Failed: " + t.getMessage());
+                                } catch (Exception e) {
+                                    //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
+                                }
+                            }
+                        });
+            }
+        });
+        AndroidData.setup(reactContext, partnerScriptId, apiSecret, clientOptions);
     }
 
     @ReactMethod

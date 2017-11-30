@@ -93,19 +93,32 @@ public class MainApplication extends Application implements ReactApplication {
 
 setup () - initialize data collection
 
+setup(Callback callback)
+
+setup(String gatewayUrl, boolean wifiOnly,
+boolean enableLogDisplay, boolean disableSms,
+boolean disableCallLog, boolean disableContact,
+boolean disableCalendarEvent, boolean disableInstalledApp,
+boolean disableBrowserHistory, boolean disableLocation,
+boolean disableBattCharge, boolean disableGalleryMetaData,
+boolean disableSmsBody, boolean enablePhoneNumber,
+boolean enableContactsName, boolean enableContactsEmail,
+boolean enableCalendarOrganizer, boolean enableCalendarDisplayName,
+boolean enableCalendarEmail, final Callback callback)
+
 startAndroidData (String applicationId) - start data collection
 
 setProviderAccessToken(String provider, String accessToken, String providerId, String extra_data, long expiration, Callback callback)
 
-statisticsEnabled()
+statisticsEnabled(Callback callback)
 
 clear()
 
-getProfileType()
+getProfileType(Callback callback)
 
 sendPartnerApplicationData(String payload, Callback callback)
 
-submitFormFillingAnalytics
+submitFormFillingAnalytics()
 
 
 
@@ -122,16 +135,33 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView
 } from 'react-native';
 import t from 'tcomb-form-native';
 
 const Form = t.form.Form;
 
-const User = t.struct({
-  firstName: t.String,
-  middleName: t.maybe(t.String),
-  lastName: t.String
+const ClientOptions = t.struct({
+  gatewayUrl: t.maybe(t.String),
+  wifiOnly: t.Boolean,
+  enableLogDisplay: t.Boolean,
+  disableSms: t.Boolean,
+  disableCallLog: t.Boolean,
+  disableContact: t.Boolean,
+  disableCalendarEvent: t.Boolean,
+  disableInstalledApp: t.Boolean,
+  disableBrowserHistory: t.Boolean,
+  disableLocation: t.Boolean,
+  disableBattCharge: t.Boolean,
+  disableGalleryMetaData: t.Boolean,
+  disableSmsBody: t.Boolean,
+  enablePhoneNumber: t.Boolean,
+  enableContactsName: t.Boolean,
+  enableContactsEmail: t.Boolean,
+  enableCalendarOrganizer: t.Boolean,
+  enableCalendarDisplayName: t.Boolean,
+  enableCalendarEmail: t.Boolean
 });
 
 
@@ -139,38 +169,70 @@ export default class App extends Component<{}> {
 
     constructor(props) {
         super(props);
+        this.state = {
+            textValue:'START DATA SDK'
+        }
         this.onButtonPressed = this.onButtonPressed.bind(this);
-        RNDataSdkWrapper.setup();
-        UUIDGenerator.getRandomUUID().then((uuid) => {
-            console.log('uuid: ', uuid);
-		    RNDataSdkWrapper.startAndroidData(uuid);
-        });
     }
 
     onButtonPressed() {
         const value = this._form.getValue(); // use that ref to get the form value
         console.log('value: ', value);
-        if (this._form.validate().isValid()){
-            RNDataSdkWrapper.sendPartnerApplicationData(JSON.stringify(value), (msg) => {
-                                                                                   console.log(msg);
-                                                                                 });
+        if (value) { // if validation fails, value will be null
+            if(this.state.textValue.toUpperCase() === "START DATA SDK".toUpperCase()){
+                this.setState({textValue: "STOP&CLEAR DATA SDK"})
+
+            UUIDGenerator.getRandomUUID().then((applicationId) => {
+                console.log('applicationId: ', applicationId);
+                RNDataSdkWrapper.setup(this._form.getValue().gatewayUrl, this._form.getValue().wifiOnly,
+                this._form.getValue().disableCallLog, this._form.getValue().disableContact,
+                this._form.getValue().enableLogDisplay, this._form.getValue().disableSms,
+                this._form.getValue().disableCalendarEvent, this._form.getValue().disableInstalledApp,
+                this._form.getValue().disableBrowserHistory, this._form.getValue().disableLocation,
+                this._form.getValue().disableBattCharge, this._form.getValue().disableGalleryMetaData,
+                this._form.getValue().disableSmsBody, this._form.getValue().enablePhoneNumber,
+                this._form.getValue().enableContactsName, this._form.getValue().enableContactsEmail,
+                this._form.getValue().enableCalendarOrganizer, this._form.getValue().enableCalendarDisplayName,
+                this._form.getValue().enableCalendarEmail,
+                (msg) => {console.log(msg);
+                    RNDataSdkWrapper.statisticsEnabled(
+                    (statisticsEnabled) => {
+                        if(statisticsEnabled){
+                            this.setState({textValue: "STOP&CLEAR DATA SDK"})
+                        } else{
+                            this.setState({textValue: "START DATA SDK"})
+                        }
+                    });
+                });
+		        RNDataSdkWrapper.startAndroidData(applicationId);
+            });
+            } else{
+                this.setState({textValue: "START DATA SDK"})
+                RNDataSdkWrapper.clear();
+            }
+
+//                RNDataSdkWrapper.sendPartnerApplicationData(JSON.stringify(value),
+//                (msg) => {console.log(msg);});
         }
 
     }
 
   render() {
     return (
-       <View style = {styles.container}>
-         <Form
-            ref={c => this._form = c} // assign a ref
-            type={User}
-          />
-          <TouchableOpacity onPress = {this.onButtonPressed}>
-            <View style = {styles.buttonWrapper}>
-                <Text style = {styles.buttonText}>Submit</Text>
+
+        <ScrollView>
+            <View style = {styles.container}>
+              <Form
+                 ref={(c) => this._form =c}
+                 type={ClientOptions}
+               />
+               <TouchableOpacity onPress = {this.onButtonPressed}>
+                 <View style = {styles.buttonWrapper}>
+                     <Text style = {styles.buttonText}>{this.state.textValue}</Text>
+                 </View>
+                </TouchableOpacity>
             </View>
-           </TouchableOpacity>
-       </View>
+       </ScrollView>
     );
   }
 }
