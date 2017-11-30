@@ -76,9 +76,7 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setup() {
         Log.d(TAG, "setup:: partnerScriptId:: " + partnerScriptId + ", apiSecret:: " + apiSecret);
-        ClientOptions clientOptions = new ClientOptions();
-        clientOptions.enableLogDisplay(true);
-        AndroidData.setup(reactContext, partnerScriptId, apiSecret, clientOptions);
+        AndroidData.setup(reactContext, partnerScriptId, apiSecret);
     }
 
     @ReactMethod
