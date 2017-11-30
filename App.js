@@ -15,11 +15,11 @@ export default class App extends Component<{}> {
         super(props);
         this.onButtonPressed = this.onButtonPressed.bind(this);
         RNDataSdkWrapper.setup();
+		RNDataSdkWrapper.startAndroidData();
     }
 
     onButtonPressed() {
         console.log("onButtonPressed");
-		RNDataSdkWrapper.startAndroidData();
     }
 
   render() {
