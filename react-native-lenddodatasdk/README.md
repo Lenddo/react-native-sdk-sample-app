@@ -48,7 +48,7 @@ import com.facebook.soloader.SoLoader;
 import java.util.Arrays;
 import java.util.List;
 
-import com.lenddo.data.RNDataSdkWrapperPackage; <--- import
+import com.lenddo.data.RNDataSdkWrapperPackage; //<--- import
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -62,7 +62,7 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
-                    new RNDataSdkWrapperPackage(getResources().getString(R.string.partner_script_id), getResources().getString(R.string.api_secret)) <--- add here
+                    new RNDataSdkWrapperPackage(getResources().getString(R.string.partner_script_id), getResources().getString(R.string.api_secret)) //<--- add here
             );
         }
 
@@ -90,7 +90,6 @@ public class MainApplication extends Application implements ReactApplication {
 * register module on React Native < 0.18 (in MainApplication.java)
 ```java
 
-}
 ```
 ##API
 
