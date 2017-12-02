@@ -10,6 +10,12 @@ npm install react-native-lenddodatasdk --save
 npm install react-native-uuid-generator --save
 ```
 
+### To run
+
+```bash
+react-native run-android
+```
+
 
 ### Gradle setup
 

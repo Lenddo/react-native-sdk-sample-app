@@ -154,7 +154,6 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-uuid-generator')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile project(':react-native-lenddodatasdk')
