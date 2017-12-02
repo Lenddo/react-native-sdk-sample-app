@@ -10,6 +10,12 @@ A React-native component for Android Lenddo Data SDK [https://www.lenddo.com/doc
 npm install react-native-lenddodatasdk --save
 ```
 
+### To run
+
+```bash
+react-native run-android
+```
+
 ### Add it to your android project
 
 * In `android/setting.gradle`
