@@ -1,7 +1,6 @@
 package com.lenddo.data;
 
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.text.TextUtils;
 
@@ -49,10 +48,10 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setProviderAccessToken(@NonNull String provider, @NonNull String accessToken, @NonNull String providerId, String extra_data, String expiration, final Callback callback) {
+    public void setProviderAccessToken(String provider, String accessToken, String providerId, String extra_data, String expiration, final Callback callback) {
         Log.d(TAG, "setProviderAccessToken:: provider:: " + provider + ", accessToken:: " + accessToken + ", providerId:: " + providerId + ", extra_data:: " + extra_data + ", expiration:: " + expiration);
         if (callback != null) {
-            AndroidData.setProviderAccessToken(reactContext, provider, accessToken, providerId, extra_data, expiration == null || expiration.equals("null") ? 0 : Long.valueOf(expiration), new OnDataSendingCompleteCallback() {
+            AndroidData.setProviderAccessToken(reactContext, TextUtils.isEmpty(provider) ? "" : provider, TextUtils.isEmpty(accessToken) ? "" : accessToken,  TextUtils.isEmpty(providerId) ? "" : providerId, extra_data, expiration == null || expiration.equals("null") ? 0 : Long.valueOf(expiration), new OnDataSendingCompleteCallback() {
                 @Override
                 public void onDataSendingSuccess() {
                     UiThreadUtil.runOnUiThread(
@@ -102,7 +101,7 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
                 }
             });
         } else {
-            AndroidData.setProviderAccessToken(reactContext, provider, accessToken, providerId, extra_data, expiration == null || expiration.equals("null")  ? 0 : Long.valueOf(expiration));
+            AndroidData.setProviderAccessToken(reactContext,TextUtils.isEmpty(provider) ? "" : provider, TextUtils.isEmpty(accessToken) ? "" : accessToken,  TextUtils.isEmpty(providerId) ? "" : providerId, extra_data, expiration == null || expiration.equals("null") ? 0 : Long.valueOf(expiration));
         }
     }
 

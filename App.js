@@ -375,7 +375,7 @@ export default class TabViewExample extends PureComponent {
            console.log('value: ', value);
            if (value) { // if validation fails, value will be null
                RNDataSdkWrapper.setProviderAccessToken(value.provider,
-               value.accessToken, value.providerId, value.extra_data,
+               value.accessToken, value.providerID, value.extra_data,
                String(value.expiration), (result, statusCode, errorMsg, t) => {console.log('result: ' + result);
                                                  console.log('statusCode: ' + statusCode);
                                                  console.log('errorMsg: ' + errorMsg);
