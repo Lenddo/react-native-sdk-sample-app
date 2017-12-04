@@ -7,10 +7,18 @@ An sample app to demonstrate RNDataSdkWrapper
 
 ```bash
 npm install react-native-lenddodatasdk --save
+npm install tcomb-form-native --save
+npm install react-native-tab-view --save
+npm install react-native-gesture-handler --save
 ```
 
 ### To run
 
+* Update `index.android.bundle` whenever you modify your code in `App.js`
+```bash
+react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
+```
+*  Make sure an emulator is running or a device is connected
 ```bash
 react-native run-android
 ```
@@ -37,7 +45,7 @@ dependencies {
 ```
 
 
-* register module on React Native >= 0.18 (in MainApplication.java)
+* register module in MainApplication.java
 
 ```java
 package lenddo.com.lenddoconnect;
@@ -96,11 +104,5 @@ public class MainApplication extends Application implements ReactApplication {
     }
 
 }
-
-```
-
-* register module on React Native < 0.18 (in MainApplication.java)
-
-```java
 
 ```
