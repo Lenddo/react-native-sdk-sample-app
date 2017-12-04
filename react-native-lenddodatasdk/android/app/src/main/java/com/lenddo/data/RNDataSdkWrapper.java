@@ -31,6 +31,9 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
     public static final String PROVIDER_GOOGLE = "google";
     public static final String PROVIDER_KAKAOTALK = "kakaostory";
     public static final String PROVIDER_TWITTER = "twitter";
+    public static final int FAIL = 0;
+    public static final int SUCCESS = 1;
+    public static final int ERROR = 2;
 
     private static final String TAG = "RNDataSdkWrapper";
     private ReactApplicationContext reactContext;
@@ -58,7 +61,7 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
                                 public void runGuarded() {
                                     try {
                                         Log.d(TAG, "Send Partner Data Callback: Success!");
-                                        callback.invoke("Send Partner Data Callback: Success!");
+                                        callback.invoke(SUCCESS);
                                     } catch (Exception e) {
                                         //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
                                     }
@@ -67,14 +70,14 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
                 }
 
                 @Override
-                public void onDataSendingError(int statusCode, final String errorMessage) {
+                public void onDataSendingError(final int statusCode, final String errorMessage) {
                     UiThreadUtil.runOnUiThread(
                             new GuardedRunnable(reactContext) {
                                 @Override
                                 public void runGuarded() {
                                     try {
                                         Log.d(TAG, "Send Partner Data Callback: Error: " + errorMessage);
-                                        callback.invoke("Send Partner Data Callback: Error: " + errorMessage);
+                                        callback.invoke(ERROR, statusCode, errorMessage);
                                     } catch (Exception e) {
                                         //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
                                     }
@@ -90,7 +93,7 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
                                 public void runGuarded() {
                                     try {
                                         Log.d(TAG, "Send Partner Data Callback: Failed: " + t.getMessage());
-                                        callback.invoke("Send Partner Data Callback: Failed: " + t.getMessage());
+                                        callback.invoke(FAIL, t);
                                     } catch (Exception e) {
                                         //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
                                     }
@@ -199,7 +202,7 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
                                 public void runGuarded() {
                                     try {
                                         Log.d(TAG, "Send Partner Data Callback: Success!");
-                                        callback.invoke("Send Partner Data Callback: Success!");
+                                        callback.invoke(SUCCESS);
                                     } catch (Exception e) {
                                         //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
                                     }
@@ -208,14 +211,14 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
                 }
 
                 @Override
-                public void onDataSendingError(int statusCode, final String errorMessage) {
+                public void onDataSendingError(final int statusCode, final String errorMessage) {
                     UiThreadUtil.runOnUiThread(
                             new GuardedRunnable(reactContext) {
                                 @Override
                                 public void runGuarded() {
                                     try {
                                         Log.d(TAG, "Send Partner Data Callback: Error: " + errorMessage);
-                                        callback.invoke("Send Partner Data Callback: Error: " + errorMessage);
+                                        callback.invoke(ERROR, statusCode, errorMessage);
                                     } catch (Exception e) {
                                         //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
                                     }
@@ -231,7 +234,7 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
                                 public void runGuarded() {
                                     try {
                                         Log.d(TAG, "Send Partner Data Callback: Failed: " + t.getMessage());
-                                        callback.invoke("Send Partner Data Callback: Failed: " + t.getMessage());
+                                        callback.invoke(FAIL, t);
                                     } catch (Exception e) {
                                         //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
                                     }
@@ -257,7 +260,7 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
                                 public void runGuarded() {
                                     try {
                                         Log.d(TAG, "Send Partner Data Callback: Success!");
-                                        callback.invoke("Send Partner Data Callback: Success!");
+                                        callback.invoke(SUCCESS);
                                     } catch (Exception e) {
                                         //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
                                     }
@@ -266,14 +269,14 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
                 }
 
                 @Override
-                public void onDataSendingError(int statusCode, final String errorMessage) {
+                public void onDataSendingError(final int statusCode, final String errorMessage) {
                     UiThreadUtil.runOnUiThread(
                             new GuardedRunnable(reactContext) {
                                 @Override
                                 public void runGuarded() {
                                     try {
                                         Log.d(TAG, "Send Partner Data Callback: Error: " + errorMessage);
-                                        callback.invoke("Send Partner Data Callback: Error: " + errorMessage);
+                                        callback.invoke(ERROR, statusCode, errorMessage);
                                     } catch (Exception e) {
                                         //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
                                     }
@@ -289,7 +292,7 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
                                 public void runGuarded() {
                                     try {
                                         Log.d(TAG, "Send Partner Data Callback: Failed: " + t.getMessage());
-                                        callback.invoke("Send Partner Data Callback: Failed: " + t.getMessage());
+                                        callback.invoke(FAIL, t);
                                     } catch (Exception e) {
                                         //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
                                     }
@@ -331,7 +334,7 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
                             @Override
                             public void runGuarded() {
                                 try {
-                                    callback.invoke("Data Sending Callback: Success");
+                                    callback.invoke(SUCCESS);
                                 } catch (Exception e) {
                                     //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
                                 }
@@ -340,13 +343,13 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
             }
 
             @Override
-            public void onDataSendingError(int statusCode, final String errorMessage) {
+            public void onDataSendingError(final int statusCode, final String errorMessage) {
                 UiThreadUtil.runOnUiThread(
                         new GuardedRunnable(reactContext) {
                             @Override
                             public void runGuarded() {
                                 try {
-                                    callback.invoke("Data Sending Callback: Error: " + errorMessage);
+                                    callback.invoke(ERROR, statusCode, errorMessage);
                                 } catch (Exception e) {
                                     //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
                                 }
@@ -361,7 +364,7 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
                             @Override
                             public void runGuarded() {
                                 try {
-                                    callback.invoke("Data Sending Callback: Failed: " + t.getMessage());
+                                    callback.invoke(FAIL, t);
                                 } catch (Exception e) {
                                     //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
                                 }
@@ -424,7 +427,7 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
                             @Override
                             public void runGuarded() {
                                 try {
-                                    callback.invoke("Data Sending Callback: Success");
+                                    callback.invoke(SUCCESS);
                                 } catch (Exception e) {
                                     //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
                                 }
@@ -433,13 +436,13 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
             }
 
             @Override
-            public void onDataSendingError(int statusCode, final String errorMessage) {
+            public void onDataSendingError(final int statusCode, final String errorMessage) {
                 UiThreadUtil.runOnUiThread(
                         new GuardedRunnable(reactContext) {
                             @Override
                             public void runGuarded() {
                                 try {
-                                    callback.invoke("Data Sending Callback: Error: " + errorMessage);
+                                    callback.invoke(ERROR, statusCode, errorMessage);
                                 } catch (Exception e) {
                                     //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
                                 }
@@ -454,7 +457,7 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
                             @Override
                             public void runGuarded() {
                                 try {
-                                    callback.invoke("Data Sending Callback: Failed: " + t.getMessage());
+                                    callback.invoke(FAIL, t);
                                 } catch (Exception e) {
                                     //Catches the exception: java.lang.RuntimeException·Illegal callback invocation from native module
                                 }

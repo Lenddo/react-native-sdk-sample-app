@@ -321,7 +321,10 @@ export default class TabViewExample extends PureComponent {
         value.enablePhoneNumber, value.enableContactsName,
         value.enableContactsEmail,  value.enableCalendarOrganizer,
         value.enableCalendarDisplayName, value.enableCalendarEmail,
-        (msg) => {console.log(msg);
+        (result, statusCode, errorMsg, t) => {console.log('result: ' + result);
+        console.log('statusCode: ' + statusCode);
+        console.log('errorMsg: ' + errorMsg);
+        console.log('t: ' + t);
             RNDataSdkWrapper.statisticsEnabled(
             (statisticsEnabled) => {
                 if(statisticsEnabled){
@@ -331,7 +334,7 @@ export default class TabViewExample extends PureComponent {
                 }
             });
         });
-        RNDataSdkWrapper.startAndroidData(value.applicationID);
+        RNDataSdkWrapper.startAndroidData(value.applicationId);
   }
 
   onPressStartData() {
@@ -360,7 +363,10 @@ export default class TabViewExample extends PureComponent {
               value.addressLine2, value.city, value.administrativeRegion,
               value.country, value.postalCode, value.latitude,
               value.longitude, value.applicationId,
-             (msg) => {console.log(msg);  RNDataSdkWrapper.submitFormFillingAnalytics()});
+              (result, statusCode, errorMsg, t) => {console.log('result: ' + result);
+                     console.log('statusCode: ' + statusCode);
+                     console.log('errorMsg: ' + errorMsg);
+                     console.log('t: ' + t);  RNDataSdkWrapper.submitFormFillingAnalytics()});
            }
   }
 
@@ -370,7 +376,10 @@ export default class TabViewExample extends PureComponent {
            if (value) { // if validation fails, value will be null
                RNDataSdkWrapper.setProviderAccessToken(value.provider,
                value.accessToken, value.providerId, value.extra_data,
-               String(value.expiration), (msg) => {console.log(msg);});
+               String(value.expiration), (result, statusCode, errorMsg, t) => {console.log('result: ' + result);
+                                                 console.log('statusCode: ' + statusCode);
+                                                 console.log('errorMsg: ' + errorMsg);
+                                                 console.log('t: ' + t);});
            }
   }
 
