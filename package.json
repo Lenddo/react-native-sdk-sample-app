@@ -10,7 +10,9 @@
 		"buffer": "^5.0.8",
 		"react": "16.0.0",
 		"react-native": "^0.50.4",
+		"react-native-gesture-handler": "^1.0.0-alpha.35",
 		"react-native-lenddodatasdk": "file:react-native-lenddodatasdk",
+		"react-native-tab-view": "0.0.72",
 		"tcomb-form-native": "^0.6.11"
 	},
 	"devDependencies": {

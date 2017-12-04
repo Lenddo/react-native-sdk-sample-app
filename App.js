@@ -1,14 +1,9 @@
-import React, { Component } from 'react';
-import RNDataSdkWrapper from 'react-native-lenddodatasdk';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  TouchableHighlight,
-  ScrollView
-} from 'react-native';
+import React, { PureComponent } from 'react';
+import { View, StyleSheet, Dimensions, Platform, Text, TouchableHighlight, ScrollView, ToolbarAndroid } from 'react-native';
+import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 import t from 'tcomb-form-native';
+import RNDataSdkWrapper from 'react-native-lenddodatasdk';
+
 
 const Form = t.form.Form;
 
@@ -54,16 +49,16 @@ const VerificationData = t.struct({
   addressLine2: t.maybe(t.String),
   city: t.maybe(t.String),
   administrativeRegion: t.maybe(t.String),
-  countryCode: t.maybe(t.String),
+  country: t.maybe(t.String),
   postalCode: t.maybe(t.String),
   latitude: t.maybe(t.String),
   longitude: t.maybe(t.String)
 });
 
 const ProviderAccessData = t.struct({
-  provider: t.String,
-  accessToken: t.String,
-  providerID: t.String,
+  provider: t.maybe(t.String),
+  accessToken: t.maybe(t.String),
+  providerID: t.maybe(t.String),
   extra_data: t.maybe(t.String),
   expiration: t.maybe(t.Number)
 });
@@ -127,38 +122,195 @@ var options = {
     enableCalendarEmail: {
       label: 'Enable Calendar Email hashing'
     },
+    firstName: {
+      label: 'First Name'
+    },
+    middleName: {
+      label: 'Middle Name'
+    },
+    lastName: {
+      label: 'Last Name'
+    },
+    dateOfBirth: {
+      label: 'Date of Birth'
+    },
+    mobile: {
+      label: 'Mobile Phone'
+    },
+    home: {
+      label: 'Home Phone'
+    },
+    email: {
+      label: 'Email'
+    },
+    employer: {
+      label: 'Employer'
+    },
+    university: {
+      label: 'University'
+    },
+    motherMaidenFirstName: {
+      label: 'Mother\'s Maiden Name - First Name'
+    },
+    motherMaidenMiddleName: {
+      label: 'Mother\'s Maiden Name - Middle Name'
+    },
+    motherMaidenLastName: {
+      label: 'Mother\'s Maiden Name - Last Name'
+    },
+    addressLine1: {
+      label: 'Address Line 1'
+    },
+    addressLine2: {
+      label: 'Address Line 2'
+    },
+    city: {
+      label: 'City'
+    },
+    administrativeRegion: {
+      label: 'Administrative Division'
+    },
+    country: {
+      label: 'Country'
+    },
+    postalCode: {
+      label: 'Postal Code'
+    },
+    latitude: {
+      label: 'Latitude'
+    },
+    longitude: {
+      label: 'Longitude'
+    },
+    provider: {
+      label: 'Provider'
+    },
+    accessToken: {
+      label: 'Provider Access Token'
+    },
+    extra_data: {
+      label: 'Provider Extra Data (optional)'
+    },
+    expiration: {
+      label: 'Access Token Expiration'
+    },
   }
 };
 
-var value = {
-  enableLogDisplay: true,
-  enableSms: true,
-  enableCallLog: true,
-  enableContact: true,
-  enableCalendarEvent: true,
-  enableInstalledApp: true,
-  enableBrowserHistory: true,
-  enableLocation: true,
-  enableBattCharge: true,
-  enableGalleryMetaData: true
 
+const initialLayout = {
+  height: 0,
+  width: Dimensions.get('window').width,
 };
 
-export default class App extends Component<{}> {
+export default class TabViewExample extends PureComponent {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            startDataText:'START DATA SDK',
-            sendPartnerDataText: 'SEND PARTNER DATA',
-            sendProviderAccessTokenText: 'SEND PROVIDER ACCESS TOKEN'
-        }
-        this.onButtonPressed = this.onButtonPressed.bind(this);
-        this.onButtonPressed1 = this.onButtonPressed1.bind(this);
-        this.onButtonPressed2 = this.onButtonPressed2.bind(this);
+  constructor(props) {
+    super(props);
+    this.onPressStartData = this.onPressStartData.bind(this);
+    this.onPressSendPartnerData = this.onPressSendPartnerData.bind(this);
+    this.onPressSendProviderAccessToken = this.onPressSendProviderAccessToken.bind(this);
+    this.onClientOptionsChange = this.onClientOptionsChange.bind(this);
+    this.onVerificationChange = this.onVerificationChange.bind(this);
+    this.onAccessTokenChange = this.onAccessTokenChange.bind(this);
+  }
+
+  state = {
+      startDataText: 'START DATA SDK',
+      sendPartnerDataText: 'SEND PARTNER DATA',
+      sendProviderAccessTokenText: 'SEND PROVIDER ACCESS TOKEN',
+      index: 0,
+      routes: [
+        { key: 'scoring', title: 'Scoring' },
+        { key: 'verification', title: 'Verification' },
+      ],
+      clientOptionsValue: {
+        enableLogDisplay: true,
+        enableSms: true,
+        enableCallLog: true,
+        enableContact: true,
+        enableCalendarEvent: true,
+        enableInstalledApp: true,
+        enableBrowserHistory: true,
+        enableLocation: true,
+        enableBattCharge: true,
+        enableGalleryMetaData: true
+      },
+      verificationValue: null,
+      providerAccessValue: null
+  }
+
+
+  _handleIndexChange = index => this.setState({ index });
+
+  _renderHeader = props => <TabBar {...props}
+                           indicatorStyle={styles.indicator}
+                           style={styles.tabBar}
+                           labelStyle={styles.label}/>;
+
+  _renderScene = ({route}) => {
+    switch(route.key){
+      case 'scoring':
+      return (
+        <ScrollView>
+          <View style = {styles.container}>
+           <Form
+              ref={component => this._startData = component}
+              type={ClientOptions}
+              options={options}
+              value={this.state.clientOptionsValue}
+              onChange={this.onClientOptionsChange}
+           />
+           <TouchableHighlight style={styles.button} onPress = {this.onPressStartData} underlayColor='#99d9f4'>
+              <Text style = {styles.buttonText}>{this.state.startDataText}</Text>
+           </TouchableHighlight>
+          </View>
+        </ScrollView>
+      );
+      case 'verification':
+      return(
+         <ScrollView>
+            <View style = {styles.container}>
+                <Form
+                   ref={component => this._verification = component}
+                   type={VerificationData}
+                   options={options}
+                   value={this.state.verificationValue}
+                   onChange={this.onVerificationChange}
+                />
+                <TouchableHighlight style={styles.button} onPress = {this.onPressSendPartnerData} underlayColor='#99d9f4'>
+                   <Text style = {styles.buttonText}>{this.state.sendPartnerDataText}</Text>
+                </TouchableHighlight>
+                <Form
+                   ref={component => this._providerAccess = component}
+                   type={ProviderAccessData}
+                   options={options}
+                   value={this.state.providerAccessValue}
+                   onChange={this.onAccessTokenChange}
+                />
+                <TouchableHighlight style={styles.button} onPress = {this.onPressSendProviderAccessToken} underlayColor='#99d9f4'>
+                  <Text style = {styles.buttonText}>{this.state.sendProviderAccessTokenText}</Text>
+                </TouchableHighlight>
+            </View>
+         </ScrollView>
+      );
     }
 
-    startAndroidData(value) {
+  }
+
+  onClientOptionsChange() {
+    this.setState({clientOptionsValue: this._startData.getValue()});
+  }
+
+  onVerificationChange() {
+    this.setState({verificationValue: this._verification.getValue()});
+  }
+  
+  onAccessTokenChange() {
+    this.setState({providerAccessValue: this._providerAccess.getValue()});
+  }
+
+  startAndroidData(value) {
         RNDataSdkWrapper.setup(value.gatewayUrl,
         value.wifiOnly, value.enableCallLog,
         value.enableContact,value.enableLogDisplay,
@@ -180,102 +332,85 @@ export default class App extends Component<{}> {
             });
         });
         RNDataSdkWrapper.startAndroidData(value.applicationID);
-    }
+  }
 
-    onButtonPressed() {
-        if (this.state.startDataText.toUpperCase() === "START DATA SDK".toUpperCase()) {
-            const value = this._startdata.getValue(); // use that ref to get the form value
-            console.log('value: ', value);
-            if (value) { // if validation fails, value will be null
-              this.setState({startDataText: "STOP&CLEAR DATA SDK"})
-              this.startAndroidData(value);
-            }
-        } else {
-            this.setState({startDataText: "START DATA SDK"})
-            RNDataSdkWrapper.clear();
-        }
+  onPressStartData() {
+       if (this.state.startDataText.toUpperCase() === "START DATA SDK".toUpperCase()) {
+           const value = this._startData.getValue(); // use that ref to get the form value
+           console.log('value: ', value);
+           if (value) { // if validation fails, value will be null
+             this.setState({startDataText: "STOP&CLEAR DATA SDK"})
+             this.startAndroidData(value);
+           }
+       } else {
+           this.setState({startDataText: "START DATA SDK"})
+           RNDataSdkWrapper.clear();
+       }
+  }
 
-    }
+  onPressSendPartnerData() {
+           const value = this._verification.getValue(); // use that ref to get the form value
+           console.log('value: ', value);
+           if (value) { // if validation fails, value will be null
+              RNDataSdkWrapper.sendPartnerApplicationData(value.firstName, value.middleName,
+              value.lastName, value.dateOfBirth, value.mobile, value.home,
+              value.email, value.employer, value.university,
+              value.motherMaidenFirstName, value.motherMaidenMiddleName,
+              value.motherMaidenLastName, value.addressLine1,
+              value.addressLine2, value.city, value.administrativeRegion,
+              value.country, value.postalCode, value.latitude,
+              value.longitude, value.applicationId,
+             (msg) => {console.log(msg);  RNDataSdkWrapper.submitFormFillingAnalytics()});
+           }
+  }
 
-    onButtonPressed1() {
-            const value = this._verification.getValue(); // use that ref to get the form value
-            console.log('value: ', value);
-            if (value) { // if validation fails, value will be null
-               RNDataSdkWrapper.sendPartnerApplicationData(value.firstName, value.middleName,
-               value.lastName, value.dateOfBirth, value.mobile, value.home,
-               value.email, value.employer, value.university,
-               value.motherMaidenFirstName, value.motherMaidenMiddleName,
-               value.motherMaidenLastName, value.addressLine1,
-               value.addressLine2, value.city, value.administrativeRegion,
-               value.countryCode, value.postalCode, value.latitude,
-               value.longitude, value.applicationId,
-              (msg) => {console.log(msg);  RNDataSdkWrapper.submitFormFillingAnalytics()});
-            }
-
-        }
-
-    onButtonPressed2() {
-            const value = this._provideraccess.getValue(); // use that ref to get the form value
-            console.log('value: ', value);
-            if (value) { // if validation fails, value will be null
-                RNDataSdkWrapper.setProviderAccessToken(value.provider,
-                value.accessToken, value.providerId, value.extra_data,
-                String(value.expiration), (msg) => {console.log(msg);});
-            }
-     }
+  onPressSendProviderAccessToken() {
+           const value = this._providerAccess.getValue(); // use that ref to get the form value
+           console.log('value: ', value);
+           if (value) { // if validation fails, value will be null
+               RNDataSdkWrapper.setProviderAccessToken(value.provider,
+               value.accessToken, value.providerId, value.extra_data,
+               String(value.expiration), (msg) => {console.log(msg);});
+           }
+  }
 
   render() {
     return (
-
-        <ScrollView>
-            <View style = {styles.container}>
-              <Form
-                 ref={component => this._startdata = component}
-                 type={ClientOptions}
-                 options={options}
-                 value={value}
-               />
-               <TouchableHighlight style={styles.button} onPress = {this.onButtonPressed} underlayColor='#99d9f4'>
-                  <Text style = {styles.buttonText}>{this.state.startDataText}</Text>
-                </TouchableHighlight>
-                <Form
-                   ref={component => this._verification = component}
-                   type={VerificationData}
-                   options={options}
-                />
-                 <TouchableHighlight style={styles.button} onPress = {this.onButtonPressed1} underlayColor='#99d9f4'>
-                    <Text style = {styles.buttonText}>{this.state.sendPartnerDataText}</Text>
-                 </TouchableHighlight>
-                 <Form
-                    ref={component => this._provideraccess = component}
-                    type={ProviderAccessData}
-                    options={options}
-                 />
-                 <TouchableHighlight style={styles.button} onPress = {this.onButtonPressed2} underlayColor='#99d9f4'>
-                   <Text style = {styles.buttonText}>{this.state.sendProviderAccessTokenText}</Text>
-                 </TouchableHighlight>
-            </View>
-       </ScrollView>
+    <View style={styles.mainContainer}>
+     <ToolbarAndroid
+        title='React Native DataSDK Demo'
+        style={styles.toolbar}
+        titleColor='white'/>
+      <TabViewAnimated
+        style={[styles.mainContainer, this.props.style]}
+        navigationState={this.state}
+        renderScene={this._renderScene}
+        renderHeader={this._renderHeader}
+        onIndexChange={this._handleIndexChange}
+        initialLayout={initialLayout}/>
+    </View>
     );
   }
 }
 
+
 const styles = StyleSheet.create({
-  container: {
-      justifyContent: 'center',
-      marginTop: 50,
-      padding: 20,
-      backgroundColor: '#ffffff',
+    mainContainer: {
+      flex: 1,
+      backgroundColor: '#f5f5f5',
     },
-    title: {
-      fontSize: 30,
-      alignSelf: 'center',
-      marginBottom: 30
+    toolbar: {
+      height: 56,
+      backgroundColor: '#ff0000',
+    },
+    container: {
+      justifyContent: 'center',
+      padding: 20,
     },
     buttonText: {
       fontSize: 18,
       color: 'white',
-      alignSelf: 'center'
+      alignSelf: 'center',
     },
     button: {
       height: 36,
@@ -286,5 +421,15 @@ const styles = StyleSheet.create({
       marginBottom: 10,
       alignSelf: 'stretch',
       justifyContent: 'center'
-    }
+    },
+    tabBar: {
+      backgroundColor: '#ff0000',
+    },
+    indicator: {
+      backgroundColor: '#ffeb3b',
+    },
+    label: {
+      color: '#fff',
+      fontWeight: '400',
+    },
 });
