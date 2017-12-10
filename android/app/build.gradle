@@ -103,7 +103,6 @@ android {
         preDexLibraries false
         javaMaxHeapSize "4g"
         jumboMode true
-//        incremental true
     }
 
     defaultConfig {
@@ -117,7 +116,16 @@ android {
             abiFilters "armeabi-v7a", "x86"
         }
     }
-
+    signingConfigs {
+        release {
+            if (project.hasProperty('RELEASE_STORE_FILE')) {
+                storeFile file(RELEASE_STORE_FILE)
+                storePassword RELEASE_STORE_PASSWORD
+                keyAlias RELEASE_KEY_ALIAS
+                keyPassword RELEASE_KEY_PASSWORD
+            }
+        }
+    }
     splits {
         abi {
             reset()
@@ -131,6 +139,7 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             multiDexEnabled true
+            signingConfig signingConfigs.release
         }
         debug {
             debuggable true
@@ -156,7 +165,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile project(':react-native-lenddodatasdk')
+    compile project(':react-native-data-sdk')
     compile 'com.google.android.gms:play-services-auth:9.8.0'
     compile 'com.facebook.android:facebook-android-sdk:4.23.0'
     compile 'com.google.code.gson:gson:2.8.2'
