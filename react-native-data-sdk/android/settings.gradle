@@ -1,0 +1,3 @@
+rootProject.name = 'react-native-data-sdk'
+
+include ':app'

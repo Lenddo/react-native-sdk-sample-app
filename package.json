@@ -8,12 +8,14 @@
 	},
 	"dependencies": {
 		"buffer": "^5.0.8",
+		"prop-types": "^15.6.0",
 		"react": "16.0.0",
 		"react-native": "^0.50.4",
+		"react-native-check-box": "^2.0.2",
+		"react-native-data-sdk": "file:react-native-data-sdk",
 		"react-native-gesture-handler": "^1.0.0-alpha.35",
-		"react-native-lenddodatasdk": "file:react-native-lenddodatasdk",
-		"react-native-tab-view": "0.0.72",
-		"tcomb-form-native": "^0.6.11"
+		"react-native-material-textfield": "^0.11.0",
+		"react-native-tab-view": "0.0.72"
 	},
 	"devDependencies": {
 		"babel-jest": "21.2.0",

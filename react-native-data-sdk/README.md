@@ -1,3 +1,149 @@
+
+# RNDataSdkWrapper
+
+A React-native component for Android Lenddo Data SDK [https://www.lenddo.com/documentation/data_sdk.html].
+
+
+## Demo app
+
+[https://bitbucket.org/leqstamaria/react-native-data-sdk-demo]
+
+### Installation
+
+```bash
+npm install react-native-data-sdk --save
+```
+
+### To run
+
+* Update `index.android.bundle` whenever you modify your code in `App.js`
+
+```bash
+react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
+
+```
+*  Make sure an emulator is running or a device is connected
+
+```bash
+react-native run-android
+```
+
+### Add it to your android project
+
+* In `android/setting.gradle`
+
+```gradle
+...
+include ':react-native-data-sdk'
+project(':react-native-data-sdk').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-data-sdk/android/app')
+```
+
+* In `android/app/build.gradle`
+
+```gradle
+...
+dependencies {
+    ...
+    compile project(':react-native-data-sdk')
+}
+```
+
+* register module in MainApplication.java
+
+```java
+package lenddo.com.lenddoconnect;
+
+import android.app.Application;
+
+import com.facebook.react.ReactApplication;
+import com.facebook.react.ReactNativeHost;
+import com.facebook.react.ReactPackage;
+import com.facebook.react.shell.MainReactPackage;
+import com.facebook.soloader.SoLoader;
+import java.util.Arrays;
+import java.util.List;
+
+import com.lenddo.data.RNDataSdkWrapperPackage; //<--- import
+
+public class MainApplication extends Application implements ReactApplication {
+
+    private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+        @Override
+        public  getUseDeveloperSupport() {
+            return BuildConfig.DEBUG;
+        }
+
+        @Override
+        protected List<ReactPackage> getPackages() {
+            return Arrays.<ReactPackage>asList(
+                    new MainReactPackage(),
+                    new RNDataSdkWrapperPackage(getResources().getString(R.string.partner_script_id), getResources().getString(R.string.api_secret)) //<--- add here
+            );
+        }
+
+        @Override
+        protected getJSMainModuleName() {
+            return "index";
+        }
+    };
+
+    @Override
+    public ReactNativeHost getReactNativeHost() {
+        return mReactNativeHost;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        SoLoader.init(this, /* native exopackage */ false);
+    }
+
+}
+
+```
+
+## API
+
+setup ()
+
+setup(callback)
+
+setup(gatewayUrl,  wifiOnly,
+ enableLogDisplay,  disableSms,
+ disableCallLog,  disableContact,
+ disableCalendarEvent,  disableInstalledApp,
+ disableBrowserHistory,  disableLocation,
+ disableBattCharge,  disableGalleryMetaData,
+ disableSmsBody,  enablePhoneNumber,
+ enableContactsName,  enableContactsEmail,
+ enableCalendarOrganizer,  enableCalendarDisplayName,
+ enableCalendarEmail, callback)
+
+startAndroidData (applicationId)
+
+setProviderAccessToken(provider, accessToken, providerId, extra_data, expiration,  callback)
+
+statisticsEnabled(callback)
+
+clear()
+
+getProfileType(callback)
+
+sendPartnerApplicationData(firstName, middleName, 
+lastName, dateOfBirth, mobile, home,
+email, employer, university,
+motherMaidenFirstName, motherMaidenMiddleName,
+motherMaidenLastName, addressLine1,
+addressLine2, city, administrativeRegion,
+country, postalCode, latitude,
+longitude, applicationId, jsonPayload,  callback)
+
+submitFormFillingAnalytics()
+
+
+## Example
+```javascript
+
 'use strict';
 
 import React, { PureComponent } from 'react';
@@ -669,3 +815,4 @@ const styles = StyleSheet.create({
       fontWeight: '400',
     },
 });
+```

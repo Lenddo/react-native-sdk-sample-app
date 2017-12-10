@@ -1,13 +1,14 @@
 # RNDataSDKWrapperDemo
 
-An sample app to demonstrate RNDataSdkWrapper
+A sample app to demonstrate RNDataSdkWrapper
 
 
 ### Installation
 
 ```bash
-npm install react-native-lenddodatasdk --save
-npm install tcomb-form-native --save
+npm install react-native-data-sdk --save
+npm install react-native-check-box --save
+npm install react-native-material-textfield --save
 npm install react-native-tab-view --save
 npm install react-native-gesture-handler --save
 ```
@@ -15,10 +16,12 @@ npm install react-native-gesture-handler --save
 ### To run
 
 * Update `index.android.bundle` whenever you modify your code in `App.js`
+
 ```bash
 react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
 ```
 *  Make sure an emulator is running or a device is connected
+
 ```bash
 react-native run-android
 ```
@@ -30,8 +33,8 @@ react-native run-android
 
 ```gradle
 ...
-include ':app', ':react-native-lenddodatasdk'
-project(':react-native-lenddodatasdk').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-lenddodatasdk/android/app')
+include ':app', ':react-native-data-sdk'
+project(':react-native-data-sdk').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-data-sdk/android/app')
 ```
 
 * In `android/app/build.gradle`
@@ -40,7 +43,7 @@ project(':react-native-lenddodatasdk').projectDir = new File(rootProject.project
 ...
 dependencies {
     ...
-    compile project(':react-native-lenddodatasdk')
+    compile project(':react-native-data-sdk')
 }
 ```
 
