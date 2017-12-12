@@ -1,7 +1,7 @@
 'use strict';
 
 import React, { PureComponent } from 'react';
-import { View, StyleSheet, Dimensions, Text, TouchableHighlight, ScrollView, ToolbarAndroid, Picker} from 'react-native';
+import { View, StyleSheet, Dimensions, Text, TouchableHighlight, ScrollView, ToolbarAndroid, Picker, Alert} from 'react-native';
 import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 import { TextField } from 'react-native-material-textfield';
 import CheckBox from 'react-native-check-box';
@@ -22,6 +22,9 @@ export default class TabViewExample extends PureComponent {
     this.onPressStartData = this.onPressStartData.bind(this);
     this.onPressSendPartnerData = this.onPressSendPartnerData.bind(this);
     this.onPressSendProviderAccessToken = this.onPressSendProviderAccessToken.bind(this);
+    this.focusNextField = this.focusNextField.bind(this);
+    this.onActionSelected = this.onActionSelected.bind(this);
+    this.inputs = {};
   }
 
   state = {
@@ -126,11 +129,13 @@ export default class TabViewExample extends PureComponent {
         <ScrollView>
           <View style = {styles.container}>
            <TextField
+             ref='applicationId'
              label='Application ID'
              value={this.state.scoring.applicationId}
              onChangeText={ (applicationId) => {this.state.scoring.applicationId = applicationId}}
-             returnKeyType = {"next"}
+             returnKeyType = {"done"}
              error={this.state.errorApplicationId}
+             blurOnSubmit={ true }
            />
            <Text style={{fontWeight: 'bold'}}>Settings:</Text>
            <Picker
@@ -288,152 +293,306 @@ export default class TabViewExample extends PureComponent {
             <View style = {styles.container}>
                 <Text style={{fontWeight: 'bold'}}>Application Id:</Text>
                 <TextField
+                  ref={ input => {
+                    this.inputs['referenceNumber'] = input;
+                  }}
                   label='Reference Number'
                   value={this.state.verification.referenceNumber}
                   onChangeText={ (referenceNumber) => {this.state.verification.referenceNumber = referenceNumber}}
                   returnKeyType = {"next"}
+                   blurOnSubmit={ false }
+                  onSubmitEditing={() => {
+                    this.focusNextField('jsonPayload');
+                  }}
                 />
                 <TextField
+                  ref={ input => {
+                    this.inputs['jsonPayload'] = input;
+                  }}
                    label='Application JSON Payload'
                    value={this.state.verification.jsonPayload}
                    onChangeText={ (jsonPayload) => {this.state.verification.jsonPayload = jsonPayload}}
                    returnKeyType = {"next"}
+                   blurOnSubmit={ false }
+                   onSubmitEditing={() => {
+                    this.focusNextField('firstName');
+                  }}
                  />
                  <Text style={{fontWeight: 'bold'}}>Personal Info:</Text>
                  <TextField
+                  ref={ input => {
+                    this.inputs['firstName'] = input;
+                  }}
                    label='First Name'
                    value={this.state.verification.firstName}
                    onChangeText={ (firstName) => {this.state.verification.firstName = firstName}}
                    returnKeyType = {"next"}
+                   blurOnSubmit={ false }
+                   onSubmitEditing={() => {
+                    this.focusNextField('middleName');
+                  }}
                  />
                  <TextField
+                  ref={ input => {
+                    this.inputs['middleName'] = input;
+                  }}
                    label='Middle Name'
                    value={this.state.verification.middleName}
                    onChangeText={ (middleName) => {this.state.verification.middleName = middleName}}
                    returnKeyType = {"next"}
+                   blurOnSubmit={ false }
+                   onSubmitEditing={() => {
+                    this.focusNextField('lastName');
+                  }}
                  />
                  <TextField
+                  ref={ input => {
+                    this.inputs['lastName'] = input;
+                  }}
                    label='Last Name'
                    value={this.state.verification.lastName}
                    onChangeText={ (lastName) => {this.state.verification.lastName = lastName}}
                    returnKeyType = {"next"}
+                   blurOnSubmit={ false }
+                   onSubmitEditing={() => {
+                    this.focusNextField('dateOfBirth');
+                  }}
                  />
                  <TextField
+                  ref={ input => {
+                    this.inputs['dateOfBirth'] = input;
+                  }}
                    label='Date of Birth'
                    value={this.state.verification.dateOfBirth}
                    onChangeText={ (dateOfBirth) => {this.state.verification.dateOfBirth = dateOfBirth}}
                    returnKeyType = {"next"}
+                   blurOnSubmit={ false }
+                   onSubmitEditing={() => {
+                    this.focusNextField('mobile');
+                  }}
                  />
 
                  <Text style={{fontWeight: 'bold'}}>Contact Info:</Text>
                  <TextField
+                  ref={ input => {
+                    this.inputs['mobile'] = input;
+                  }}
                    label='Mobile Phone'
                    value={this.state.verification.mobile}
                    onChangeText={ (mobile) => {this.state.verification.mobile = mobile}}
                    returnKeyType = {"next"}
+                   blurOnSubmit={ false }
+                   onSubmitEditing={() => {
+                    this.focusNextField('home');
+                  }}
                  />
 
                  <TextField
+                  ref={ input => {
+                    this.inputs['home'] = input;
+                  }}
                    label='Home Phone'
                    value={this.state.verification.home}
                    onChangeText={ (home) => {this.state.verification.home = home}}
                    returnKeyType = {"next"}
+                   blurOnSubmit={ false }
+                   onSubmitEditing={() => {
+                    this.focusNextField('email');
+                  }}
                  />
 
                  <TextField
+                  ref={ input => {
+                    this.inputs['email'] = input;
+                  }}
                    label='Email'
                    value={this.state.verification.email}
                    onChangeText={ (email) => {this.state.verification.email = email}}
                    returnKeyType = {"next"}
+                   blurOnSubmit={ false }
+                   onSubmitEditing={() => {
+                    this.focusNextField('employer');
+                  }}
                  />
 
                  <TextField
+                  ref={ input => {
+                    this.inputs['employer'] = input;
+                  }}
                    label='Employer'
                    value={this.state.verification.employer}
                    onChangeText={ (employer) => {this.state.verification.employer = employer}}
                    returnKeyType = {"next"}
+                   blurOnSubmit={ false }
+                   onSubmitEditing={() => {
+                    this.focusNextField('university');
+                  }}
                  />
 
                  <TextField
+                  ref={ input => {
+                    this.inputs['university'] = input;
+                  }}
                    label='University'
                    value={this.state.verification.university}
                    onChangeText={ (university) => {this.state.verification.university = university}}
                    returnKeyType = {"next"}
+                   blurOnSubmit={ false }
+                   onSubmitEditing={() => {
+                    this.focusNextField('motherMaidenFirstName');
+                  }}
                  />
 
                  <Text style={{fontWeight: 'bold'}}>Mothers Maiden Name:</Text>
                  <TextField
+                  ref={ input => {
+                    this.inputs['motherMaidenFirstName'] = input;
+                  }}
                    label='First Name'
                    value={this.state.verification.motherMaidenFirstName}
                    onChangeText={ (motherMaidenFirstName) => {this.state.verification.motherMaidenFirstName = motherMaidenFirstName}}
                    returnKeyType = {"next"}
+                   blurOnSubmit={ false }
+                   onSubmitEditing={() => {
+                    this.focusNextField('motherMaidenMiddleName');
+                  }}
                  />
                  <TextField
+                  ref={ input => {
+                    this.inputs['motherMaidenMiddleName'] = input;
+                  }}
                   label='Middle Name'
                   value={this.state.verification.motherMaidenMiddleName}
                   onChangeText={ (motherMaidenMiddleName) => {this.state.verification.motherMaidenMiddleName = motherMaidenMiddleName}}
                   returnKeyType = {"next"}
+                   blurOnSubmit={ false }
+                  onSubmitEditing={() => {
+                    this.focusNextField('motherMaidenLastName');
+                  }}
                 />
                  <TextField
+                  ref={ input => {
+                    this.inputs['motherMaidenLastName'] = input;
+                  }}
                   label='Last Name'
                   value={this.state.verification.motherMaidenLastName}
                   onChangeText={ (motherMaidenLastName) => {this.state.verification.motherMaidenLastName = motherMaidenLastName}}
                   returnKeyType = {"next"}
+                   blurOnSubmit={ false }
+                  onSubmitEditing={() => {
+                    this.focusNextField('addressLine1');
+                  }}
                 />
                  <Text style={{fontWeight: 'bold'}}>Address:</Text>
                  <TextField
+                  ref={ input => {
+                    this.inputs['addressLine1'] = input;
+                  }}
                    label='Line 1'
                    value={this.state.verification.addressLine1}
                    onChangeText={ (addressLine1) => {this.state.verification.addressLine1 = addressLine1}}
                    returnKeyType = {"next"}
+                   blurOnSubmit={ false }
+                  onSubmitEditing={() => {
+                    this.focusNextField('addressLine2');
+                  }}
                  />
                  <TextField
+                  ref={ input => {
+                    this.inputs['addressLine2'] = input;
+                  }}
                    label='Line 2'
                    value={this.state.verification.addressLine2}
                    onChangeText={ (addressLine2) => {this.state.verification.addressLine2 =addressLine2}}
                    returnKeyType = {"next"}
+                   blurOnSubmit={ false }
+                  onSubmitEditing={() => {
+                    this.focusNextField('city');
+                  }}
                  />
                  <TextField
+                  ref={ input => {
+                    this.inputs['city'] = input;
+                  }}
                    label='City'
                    value={this.state.verification.city}
                    onChangeText={ (city) => {this.state.verification.city = city}}
                    returnKeyType = {"next"}
+                   blurOnSubmit={ false }
+                  onSubmitEditing={() => {
+                    this.focusNextField('administrativeRegion');
+                  }}
                  />
                  <TextField
+                  ref={ input => {
+                    this.inputs['administrativeRegion'] = input;
+                  }}
                    label='Administrative Division'
                    value={this.state.verification.administrativeRegion}
                    onChangeText={ (administrativeRegion) => {this.state.verification.administrativeRegion = administrativeRegion}}
                    returnKeyType = {"next"}
+                   blurOnSubmit={ false }
+                  onSubmitEditing={() => {
+                    this.focusNextField('country');
+                  }}
                  />
 
                  <TextField
+                  ref={ input => {
+                    this.inputs['country'] = input;
+                  }}
                    label='Country'
                    value={this.state.verification.country}
                    onChangeText={ (country) => {this.state.verification.country = country}}
                    returnKeyType = {"next"}
+                   blurOnSubmit={ false }
+                  onSubmitEditing={() => {
+                    this.focusNextField('postalCode');
+                  }}
                  />
 
                  <TextField
+                  ref={ input => {
+                    this.inputs['postalCode'] = input;
+                  }}
                    label='Postal Code'
                    value={this.state.verification.postalCode}
                    onChangeText={ (postalCode) => {this.state.verification.postalCode = postalCode}}
                    returnKeyType = {"next"}
+                   blurOnSubmit={ false }
+                  onSubmitEditing={() => {
+                    this.focusNextField('latitude');
+                  }}
                  />
 
                  <Text style={{fontWeight: 'bold'}}>Geo-Location:</Text>
                  <TextField
+                  ref={ input => {
+                    this.inputs['latitude'] = input;
+                  }}
                    label='Latitude'
                    value={this.state.verification.latitude}
-                   onChangeText={ (latitude) => {this.state.verification.latitude = latitude}}
+                   onChangeText={ (latitude) => {this.state.verification.latitude = latitude.replace(/[^0-9]/g, '')}}
                    returnKeyType = {"next"}
                    keyboardType = 'numeric'
+                   blurOnSubmit={ false }
+                  onSubmitEditing={() => {
+                    this.focusNextField('longitude');
+                  }}
                  />
                  <TextField
+                  ref={ input => {
+                    this.inputs['longitude'] = input;
+                  }}
                    label='Longitude'
                    value={this.state.verification.longitude}
-                   onChangeText={ (longitude) => {this.state.verification.longitude = longitude}}
+                   onChangeText={ (longitude) => {this.state.verification.longitude = longitude.replace(/[^0-9]/g, '')}}
                    returnKeyType = {"next"}
                    keyboardType = 'numeric'
+                   blurOnSubmit={ false }
+                  onSubmitEditing={() => {
+                    this.focusNextField('providerID');
+                  }}
                  />
                 <TouchableHighlight style={styles.button} onPress = {this.onPressSendPartnerData} underlayColor='#99d9f4'>
                    <Text style = {styles.buttonText}>{this.state.sendPartnerDataText}</Text>
@@ -456,29 +615,54 @@ export default class TabViewExample extends PureComponent {
                   <Picker.Item label='twitter' value='twitter' />
                 </Picker>
                  <TextField
+                  ref={ input => {
+                    this.inputs['providerID'] = input;
+                  }}
                    label='Provider Id'
                    value={this.state.providerAccess.providerID}
                    onChangeText={ (providerID) => {this.state.providerAccess.providerID = providerID}}
                    returnKeyType = {"next"}
+                   blurOnSubmit={ false }
+                  onSubmitEditing={() => {
+                    this.focusNextField('accessToken');
+                  }}
                  />
                  <TextField
+                  ref={ input => {
+                    this.inputs['accessToken'] = input;
+                  }}
                    label='Provider Access Token'
                    value={this.state.providerAccess.accessToken}
                    onChangeText={ (accessToken) => {this.state.providerAccess.accessToken = accessToken}}
                    returnKeyType = {"next"}
+                   blurOnSubmit={ false }
+                  onSubmitEditing={() => {
+                    this.focusNextField('extra_data');
+                  }}
                  />
                  <TextField
+                  ref={ input => {
+                    this.inputs['extra_data'] = input;
+                  }}
                    label='Provider Extra Data (optional)'
                    value={this.state.providerAccess.extra_data}
                    onChangeText={ (extra_data) => {this.state.providerAccess.extra_data = extra_data}}
                    returnKeyType = {"next"}
+                   blurOnSubmit={ false }
+                  onSubmitEditing={() => {
+                    this.focusNextField('expiration');
+                  }}
                  />
                  <TextField
+                  ref={ input => {
+                    this.inputs['expiration'] = input;
+                  }}
                    label='Access Token Expiration'
                    value={this.state.providerAccess.expiration}
-                   onChangeText={ (expiration) => {this.state.providerAccess.expiration = expiration}}
+                   onChangeText={ (expiration) => {this.state.providerAccess.expiration = expiration.replace(/[^0-9]/g, '')}}
                    returnKeyType = {"done"}
                    keyboardType = 'numeric'
+                   blurOnSubmit={ true }
                  />
                 <TouchableHighlight style={styles.button} onPress = {this.onPressSendProviderAccessToken} underlayColor='#99d9f4'>
                   <Text style = {styles.buttonText}>{this.state.sendProviderAccessTokenText}</Text>
@@ -609,13 +793,37 @@ export default class TabViewExample extends PureComponent {
 
   }
 
+  focusNextField(id) {
+    this.inputs[id].focus();
+  }
+
+
+  onActionSelected(position) {
+    if (position === 0) { // index of 'About'
+      this.showAbout();
+    }
+  }
+
+  showAbout() {
+     Alert.alert(
+       'RNDataSdkWrapper Demo Application',
+       '...',
+       [
+         {text: 'OK', onPress: () => console.log('OK Pressed')},
+       ],
+       { cancelable: false }
+     )
+  }
+
   render() {
     return (
     <View style={styles.mainContainer}>
      <ToolbarAndroid
         title='React Native DataSDK Demo'
         style={styles.toolbar}
-        titleColor='white'/>
+        titleColor='white'
+        actions={[{title: 'About'}]}
+        onActionSelected={this.onActionSelected}/>
       <TabViewAnimated
         style={[styles.mainContainer, this.props.style]}
         navigationState={this.state}
