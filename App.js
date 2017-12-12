@@ -1,11 +1,13 @@
 'use strict';
 
-import React, { PureComponent } from 'react';
-import { View, StyleSheet, Dimensions, Text, TouchableHighlight, ScrollView, ToolbarAndroid, Picker, Alert} from 'react-native';
-import { TabViewAnimated, TabBar } from 'react-native-tab-view';
-import { TextField } from 'react-native-material-textfield';
-import CheckBox from 'react-native-check-box';
-import RNDataSdkWrapper from 'react-native-data-sdk';
+import React, { PureComponent } from 'react'
+import { View, StyleSheet, Dimensions, Text, TouchableHighlight, ToolbarAndroid, Picker, Alert} from 'react-native'
+import { AppBarLayout, CoordinatorLayout } from 'react-native-collapsing-toolbar'
+import NestedScrollView from 'react-native-nested-scroll-view'
+import { TabViewAnimated, TabBar } from 'react-native-tab-view'
+import { TextField } from 'react-native-material-textfield'
+import CheckBox from 'react-native-check-box'
+import RNDataSdkWrapper from 'react-native-data-sdk'
 
 
 
@@ -126,7 +128,7 @@ export default class TabViewExample extends PureComponent {
     switch(route.key){
       case 'scoring':
       return (
-        <ScrollView>
+//        <NestedScrollView>
           <View style = {styles.container}>
            <TextField
              ref='applicationId'
@@ -285,11 +287,11 @@ export default class TabViewExample extends PureComponent {
              <Text style={{fontWeight: 'bold'}}>{this.state.dataSendingCallback}</Text>
            </Text>
           </View>
-        </ScrollView>
+//        </NestedScrollView>
       );
       case 'verification':
       return(
-         <ScrollView>
+//         <NestedScrollView>
             <View style = {styles.container}>
                 <Text style={{fontWeight: 'bold'}}>Application Id:</Text>
                 <TextField
@@ -673,7 +675,7 @@ export default class TabViewExample extends PureComponent {
                    <Text style={{fontWeight: 'bold'}}>{this.state.sendProviderAccessTokenCallback}</Text>
                  </Text>
             </View>
-         </ScrollView>
+//         </NestedScrollView>
       );
     }
 
@@ -806,7 +808,7 @@ export default class TabViewExample extends PureComponent {
 
   showAbout() {
      Alert.alert(
-       'RNDataSdkWrapper Demo Application',
+       'React Native DataSDK Demo Application',
        '...',
        [
          {text: 'OK', onPress: () => console.log('OK Pressed')},
@@ -817,21 +819,26 @@ export default class TabViewExample extends PureComponent {
 
   render() {
     return (
-    <View style={styles.mainContainer}>
-     <ToolbarAndroid
-        title='React Native DataSDK Demo'
-        style={styles.toolbar}
-        titleColor='white'
-        actions={[{title: 'About'}]}
-        onActionSelected={this.onActionSelected}/>
-      <TabViewAnimated
-        style={[styles.mainContainer, this.props.style]}
-        navigationState={this.state}
-        renderScene={this._renderScene}
-        renderHeader={this._renderHeader}
-        onIndexChange={this._handleIndexChange}
-        initialLayout={initialLayout}/>
-    </View>
+//    <View style={styles.mainContainer}>
+      <CoordinatorLayout style={styles.mainContainer}>
+       <AppBarLayout style={styles.toolbar}>
+         <ToolbarAndroid
+            title='React Native DataSDK Demo'
+            titleColor='white'
+            actions={[{title: 'About'}]}
+            onActionSelected={this.onActionSelected}/>
+       </AppBarLayout>
+       <NestedScrollView>
+       <TabViewAnimated
+         style={[styles.mainContainer, this.props.style]}
+         navigationState={this.state}
+         renderScene={this._renderScene}
+         renderHeader={this._renderHeader}
+         onIndexChange={this._handleIndexChange}
+         initialLayout={initialLayout}/>
+       </NestedScrollView>
+      </CoordinatorLayout>
+//    </View>
     );
   }
 }

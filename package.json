@@ -12,9 +12,11 @@
 		"react": "16.0.0",
 		"react-native": "^0.50.4",
 		"react-native-check-box": "^2.0.2",
+		"react-native-collapsing-toolbar": "^1.0.0-beta.7",
 		"react-native-data-sdk": "file:react-native-data-sdk",
 		"react-native-gesture-handler": "^1.0.0-alpha.35",
 		"react-native-material-textfield": "^0.11.0",
+		"react-native-nested-scroll-view": "^5.0.2",
 		"react-native-tab-view": "0.0.72"
 	},
 	"devDependencies": {

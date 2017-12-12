@@ -10,6 +10,8 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.lenddo.data.RNDataSdkWrapperPackage;
+import com.rnnestedscrollview.RNNestedScrollViewPackage;
+import com.rncollapsingtoolbar.RNCollapsingToolbarPackage;
 
 
 import java.util.Arrays;
@@ -27,6 +29,8 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+                    new RNCollapsingToolbarPackage(),
+                    new RNNestedScrollViewPackage(),
                     new RNDataSdkWrapperPackage(getResources().getString(R.string.partner_script_id), getResources().getString(R.string.api_secret))
             );
         }
