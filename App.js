@@ -15,7 +15,7 @@ const initialLayout = {
 };
 
 
-export default class TabViewExample extends PureComponent {
+export default class RNDataSDKDemo extends PureComponent {
 
   constructor(props) {
     super(props);
