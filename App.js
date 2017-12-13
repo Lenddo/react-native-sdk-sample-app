@@ -444,7 +444,7 @@ export default class TabViewExample extends PureComponent {
 
   showAbout() {
      Alert.alert(
-       'RNDataSdkWrapper Demo Application',
+       'React Native DataSDK Demo Application',
        'Application version: 0.0.1\nData SDK version: v2.22.1',
        [
          {text: 'OK', onPress: () => console.log('OK Pressed')},
