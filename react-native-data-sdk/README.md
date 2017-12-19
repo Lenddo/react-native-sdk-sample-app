@@ -161,104 +161,73 @@ const initialLayout = {
 };
 
 
-export default class TabViewExample extends PureComponent {
+export default class RNDataSDKDemo extends PureComponent {
 
   constructor(props) {
     super(props);
     this.onPressStartData = this.onPressStartData.bind(this);
-    this.onPressSendPartnerData = this.onPressSendPartnerData.bind(this);
     this.onPressSendProviderAccessToken = this.onPressSendProviderAccessToken.bind(this);
     this.focusNextField = this.focusNextField.bind(this);
     this.onActionSelected = this.onActionSelected.bind(this);
     this.inputs = {};
+    this.state = {
+        startDataText: 'START DATA SDK',
+        sendProviderAccessTokenText: 'SEND PROVIDER ACCESS TOKEN',
+
+        index: 0,
+
+        enabled: true,
+
+        routes: [
+          { key: 'scoring', title: 'Scoring' },
+          { key: 'verification', title: 'Verification' },
+        ],
+
+        applicationIdDebugInfo : '',
+        deviceIdDebugInfo: '',
+        serviceTokenDebugInfo: '',
+        dataSendingCallback: '',
+        sendProviderAccessTokenCallback: '',
+        errorApplicationId : null,
+
+        //Picker default values
+        gatewayUrl: 'https://gateway.partner-service.link',
+        uploadMode: 'Wifi + Mobile',
+        provider: 'facebook',
+
+        //Scoring
+        scoring: {
+          applicationId : '',
+          wifiOnly: false,
+          enableLogDisplay: true,
+          enableSms: true,
+          enableCallLog: true,
+          enableContact: true,
+          enableCalendarEvent: true,
+          enableInstalledApp: true,
+          enableBrowserHistory: true,
+          enableLocation: true,
+          enableBattCharge: true,
+          enableGalleryMetaData: true,
+          enableSmsBody: false,
+          enablePhoneNumber: false,
+          enableContactsName: false,
+          enableContactsEmail: false,
+          enableCalendarOrganizer: false,
+          enableCalendarDisplayName: false,
+          enableCalendarEmail: false,
+        },
+
+        //Provider Access
+        providerAccess: {
+          accessToken: '',
+          providerID: '',
+          extra_data: '',
+          expiration: '',
+        }
+    }
   }
 
-  state = {
-      startDataText: 'START DATA SDK',
-      sendPartnerDataText: 'SEND PARTNER DATA',
-      sendProviderAccessTokenText: 'SEND PROVIDER ACCESS TOKEN',
-
-      index: 0,
-
-      routes: [
-        { key: 'scoring', title: 'Scoring' },
-        { key: 'verification', title: 'Verification' },
-      ],
-
-      applicationIdDebugInfo : '',
-      deviceIdDebugInfo: '',
-      serviceTokenDebugInfo: '',
-      dataSendingCallback: '',
-      sendPartnerDataCallback: '',
-      sendProviderAccessTokenCallback: '',
-      errorApplicationId : null,
-
-      //Picker default values
-      gatewayUrl: 'https://gateway.partner-service.link',
-      uploadMode: 'Wifi + Mobile',
-      provider: 'facebook',
-
-      //Scoring
-      scoring: {
-        applicationId : '',
-        verificationValue: '',
-        providerAccessValue: '',
-        wifiOnly: false,
-        enableLogDisplay: true,
-        enableSms: true,
-        enableCallLog: true,
-        enableContact: true,
-        enableCalendarEvent: true,
-        enableInstalledApp: true,
-        enableBrowserHistory: true,
-        enableLocation: true,
-        enableBattCharge: true,
-        enableGalleryMetaData: true,
-        enableSmsBody: false,
-        enablePhoneNumber: false,
-        enableContactsName: false,
-        enableContactsEmail: false,
-        enableCalendarOrganizer: false,
-        enableCalendarDisplayName: false,
-        enableCalendarEmail: false,
-      },
-
-      //Verification
-      verification: {
-        referenceNumber : '',
-        jsonPayload : '',
-        firstName: '',
-        middleName: '',
-        lastName: '',
-        dateOfBirth: '',
-        mobile: '',
-        home: '',
-        email: '',
-        employer: '',
-        university: '',
-        motherMaidenFirstName: '',
-        motherMaidenMiddleName: '',
-        motherMaidenLastName: '',
-        addressLine1: '',
-        addressLine2: '',
-        city: '',
-        administrativeRegion: '',
-        country: '',
-        postalCode: '',
-        latitude: '',
-        longitude: '',
-      },
-
-      //Provider Access
-      providerAccess: {
-        accessToken: '',
-        providerID: '',
-        extra_data: '',
-        expiration: '',
-      }
-
-
-  }
 
   _handleIndexChange = index => this.setState({ index });
 
@@ -275,134 +244,173 @@ export default class TabViewExample extends PureComponent {
         <ScrollView>
           <View style = {styles.container}>
            <TextField
-             ref='applicationId'
+             ref={(c) => this._applicationId = c}
              label='Application ID'
              value={this.state.scoring.applicationId}
              onChangeText={ (applicationId) => {this.state.scoring.applicationId = applicationId}}
              returnKeyType = {"done"}
              error={this.state.errorApplicationId}
              blurOnSubmit={ true }
+             editable={this.state.enabled}
            />
            <Text style={{fontWeight: 'bold'}}>Settings:</Text>
            <Picker
+             ref={(c) => this.gatewayUrl = c}
              selectedValue={this.state.gatewayUrl}
-             onValueChange={(itemValue, itemIndex) => {this.setState({gatewayUrl: itemValue})}}>
+             onValueChange={(itemValue, itemIndex) => {this.setState({gatewayUrl: itemValue})}}
+             enabled={this.state.enabled}>
              <Picker.Item label="https://gateway.partner-service.link" value='https://gateway.partner-service.link' />
              <Picker.Item label="https://gateway-kr.partner-service.link" value='https://gateway-kr.partner-service.link' />
            </Picker>
            <Picker
+             ref={(c) => this.uploadMode = c}
              selectedValue={this.state.uploadMode}
+             enabled={this.state.enabled}
              onValueChange={(itemValue, itemIndex) => {this.setState({uploadMode: itemValue});  if(itemIndex === 0) {this.state.scoring.wifiOnly = false; }else {this.state.scoring.wifiOnly = true;} }}>
              <Picker.Item label="Wifi + Mobile" value='Wifi + Mobile' />
              <Picker.Item label="Wifi" value='Wifi' />
            </Picker>
             <CheckBox
+                ref={(c) => this.enableLogDisplay = c}
                 style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableLogDisplay = !this.state.scoring.enableLogDisplay}}
                 isChecked={this.state.scoring.enableLogDisplay}
                 rightText='Enable Debug Logs'
             />
            <Text style={{fontWeight: 'bold'}}>Data type:</Text>
            <CheckBox
+                ref={(c) => this.enableSms = c}
                 style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableSms = !this.state.scoring.enableSms}}
                 isChecked={this.state.scoring.enableSms}
                 rightText='Enable SMS data collection'
             />
            <CheckBox
+                ref={(c) => this.enableCallLog = c}
                 style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableCallLog = !this.state.scoring.enableCallLog}}
                 isChecked={this.state.scoring.enableCallLog}
                 rightText='Enable Call Logs data collection'
             />
            <CheckBox
+                ref={(c) => this.enableContact = c}
                 style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableContact = !this.state.scoring.enableContact}}
                 isChecked={this.state.scoring.enableContact}
                 rightText='Enable Contacts data collection'
             />
 
            <CheckBox
+                ref={(c) => this.enableCalendarEvent = c}
                 style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableCalendarEvent = !this.state.scoring.enableCalendarEvent}}
                 isChecked={this.state.scoring.enableCalendarEvent}
                 rightText='Enable Calendar Events data collection'
             />
 
            <CheckBox
+                ref={(c) => this.enableInstalledApp = c}
                 style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableInstalledApp = !this.state.scoring.enableInstalledApp}}
                 isChecked={this.state.scoring.enableInstalledApp}
                 rightText='Enable Installed Apps data collection'
             />
 
            <CheckBox
+                ref={(c) => this.enableBrowserHistory = c}
                 style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableBrowserHistory = !this.state.scoring.enableBrowserHistory}}
                 isChecked={this.state.scoring.enableBrowserHistory}
                 rightText='Enable Browser History data collection'
             />
 
            <CheckBox
+                ref={(c) => this.enableLocation = c}
                 style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableLocation = !this.state.scoring.enableLocation}}
                 isChecked={this.state.scoring.enableLocation}
                 rightText='Enable Location data collection'
             />
 
            <CheckBox
+                ref={(c) => this.enableBattCharge = c}
                 style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableBattCharge = !this.state.scoring.enableBattCharge}}
                 isChecked={this.state.scoring.enableBattCharge}
                 rightText='Enable Battery Charge data collection'
             />
 
            <CheckBox
+                ref={(c) => this.enableGalleryMetaData = c}
                 style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableGalleryMetaData = !this.state.scoring.enableGalleryMetaData}}
                 isChecked={this.state.scoring.enableGalleryMetaData}
                 rightText='Enable Gallery Meta data collection'
             />
             <Text style={{fontWeight: 'bold'}}>SMS Message content:</Text>
             <CheckBox
+                ref={(c) => this.enableSmsBody = c}
                 style={{flex: 1, padding: 10}}
-                onClick={() => {this.state.scoring.enableSmsBody = !this.state.scoring.isChecked}}
+                disabled={!this.state.enabled}
+                onClick={() => {this.state.scoring.enableSmsBody = !this.state.scoring.enableSmsBody}}
                 isChecked={this.state.scoring.enableSmsBody}
                 rightText='Enable SMS Body data collection'
             />
             <Text style={{fontWeight: 'bold'}}>Data hashing:</Text>
             <CheckBox
+                ref={(c) => this.enablePhoneNumber = c}
                 style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enablePhoneNumber = !this.state.scoring.enablePhoneNumber}}
                 isChecked={this.state.scoring.enablePhoneNumber}
                 rightText='Enable Phone Number hashing'
             />
             <CheckBox
+                ref={(c) => this.enableContactsName = c}
                 style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableContactsName = !this.state.enableContactsName}}
                 isChecked={this.state.scoring.enableContactsName}
                 rightText='Enable Contacts Name hashing'
             />
             <CheckBox
+                ref={(c) => this.enableContactsEmail = c}
                 style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableContactsEmail = !this.state.enableContactsEmail}}
                 isChecked={this.state.scoring.enableContactsEmail}
                 rightText='Enable Contacts Email hashing'
             />
             <CheckBox
+                ref={(c) => this.enableCalendarOrganizer = c}
                 style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableCalendarOrganizer = !this.state.scoring.enableCalendarOrganizer}}
                 isChecked={this.state.scoring.enableCalendarOrganizer}
                 rightText='Enable Calendar Organizer hashing'
             />
             <CheckBox
+                ref={(c) => this.enableCalendarDisplayName = c}
                 style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableCalendarDisplayName = !this.state.scoring.enableCalendarDisplayName}}
                 isChecked={this.state.scoring.enableCalendarDisplayName}
                 rightText='Enable Calendar Display Name hashing'
             />
             <CheckBox
+                ref={(c) => this.enableCalendarEmail = c}
                 style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableCalendarEmail = !this.state.scoring.enableCalendarEmail}}
                 isChecked={this.state.scoring.enableCalendarEmail}
                 rightText='Enable Calendar Email hashing'
@@ -437,319 +445,9 @@ export default class TabViewExample extends PureComponent {
       return(
          <ScrollView>
             <View style = {styles.container}>
-                <Text style={{fontWeight: 'bold'}}>Application Id:</Text>
-                <TextField
-                  ref={ input => {
-                    this.inputs['referenceNumber'] = input;
-                  }}
-                  label='Reference Number'
-                  value={this.state.verification.referenceNumber}
-                  onChangeText={ (referenceNumber) => {this.state.verification.referenceNumber = referenceNumber}}
-                  returnKeyType = {"next"}
-                   blurOnSubmit={ false }
-                  onSubmitEditing={() => {
-                    this.focusNextField('jsonPayload');
-                  }}
-                />
-                <TextField
-                  ref={ input => {
-                    this.inputs['jsonPayload'] = input;
-                  }}
-                   label='Application JSON Payload'
-                   value={this.state.verification.jsonPayload}
-                   onChangeText={ (jsonPayload) => {this.state.verification.jsonPayload = jsonPayload}}
-                   returnKeyType = {"next"}
-                   blurOnSubmit={ false }
-                   onSubmitEditing={() => {
-                    this.focusNextField('firstName');
-                  }}
-                 />
-                 <Text style={{fontWeight: 'bold'}}>Personal Info:</Text>
-                 <TextField
-                  ref={ input => {
-                    this.inputs['firstName'] = input;
-                  }}
-                   label='First Name'
-                   value={this.state.verification.firstName}
-                   onChangeText={ (firstName) => {this.state.verification.firstName = firstName}}
-                   returnKeyType = {"next"}
-                   blurOnSubmit={ false }
-                   onSubmitEditing={() => {
-                    this.focusNextField('middleName');
-                  }}
-                 />
-                 <TextField
-                  ref={ input => {
-                    this.inputs['middleName'] = input;
-                  }}
-                   label='Middle Name'
-                   value={this.state.verification.middleName}
-                   onChangeText={ (middleName) => {this.state.verification.middleName = middleName}}
-                   returnKeyType = {"next"}
-                   blurOnSubmit={ false }
-                   onSubmitEditing={() => {
-                    this.focusNextField('lastName');
-                  }}
-                 />
-                 <TextField
-                  ref={ input => {
-                    this.inputs['lastName'] = input;
-                  }}
-                   label='Last Name'
-                   value={this.state.verification.lastName}
-                   onChangeText={ (lastName) => {this.state.verification.lastName = lastName}}
-                   returnKeyType = {"next"}
-                   blurOnSubmit={ false }
-                   onSubmitEditing={() => {
-                    this.focusNextField('dateOfBirth');
-                  }}
-                 />
-                 <TextField
-                  ref={ input => {
-                    this.inputs['dateOfBirth'] = input;
-                  }}
-                   label='Date of Birth'
-                   value={this.state.verification.dateOfBirth}
-                   onChangeText={ (dateOfBirth) => {this.state.verification.dateOfBirth = dateOfBirth}}
-                   returnKeyType = {"next"}
-                   blurOnSubmit={ false }
-                   onSubmitEditing={() => {
-                    this.focusNextField('mobile');
-                  }}
-                 />
-
-                 <Text style={{fontWeight: 'bold'}}>Contact Info:</Text>
-                 <TextField
-                  ref={ input => {
-                    this.inputs['mobile'] = input;
-                  }}
-                   label='Mobile Phone'
-                   value={this.state.verification.mobile}
-                   onChangeText={ (mobile) => {this.state.verification.mobile = mobile}}
-                   returnKeyType = {"next"}
-                   blurOnSubmit={ false }
-                   onSubmitEditing={() => {
-                    this.focusNextField('home');
-                  }}
-                 />
-
-                 <TextField
-                  ref={ input => {
-                    this.inputs['home'] = input;
-                  }}
-                   label='Home Phone'
-                   value={this.state.verification.home}
-                   onChangeText={ (home) => {this.state.verification.home = home}}
-                   returnKeyType = {"next"}
-                   blurOnSubmit={ false }
-                   onSubmitEditing={() => {
-                    this.focusNextField('email');
-                  }}
-                 />
-
-                 <TextField
-                  ref={ input => {
-                    this.inputs['email'] = input;
-                  }}
-                   label='Email'
-                   value={this.state.verification.email}
-                   onChangeText={ (email) => {this.state.verification.email = email}}
-                   returnKeyType = {"next"}
-                   blurOnSubmit={ false }
-                   onSubmitEditing={() => {
-                    this.focusNextField('employer');
-                  }}
-                 />
-
-                 <TextField
-                  ref={ input => {
-                    this.inputs['employer'] = input;
-                  }}
-                   label='Employer'
-                   value={this.state.verification.employer}
-                   onChangeText={ (employer) => {this.state.verification.employer = employer}}
-                   returnKeyType = {"next"}
-                   blurOnSubmit={ false }
-                   onSubmitEditing={() => {
-                    this.focusNextField('university');
-                  }}
-                 />
-
-                 <TextField
-                  ref={ input => {
-                    this.inputs['university'] = input;
-                  }}
-                   label='University'
-                   value={this.state.verification.university}
-                   onChangeText={ (university) => {this.state.verification.university = university}}
-                   returnKeyType = {"next"}
-                   blurOnSubmit={ false }
-                   onSubmitEditing={() => {
-                    this.focusNextField('motherMaidenFirstName');
-                  }}
-                 />
-
-                 <Text style={{fontWeight: 'bold'}}>Mothers Maiden Name:</Text>
-                 <TextField
-                  ref={ input => {
-                    this.inputs['motherMaidenFirstName'] = input;
-                  }}
-                   label='First Name'
-                   value={this.state.verification.motherMaidenFirstName}
-                   onChangeText={ (motherMaidenFirstName) => {this.state.verification.motherMaidenFirstName = motherMaidenFirstName}}
-                   returnKeyType = {"next"}
-                   blurOnSubmit={ false }
-                   onSubmitEditing={() => {
-                    this.focusNextField('motherMaidenMiddleName');
-                  }}
-                 />
-                 <TextField
-                  ref={ input => {
-                    this.inputs['motherMaidenMiddleName'] = input;
-                  }}
-                  label='Middle Name'
-                  value={this.state.verification.motherMaidenMiddleName}
-                  onChangeText={ (motherMaidenMiddleName) => {this.state.verification.motherMaidenMiddleName = motherMaidenMiddleName}}
-                  returnKeyType = {"next"}
-                   blurOnSubmit={ false }
-                  onSubmitEditing={() => {
-                    this.focusNextField('motherMaidenLastName');
-                  }}
-                />
-                 <TextField
-                  ref={ input => {
-                    this.inputs['motherMaidenLastName'] = input;
-                  }}
-                  label='Last Name'
-                  value={this.state.verification.motherMaidenLastName}
-                  onChangeText={ (motherMaidenLastName) => {this.state.verification.motherMaidenLastName = motherMaidenLastName}}
-                  returnKeyType = {"next"}
-                   blurOnSubmit={ false }
-                  onSubmitEditing={() => {
-                    this.focusNextField('addressLine1');
-                  }}
-                />
-                 <Text style={{fontWeight: 'bold'}}>Address:</Text>
-                 <TextField
-                  ref={ input => {
-                    this.inputs['addressLine1'] = input;
-                  }}
-                   label='Line 1'
-                   value={this.state.verification.addressLine1}
-                   onChangeText={ (addressLine1) => {this.state.verification.addressLine1 = addressLine1}}
-                   returnKeyType = {"next"}
-                   blurOnSubmit={ false }
-                  onSubmitEditing={() => {
-                    this.focusNextField('addressLine2');
-                  }}
-                 />
-                 <TextField
-                  ref={ input => {
-                    this.inputs['addressLine2'] = input;
-                  }}
-                   label='Line 2'
-                   value={this.state.verification.addressLine2}
-                   onChangeText={ (addressLine2) => {this.state.verification.addressLine2 =addressLine2}}
-                   returnKeyType = {"next"}
-                   blurOnSubmit={ false }
-                  onSubmitEditing={() => {
-                    this.focusNextField('city');
-                  }}
-                 />
-                 <TextField
-                  ref={ input => {
-                    this.inputs['city'] = input;
-                  }}
-                   label='City'
-                   value={this.state.verification.city}
-                   onChangeText={ (city) => {this.state.verification.city = city}}
-                   returnKeyType = {"next"}
-                   blurOnSubmit={ false }
-                  onSubmitEditing={() => {
-                    this.focusNextField('administrativeRegion');
-                  }}
-                 />
-                 <TextField
-                  ref={ input => {
-                    this.inputs['administrativeRegion'] = input;
-                  }}
-                   label='Administrative Division'
-                   value={this.state.verification.administrativeRegion}
-                   onChangeText={ (administrativeRegion) => {this.state.verification.administrativeRegion = administrativeRegion}}
-                   returnKeyType = {"next"}
-                   blurOnSubmit={ false }
-                  onSubmitEditing={() => {
-                    this.focusNextField('country');
-                  }}
-                 />
-
-                 <TextField
-                  ref={ input => {
-                    this.inputs['country'] = input;
-                  }}
-                   label='Country'
-                   value={this.state.verification.country}
-                   onChangeText={ (country) => {this.state.verification.country = country}}
-                   returnKeyType = {"next"}
-                   blurOnSubmit={ false }
-                  onSubmitEditing={() => {
-                    this.focusNextField('postalCode');
-                  }}
-                 />
-
-                 <TextField
-                  ref={ input => {
-                    this.inputs['postalCode'] = input;
-                  }}
-                   label='Postal Code'
-                   value={this.state.verification.postalCode}
-                   onChangeText={ (postalCode) => {this.state.verification.postalCode = postalCode}}
-                   returnKeyType = {"next"}
-                   blurOnSubmit={ false }
-                  onSubmitEditing={() => {
-                    this.focusNextField('latitude');
-                  }}
-                 />
-
-                 <Text style={{fontWeight: 'bold'}}>Geo-Location:</Text>
-                 <TextField
-                  ref={ input => {
-                    this.inputs['latitude'] = input;
-                  }}
-                   label='Latitude'
-                   value={this.state.verification.latitude}
-                   onChangeText={ (latitude) => {this.state.verification.latitude = latitude.replace(/[^0-9]/g, '')}}
-                   returnKeyType = {"next"}
-                   keyboardType = 'numeric'
-                   blurOnSubmit={ false }
-                  onSubmitEditing={() => {
-                    this.focusNextField('longitude');
-                  }}
-                 />
-                 <TextField
-                  ref={ input => {
-                    this.inputs['longitude'] = input;
-                  }}
-                   label='Longitude'
-                   value={this.state.verification.longitude}
-                   onChangeText={ (longitude) => {this.state.verification.longitude = longitude.replace(/[^0-9]/g, '')}}
-                   returnKeyType = {"next"}
-                   keyboardType = 'numeric'
-                   blurOnSubmit={ false }
-                  onSubmitEditing={() => {
-                    this.focusNextField('providerID');
-                  }}
-                 />
-                <TouchableHighlight style={styles.button} onPress = {this.onPressSendPartnerData} underlayColor='#99d9f4'>
-                   <Text style = {styles.buttonText}>{this.state.sendPartnerDataText}</Text>
-                </TouchableHighlight>
-                 <Text>
-                   <Text>Send Partner Data Callback: </Text>
-                   <Text style={{fontWeight: 'bold'}}>{this.state.sendPartnerDataCallback}</Text>
-                 </Text>
-
                  <Text style={{fontWeight: 'bold', marginTop: 20}}>Providers:</Text>
                 <Picker
+                  ref={(c) => this.provider = c}
                   selectedValue={this.state.provider}
                   onValueChange={(itemValue, itemIndex) => this.setState({provider : itemValue})}>
                   <Picker.Item label='facebook' value='facebook' />
@@ -826,17 +524,16 @@ export default class TabViewExample extends PureComponent {
   }
 
   startAndroidData() {
-        RNDataSdkWrapper.setup(this.state.gatewayUrl,
-        this.state.scoring.wifiOnly, this.state.scoring.enableCallLog,
-        this.state.scoring.enableContact,this.state.scoring.enableLogDisplay,
-        this.state.scoring.enableSms,this.state.scoring.enableCalendarEvent,
-        this.state.scoring.enableInstalledApp, this.state.scoring.enableBrowserHistory,
-        this.state.scoring.enableLocation, this.state.scoring.enableBattCharge,
-        this.state.scoring.enableGalleryMetaData, this.state.scoring.enableSmsBody,
-        this.state.scoring.enablePhoneNumber, this.state.scoring.enableContactsName,
-        this.state.scoring.enableContactsEmail,  this.state.scoring.enableCalendarOrganizer,
-        this.state.scoring.enableCalendarDisplayName, this.state.scoring.enableCalendarEmail,
-
+        RNDataSdkWrapper.setup(this.state.gatewayUrl, this.state.scoring.wifiOnly,
+        this.state.scoring.enableLogDisplay, this.state.scoring.enableSms,
+        this.state.scoring.enableCallLog, this.state.scoring.enableContact,
+        this.state.scoring.enableCalendarEvent, this.state.scoring.enableInstalledApp,
+        this.state.scoring.enableBrowserHistory, this.state.scoring.enableLocation,
+        this.state.scoring.enableBattCharge, this.state.scoring.enableGalleryMetaData,
+        this.state.scoring.enableSmsBody, this.state.scoring.enablePhoneNumber,
+        this.state.scoring.enableContactsName, this.state.scoring.enableContactsEmail,
+        this.state.scoring.enableCalendarOrganizer, this.state.scoring.enableCalendarDisplayName,
+        this.state.scoring.enableCalendarEmail,
         (result, logMsg, statusCode) => {console.log('result: ' + result);
             console.log('logMsg: ' + logMsg);
             console.log('statusCode: ' + statusCode);
@@ -855,19 +552,37 @@ export default class TabViewExample extends PureComponent {
         RNDataSdkWrapper.startAndroidData(this.state.scoring.applicationId);
   }
 
+
+
   onPressStartData() {
        if (this.state.startDataText.toUpperCase() === 'START DATA SDK'.toUpperCase()) {
 
            if(this.state.scoring.applicationId == null || this.state.scoring.applicationId.trim() === "") {
              this.setState({errorApplicationId: 'This field is mandatory!'})
+             this.setState({enabled: true});
            } else {
+             this.setState({enabled: false});
              this.setState({errorApplicationId: null})
              this.setState({applicationIdDebugInfo: this.state.scoring.applicationId});
-
              this.setState({startDataText : 'STOP&CLEAR DATA SDK'})
+              console.log('gatewayUrl: ' + this.state.gatewayUrl)
+              if (this.state.gatewayUrl != null) {
+                  if (this.state.gatewayUrl === ("https://gateway.partner-service.link")) {
+                     RNDataSdkWrapper.setPartnerScriptId(0);
+                     RNDataSdkWrapper.setApiSecret(0);
+                  } else {
+                     RNDataSdkWrapper.setPartnerScriptId(1);
+                     RNDataSdkWrapper.setApiSecret(1);
+                  }
+              } else {
+                RNDataSdkWrapper.setPartnerScriptId(0);
+                RNDataSdkWrapper.setApiSecret(0);
+              }
 
              RNDataSdkWrapper.setApplicationId(this.state.scoring.applicationId);
+
              this.startAndroidData();
+
              this.setState({dataSendingCallback: 'process currently running'})
              if (this.state.scoring.wifiOnly){
                 this.setState({uploadMode : 'Wifi'});
@@ -889,8 +604,10 @@ export default class TabViewExample extends PureComponent {
            }
 
 
+
        } else {
            RNDataSdkWrapper.clear();
+           this.setState({enabled: true});
            this.setState({startDataText: 'START DATA SDK'})
            this.setState({dataSendingCallback: ''})
            this.setState({applicationIdDebugInfo: ''})
@@ -901,28 +618,6 @@ export default class TabViewExample extends PureComponent {
 
   }
 
-  onPressSendPartnerData() {
-     this.setState({sendPartnerDataCallback: 'process currently running'})
-     RNDataSdkWrapper.sendPartnerApplicationData(this.state.verification.firstName, this.state.verification.middleName,
-     this.state.verification.lastName, this.state.verification.dateOfBirth, this.state.verification.mobile, this.state.verification.home,
-     this.state.verification.email, this.state.verification.employer, this.state.verification.university,
-     this.state.verification.motherMaidenFirstName, this.state.verification.motherMaidenMiddleName,
-     this.state.verification.motherMaidenLastName, this.state.verification.addressLine1,
-     this.state.verification.addressLine2, this.state.verification.city, this.state.verification.administrativeRegion,
-     this.state.verification.country, this.state.verification.postalCode, this.state.verification.latitude,
-     this.state.verification.longitude, this.state.verification.referenceNumber, this.state.verification.jsonPayload,
-     (result, logMsg, statusCode) => {console.log('result: ' + result);
-            console.log('logMsg: ' + logMsg);
-            console.log('statusCode: ' + statusCode);
-
-            this.setState({sendPartnerDataCallback: logMsg});
-
-            if (result==1) {
-                RNDataSdkWrapper.submitFormFillingAnalytics()
-            }
-            });
-
-  }
 
   onPressSendProviderAccessToken() {
      this.setState({sendProviderAccessTokenCallback: 'process currently running'})
@@ -952,8 +647,8 @@ export default class TabViewExample extends PureComponent {
 
   showAbout() {
      Alert.alert(
-       'RNDataSdkWrapper Demo Application',
-       '...',
+       'React Native DataSDK Demo Application',
+       'Application version: v0.0.1\nData SDK version: v2.22.1',
        [
          {text: 'OK', onPress: () => console.log('OK Pressed')},
        ],
