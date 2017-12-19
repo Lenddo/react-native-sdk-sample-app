@@ -8,17 +8,17 @@ import java.util.Arrays;
 import java.util.List;
 
 public class RNDataSdkWrapperPackage implements ReactPackage {
-  private String partnerScriptId, apiSecret;
+  private List<String> partnerScriptIds, apiSecrets;
 
-    public RNDataSdkWrapperPackage(String partnerScriptId, String apiSecret){
-      this.partnerScriptId = partnerScriptId;
-      this.apiSecret = apiSecret;
+    public RNDataSdkWrapperPackage(List<String> partnerScriptIds, List<String> apiSecrets){
+      this.partnerScriptIds = partnerScriptIds;
+      this.apiSecrets = apiSecrets;
     }
 
     @Override
     public List<NativeModule> createNativeModules(
             ReactApplicationContext reactContext) {
-        return Arrays.<NativeModule>asList(new RNDataSdkWrapper(reactContext, partnerScriptId, apiSecret));
+        return Arrays.<NativeModule>asList(new RNDataSdkWrapper(reactContext, partnerScriptIds, apiSecrets));
     }
 
     @Override
