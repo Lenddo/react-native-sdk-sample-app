@@ -20,6 +20,7 @@ import com.lenddo.data.models.ClientOptions;
 import com.lenddo.data.utils.AndroidDataUtils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -37,15 +38,18 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
 
     private static final String TAG = "RNDataSdkWrapper";
     private ReactApplicationContext reactContext;
+    private List<String> partnerScriptIds;
+    private List<String> apiSecrets;
     private String partnerScriptId;
     private String apiSecret;
 
-    public RNDataSdkWrapper(ReactApplicationContext reactContext, String partnerScriptId, String apiSecret) {
+
+    public RNDataSdkWrapper(ReactApplicationContext reactContext, List<String> partnerScriptIds, List<String> apiSecrets) {
         super(reactContext);
         Log.d(TAG, "RNDataSdkWrapper");
         this.reactContext = reactContext;
-        this.partnerScriptId = partnerScriptId;
-        this.apiSecret = apiSecret;
+        this.partnerScriptIds = partnerScriptIds;
+        this.apiSecrets = apiSecrets;
     }
 
     @ReactMethod
@@ -329,7 +333,7 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setup() {
-        AndroidData.setup(reactContext, partnerScriptId, apiSecret);
+        AndroidData.setup(reactContext, partnerScriptIds.get(0), apiSecrets.get(0));
     }
 
     @ReactMethod
@@ -384,7 +388,7 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
                         });
             }
         });
-        AndroidData.setup(reactContext, partnerScriptId, apiSecret, clientOptions);
+        AndroidData.setup(reactContext, partnerScriptIds.get(0), apiSecrets.get(0), clientOptions);
     }
 
     @ReactMethod
@@ -399,12 +403,33 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
                       boolean enableCalendarOrganizer, boolean enableCalendarDisplayName,
                       boolean enableCalendarEmail, final Callback callback) {
         Log.d(TAG, "setup:: partnerScriptId:: " + partnerScriptId + ", apiSecret:: " + apiSecret);
+        Log.d(TAG, "setup:: gatewayUrl:: " + gatewayUrl);
+        Log.d(TAG, "setup:: wifiOnly:: " + wifiOnly);
+        Log.d(TAG, "setup:: enableLogDisplay:: " + enableLogDisplay);
+        Log.d(TAG, "setup:: enableSms:: " + enableSms);
+        Log.d(TAG, "setup:: enableCallLog:: " + enableCallLog);
+        Log.d(TAG, "setup:: enableContact:: " + enableContact);
+        Log.d(TAG, "setup:: enableCalendarEvent:: " + enableCalendarEvent);
+        Log.d(TAG, "setup:: enableInstalledApp:: " + enableInstalledApp);
+        Log.d(TAG, "setup:: enableBrowserHistory:: " + enableBrowserHistory);
+        Log.d(TAG, "setup:: enableLocation:: " + enableLocation);
+        Log.d(TAG, "setup:: enableBattCharge:: " + enableBattCharge);
+        Log.d(TAG, "setup:: enableGalleryMetaData:: " + enableGalleryMetaData);
+        Log.d(TAG, "setup:: enableSmsBody:: " + enableSmsBody);
+        Log.d(TAG, "setup:: enablePhoneNumber:: " + enablePhoneNumber);
+        Log.d(TAG, "setup:: enableContactsName:: " + enableContactsName);
+        Log.d(TAG, "setup:: enableContactsEmail:: " + enableContactsEmail);
+        Log.d(TAG, "setup:: enableCalendarOrganizer:: " + enableCalendarOrganizer);
+        Log.d(TAG, "setup:: enableCalendarDisplayName:: " + enableCalendarDisplayName);
+        Log.d(TAG, "setup:: enableCalendarEmail:: " + enableCalendarEmail);
 
         ClientOptions clientOptions = new ClientOptions();
+
         // Hostname (Gateway)
         if (gatewayUrl != null) {
             clientOptions.setApiGatewayUrl(gatewayUrl);
         }
+
         // Upload Mode
         clientOptions.setWifiOnly(wifiOnly);
 
@@ -536,6 +561,42 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
     public void setApplicationId(String applicationId) {
         Log.d(TAG, "setApplicationId: " + applicationId);
         AndroidDataUtils.setApplicationId(reactContext, applicationId);
+    }
+
+
+    @ReactMethod
+    public void getPartnerScriptId(Callback callback) {
+        Log.d(TAG, "getPartnerScriptId");
+        try {
+            callback.invoke(partnerScriptId);
+        } catch (Exception e) {
+
+        }
+    }
+
+
+    @ReactMethod
+    public void getApiSecret(Callback callback) {
+        Log.d(TAG, "getApiSecret");
+        try {
+            callback.invoke(apiSecret);
+        } catch (Exception e) {
+
+        }
+    }
+
+
+    @ReactMethod
+    public void setPartnerScriptId(int index) {
+        Log.d(TAG, "setPartnerScriptId: " + index);
+        partnerScriptId = partnerScriptIds.get(index);
+    }
+
+
+    @ReactMethod
+    public void setApiSecret(int index) {
+        Log.d(TAG, "setApiSecret: " + index);
+        apiSecret = apiSecrets.get(index);
     }
 
 }

@@ -5,4 +5,8 @@
     <string name="api_secret">xskK9oro19LZ1aHawIa9JDY8cNxaGnMae1IV4ttrPzT3IJN7hpzF0tNAIqTEWB/OHSileJbsmdK4vNF/X/1FEQ==</string>
     <string name="google_client_id">455547289293-8gng1h62cgb4cfbb0ll37qgfag3kji90.apps.googleusercontent.com</string>
     <!--969397998844-km3ab8vdcvr4tv9k9g1emprr8a05bov5.apps.googleusercontent.com-->
+
+    <!-- FOR KOREAN GATEWAY -->
+    <string name="partner_script_id_kr">56b424e5aa9612216a72e8c7</string>
+    <string name="api_secret_kr">xskK9oro19LZ1aHawIa9JDY8cNxaGnMae1IV4ttrPzT3IJN7hpzF0tNAIqTEWB/OHSileJbsmdK4vNF/X/1FEQ==</string>
 </resources>

@@ -24,66 +24,64 @@ export default class RNDataSDKDemo extends PureComponent {
     this.focusNextField = this.focusNextField.bind(this);
     this.onActionSelected = this.onActionSelected.bind(this);
     this.inputs = {};
+    this.state = {
+        startDataText: 'START DATA SDK',
+        sendProviderAccessTokenText: 'SEND PROVIDER ACCESS TOKEN',
+
+        index: 0,
+
+        enabled: true,
+
+        routes: [
+          { key: 'scoring', title: 'Scoring' },
+          { key: 'verification', title: 'Verification' },
+        ],
+
+        applicationIdDebugInfo : '',
+        deviceIdDebugInfo: '',
+        serviceTokenDebugInfo: '',
+        dataSendingCallback: '',
+        sendProviderAccessTokenCallback: '',
+        errorApplicationId : null,
+
+        //Picker default values
+        gatewayUrl: 'https://gateway.partner-service.link',
+        uploadMode: 'Wifi + Mobile',
+        provider: 'facebook',
+
+        //Scoring
+        scoring: {
+          applicationId : '',
+          wifiOnly: false,
+          enableLogDisplay: true,
+          enableSms: true,
+          enableCallLog: true,
+          enableContact: true,
+          enableCalendarEvent: true,
+          enableInstalledApp: true,
+          enableBrowserHistory: true,
+          enableLocation: true,
+          enableBattCharge: true,
+          enableGalleryMetaData: true,
+          enableSmsBody: false,
+          enablePhoneNumber: false,
+          enableContactsName: false,
+          enableContactsEmail: false,
+          enableCalendarOrganizer: false,
+          enableCalendarDisplayName: false,
+          enableCalendarEmail: false,
+        },
+
+        //Provider Access
+        providerAccess: {
+          accessToken: '',
+          providerID: '',
+          extra_data: '',
+          expiration: '',
+        }
+    }
   }
 
-  state = {
-      startDataText: 'START DATA SDK',
-      sendProviderAccessTokenText: 'SEND PROVIDER ACCESS TOKEN',
-
-      index: 0,
-
-      enabled: true,
-
-      routes: [
-        { key: 'scoring', title: 'Scoring' },
-        { key: 'verification', title: 'Verification' },
-      ],
-
-      applicationIdDebugInfo : '',
-      deviceIdDebugInfo: '',
-      serviceTokenDebugInfo: '',
-      dataSendingCallback: '',
-      sendProviderAccessTokenCallback: '',
-      errorApplicationId : null,
-
-      //Picker default values
-      gatewayUrl: 'https://gateway.partner-service.link',
-      uploadMode: 'Wifi + Mobile',
-      provider: 'facebook',
-
-      //Scoring
-      scoring: {
-        applicationId : '',
-        wifiOnly: false,
-        enableLogDisplay: true,
-        enableSms: true,
-        enableCallLog: true,
-        enableContact: true,
-        enableCalendarEvent: true,
-        enableInstalledApp: true,
-        enableBrowserHistory: true,
-        enableLocation: true,
-        enableBattCharge: true,
-        enableGalleryMetaData: true,
-        enableSmsBody: false,
-        enablePhoneNumber: false,
-        enableContactsName: false,
-        enableContactsEmail: false,
-        enableCalendarOrganizer: false,
-        enableCalendarDisplayName: false,
-        enableCalendarEmail: false,
-      },
-
-      //Provider Access
-      providerAccess: {
-        accessToken: '',
-        providerID: '',
-        extra_data: '',
-        expiration: '',
-      }
-
-
-  }
 
   _handleIndexChange = index => this.setState({ index });
 
@@ -218,7 +216,7 @@ export default class RNDataSDKDemo extends PureComponent {
                 ref={(c) => this.enableSmsBody = c}
                 style={{flex: 1, padding: 10}}
                 disabled={!this.state.enabled}
-                onClick={() => {this.state.scoring.enableSmsBody = !this.state.scoring.isChecked}}
+                onClick={() => {this.state.scoring.enableSmsBody = !this.state.scoring.enableSmsBody}}
                 isChecked={this.state.scoring.enableSmsBody}
                 rightText='Enable SMS Body data collection'
             />
@@ -380,17 +378,16 @@ export default class RNDataSDKDemo extends PureComponent {
   }
 
   startAndroidData() {
-        RNDataSdkWrapper.setup(this.state.gatewayUrl,
-        this.state.scoring.wifiOnly, this.state.scoring.enableCallLog,
-        this.state.scoring.enableContact,this.state.scoring.enableLogDisplay,
-        this.state.scoring.enableSms,this.state.scoring.enableCalendarEvent,
-        this.state.scoring.enableInstalledApp, this.state.scoring.enableBrowserHistory,
-        this.state.scoring.enableLocation, this.state.scoring.enableBattCharge,
-        this.state.scoring.enableGalleryMetaData, this.state.scoring.enableSmsBody,
-        this.state.scoring.enablePhoneNumber, this.state.scoring.enableContactsName,
-        this.state.scoring.enableContactsEmail,  this.state.scoring.enableCalendarOrganizer,
-        this.state.scoring.enableCalendarDisplayName, this.state.scoring.enableCalendarEmail,
-
+        RNDataSdkWrapper.setup(this.state.gatewayUrl, this.state.scoring.wifiOnly,
+        this.state.scoring.enableLogDisplay, this.state.scoring.enableSms,
+        this.state.scoring.enableCallLog, this.state.scoring.enableContact,
+        this.state.scoring.enableCalendarEvent, this.state.scoring.enableInstalledApp,
+        this.state.scoring.enableBrowserHistory, this.state.scoring.enableLocation,
+        this.state.scoring.enableBattCharge, this.state.scoring.enableGalleryMetaData,
+        this.state.scoring.enableSmsBody, this.state.scoring.enablePhoneNumber,
+        this.state.scoring.enableContactsName, this.state.scoring.enableContactsEmail,
+        this.state.scoring.enableCalendarOrganizer, this.state.scoring.enableCalendarDisplayName,
+        this.state.scoring.enableCalendarEmail,
         (result, logMsg, statusCode) => {console.log('result: ' + result);
             console.log('logMsg: ' + logMsg);
             console.log('statusCode: ' + statusCode);
@@ -421,11 +418,25 @@ export default class RNDataSDKDemo extends PureComponent {
              this.setState({enabled: false});
              this.setState({errorApplicationId: null})
              this.setState({applicationIdDebugInfo: this.state.scoring.applicationId});
-
              this.setState({startDataText : 'STOP&CLEAR DATA SDK'})
+              console.log('gatewayUrl: ' + this.state.gatewayUrl)
+              if (this.state.gatewayUrl != null) {
+                  if (this.state.gatewayUrl === ("https://gateway.partner-service.link")) {
+                     RNDataSdkWrapper.setPartnerScriptId(0);
+                     RNDataSdkWrapper.setApiSecret(0);
+                  } else {
+                     RNDataSdkWrapper.setPartnerScriptId(1);
+                     RNDataSdkWrapper.setApiSecret(1);
+                  }
+              } else {
+                RNDataSdkWrapper.setPartnerScriptId(0);
+                RNDataSdkWrapper.setApiSecret(0);
+              }
 
              RNDataSdkWrapper.setApplicationId(this.state.scoring.applicationId);
+
              this.startAndroidData();
+
              this.setState({dataSendingCallback: 'process currently running'})
              if (this.state.scoring.wifiOnly){
                 this.setState({uploadMode : 'Wifi'});
