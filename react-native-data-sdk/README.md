@@ -1,4 +1,3 @@
-
 # RNDataSdkWrapper
 
 A React-native component for Android Lenddo Data SDK [https://www.lenddo.com/documentation/data_sdk.html].
@@ -6,7 +5,7 @@ A React-native component for Android Lenddo Data SDK [https://www.lenddo.com/doc
 
 ## Demo app
 
-[https://bitbucket.org/leqstamaria/react-native-data-sdk-demo]
+[https://bitbucket.org/Lenddo/react-native-sample-app.git]
 
 ### Installation
 
@@ -22,6 +21,14 @@ npm install react-native-data-sdk --save
 react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
 
 ```
+
+or
+
+```bash
+react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
+
+```
+
 *  Make sure an emulator is running or a device is connected
 
 ```bash
@@ -42,7 +49,7 @@ project(':react-native-data-sdk').projectDir = new File(rootProject.projectDir, 
 
 ```gradle
 ...
-dependencies {
+dependencies {X
     ...
     compile project(':react-native-data-sdk')
 }
@@ -54,22 +61,27 @@ dependencies {
 package lenddo.com.lenddoconnect;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.lenddo.data.RNDataSdkWrapperPackage; //<--- import
+import com.rncollapsingtoolbar.RNCollapsingToolbarPackage;
+import com.rnnestedscrollview.RNNestedScrollViewPackage;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import com.lenddo.data.RNDataSdkWrapperPackage; //<--- import
 
 public class MainApplication extends Application implements ReactApplication {
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
         @Override
-        public  getUseDeveloperSupport() {
+        public boolean getUseDeveloperSupport() {
             return BuildConfig.DEBUG;
         }
 
@@ -77,12 +89,14 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
-                    new RNDataSdkWrapperPackage(getResources().getString(R.string.partner_script_id), getResources().getString(R.string.api_secret)) //<--- add here
+                    new RNCollapsingToolbarPackage(),
+                    new RNNestedScrollViewPackage(),
+                    new RNDataSdkWrapperPackage(getPartnerScriptIds(), getApiSecrets()) //<--- add here
             );
         }
 
         @Override
-        protected getJSMainModuleName() {
+        protected String getJSMainModuleName() {
             return "index";
         }
     };
@@ -96,6 +110,26 @@ public class MainApplication extends Application implements ReactApplication {
     public void onCreate() {
         super.onCreate();
         SoLoader.init(this, /* native exopackage */ false);
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
+
+    private List<String> getPartnerScriptIds() {
+        List<String> partnerScriptIds = new ArrayList<String>();
+        partnerScriptIds.add(getResources().getString(R.string.partner_script_id));
+        partnerScriptIds.add(getResources().getString(R.string.partner_script_id_kr));
+        return partnerScriptIds;
+    }
+
+    private List<String> getApiSecrets() {
+        List<String> apiSecrets = new ArrayList<String>();
+        apiSecrets.add(getResources().getString(R.string.api_secret));
+        apiSecrets.add(getResources().getString(R.string.api_secret_kr));
+        return apiSecrets;
     }
 
 }
@@ -161,7 +195,7 @@ const initialLayout = {
 };
 
 
-export default class RNDataSDKDemo extends PureComponent {
+export default class TabViewExample extends PureComponent {
 
   constructor(props) {
     super(props);
@@ -170,64 +204,66 @@ export default class RNDataSDKDemo extends PureComponent {
     this.focusNextField = this.focusNextField.bind(this);
     this.onActionSelected = this.onActionSelected.bind(this);
     this.inputs = {};
-    this.state = {
-        startDataText: 'START DATA SDK',
-        sendProviderAccessTokenText: 'SEND PROVIDER ACCESS TOKEN',
-
-        index: 0,
-
-        enabled: true,
-
-        routes: [
-          { key: 'scoring', title: 'Scoring' },
-          { key: 'verification', title: 'Verification' },
-        ],
-
-        applicationIdDebugInfo : '',
-        deviceIdDebugInfo: '',
-        serviceTokenDebugInfo: '',
-        dataSendingCallback: '',
-        sendProviderAccessTokenCallback: '',
-        errorApplicationId : null,
-
-        //Picker default values
-        gatewayUrl: 'https://gateway.partner-service.link',
-        uploadMode: 'Wifi + Mobile',
-        provider: 'facebook',
-
-        //Scoring
-        scoring: {
-          applicationId : '',
-          wifiOnly: false,
-          enableLogDisplay: true,
-          enableSms: true,
-          enableCallLog: true,
-          enableContact: true,
-          enableCalendarEvent: true,
-          enableInstalledApp: true,
-          enableBrowserHistory: true,
-          enableLocation: true,
-          enableBattCharge: true,
-          enableGalleryMetaData: true,
-          enableSmsBody: false,
-          enablePhoneNumber: false,
-          enableContactsName: false,
-          enableContactsEmail: false,
-          enableCalendarOrganizer: false,
-          enableCalendarDisplayName: false,
-          enableCalendarEmail: false,
-        },
-
-        //Provider Access
-        providerAccess: {
-          accessToken: '',
-          providerID: '',
-          extra_data: '',
-          expiration: '',
-        }
-    }
   }
 
+  state = {
+      startDataText: 'START DATA SDK',
+      sendProviderAccessTokenText: 'SEND PROVIDER ACCESS TOKEN',
+
+      index: 0,
+
+      routes: [
+        { key: 'scoring', title: 'Scoring' },
+        { key: 'verification', title: 'Verification' },
+      ],
+
+      applicationIdDebugInfo : '',
+      deviceIdDebugInfo: '',
+      serviceTokenDebugInfo: '',
+      dataSendingCallback: '',
+      sendProviderAccessTokenCallback: '',
+      errorApplicationId : null,
+
+      //Picker default values
+      gatewayUrl: 'https://gateway.partner-service.link',
+      uploadMode: 'Wifi + Mobile',
+      provider: 'facebook',
+
+      //Scoring
+      scoring: {
+        applicationId : '',
+        verificationValue: '',
+        providerAccessValue: '',
+        wifiOnly: false,
+        enableLogDisplay: true,
+        enableSms: true,
+        enableCallLog: true,
+        enableContact: true,
+        enableCalendarEvent: true,
+        enableInstalledApp: true,
+        enableBrowserHistory: true,
+        enableLocation: true,
+        enableBattCharge: true,
+        enableGalleryMetaData: true,
+        enableSmsBody: false,
+        enablePhoneNumber: false,
+        enableContactsName: false,
+        enableContactsEmail: false,
+        enableCalendarOrganizer: false,
+        enableCalendarDisplayName: false,
+        enableCalendarEmail: false,
+      },
+
+      //Provider Access
+      providerAccess: {
+        accessToken: '',
+        providerID: '',
+        extra_data: '',
+        expiration: '',
+      }
+
+
+  }
 
   _handleIndexChange = index => this.setState({ index });
 
@@ -244,173 +280,134 @@ export default class RNDataSDKDemo extends PureComponent {
         <ScrollView>
           <View style = {styles.container}>
            <TextField
-             ref={(c) => this._applicationId = c}
+             ref='applicationId'
              label='Application ID'
              value={this.state.scoring.applicationId}
              onChangeText={ (applicationId) => {this.state.scoring.applicationId = applicationId}}
              returnKeyType = {"done"}
              error={this.state.errorApplicationId}
              blurOnSubmit={ true }
-             editable={this.state.enabled}
            />
            <Text style={{fontWeight: 'bold'}}>Settings:</Text>
            <Picker
-             ref={(c) => this.gatewayUrl = c}
              selectedValue={this.state.gatewayUrl}
-             onValueChange={(itemValue, itemIndex) => {this.setState({gatewayUrl: itemValue})}}
-             enabled={this.state.enabled}>
+             onValueChange={(itemValue, itemIndex) => {this.setState({gatewayUrl: itemValue})}}>
              <Picker.Item label="https://gateway.partner-service.link" value='https://gateway.partner-service.link' />
              <Picker.Item label="https://gateway-kr.partner-service.link" value='https://gateway-kr.partner-service.link' />
            </Picker>
            <Picker
-             ref={(c) => this.uploadMode = c}
              selectedValue={this.state.uploadMode}
-             enabled={this.state.enabled}
              onValueChange={(itemValue, itemIndex) => {this.setState({uploadMode: itemValue});  if(itemIndex === 0) {this.state.scoring.wifiOnly = false; }else {this.state.scoring.wifiOnly = true;} }}>
              <Picker.Item label="Wifi + Mobile" value='Wifi + Mobile' />
              <Picker.Item label="Wifi" value='Wifi' />
            </Picker>
             <CheckBox
-                ref={(c) => this.enableLogDisplay = c}
                 style={{flex: 1, padding: 10}}
-                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableLogDisplay = !this.state.scoring.enableLogDisplay}}
                 isChecked={this.state.scoring.enableLogDisplay}
                 rightText='Enable Debug Logs'
             />
            <Text style={{fontWeight: 'bold'}}>Data type:</Text>
            <CheckBox
-                ref={(c) => this.enableSms = c}
                 style={{flex: 1, padding: 10}}
-                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableSms = !this.state.scoring.enableSms}}
                 isChecked={this.state.scoring.enableSms}
                 rightText='Enable SMS data collection'
             />
            <CheckBox
-                ref={(c) => this.enableCallLog = c}
                 style={{flex: 1, padding: 10}}
-                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableCallLog = !this.state.scoring.enableCallLog}}
                 isChecked={this.state.scoring.enableCallLog}
                 rightText='Enable Call Logs data collection'
             />
            <CheckBox
-                ref={(c) => this.enableContact = c}
                 style={{flex: 1, padding: 10}}
-                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableContact = !this.state.scoring.enableContact}}
                 isChecked={this.state.scoring.enableContact}
                 rightText='Enable Contacts data collection'
             />
 
            <CheckBox
-                ref={(c) => this.enableCalendarEvent = c}
                 style={{flex: 1, padding: 10}}
-                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableCalendarEvent = !this.state.scoring.enableCalendarEvent}}
                 isChecked={this.state.scoring.enableCalendarEvent}
                 rightText='Enable Calendar Events data collection'
             />
 
            <CheckBox
-                ref={(c) => this.enableInstalledApp = c}
                 style={{flex: 1, padding: 10}}
-                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableInstalledApp = !this.state.scoring.enableInstalledApp}}
                 isChecked={this.state.scoring.enableInstalledApp}
                 rightText='Enable Installed Apps data collection'
             />
 
            <CheckBox
-                ref={(c) => this.enableBrowserHistory = c}
                 style={{flex: 1, padding: 10}}
-                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableBrowserHistory = !this.state.scoring.enableBrowserHistory}}
                 isChecked={this.state.scoring.enableBrowserHistory}
                 rightText='Enable Browser History data collection'
             />
 
            <CheckBox
-                ref={(c) => this.enableLocation = c}
                 style={{flex: 1, padding: 10}}
-                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableLocation = !this.state.scoring.enableLocation}}
                 isChecked={this.state.scoring.enableLocation}
                 rightText='Enable Location data collection'
             />
 
            <CheckBox
-                ref={(c) => this.enableBattCharge = c}
                 style={{flex: 1, padding: 10}}
-                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableBattCharge = !this.state.scoring.enableBattCharge}}
                 isChecked={this.state.scoring.enableBattCharge}
                 rightText='Enable Battery Charge data collection'
             />
 
            <CheckBox
-                ref={(c) => this.enableGalleryMetaData = c}
                 style={{flex: 1, padding: 10}}
-                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableGalleryMetaData = !this.state.scoring.enableGalleryMetaData}}
                 isChecked={this.state.scoring.enableGalleryMetaData}
                 rightText='Enable Gallery Meta data collection'
             />
             <Text style={{fontWeight: 'bold'}}>SMS Message content:</Text>
             <CheckBox
-                ref={(c) => this.enableSmsBody = c}
                 style={{flex: 1, padding: 10}}
-                disabled={!this.state.enabled}
-                onClick={() => {this.state.scoring.enableSmsBody = !this.state.scoring.enableSmsBody}}
+                onClick={() => {this.state.scoring.enableSmsBody = !this.state.scoring.isChecked}}
                 isChecked={this.state.scoring.enableSmsBody}
                 rightText='Enable SMS Body data collection'
             />
             <Text style={{fontWeight: 'bold'}}>Data hashing:</Text>
             <CheckBox
-                ref={(c) => this.enablePhoneNumber = c}
                 style={{flex: 1, padding: 10}}
-                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enablePhoneNumber = !this.state.scoring.enablePhoneNumber}}
                 isChecked={this.state.scoring.enablePhoneNumber}
                 rightText='Enable Phone Number hashing'
             />
             <CheckBox
-                ref={(c) => this.enableContactsName = c}
                 style={{flex: 1, padding: 10}}
-                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableContactsName = !this.state.enableContactsName}}
                 isChecked={this.state.scoring.enableContactsName}
                 rightText='Enable Contacts Name hashing'
             />
             <CheckBox
-                ref={(c) => this.enableContactsEmail = c}
                 style={{flex: 1, padding: 10}}
-                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableContactsEmail = !this.state.enableContactsEmail}}
                 isChecked={this.state.scoring.enableContactsEmail}
                 rightText='Enable Contacts Email hashing'
             />
             <CheckBox
-                ref={(c) => this.enableCalendarOrganizer = c}
                 style={{flex: 1, padding: 10}}
-                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableCalendarOrganizer = !this.state.scoring.enableCalendarOrganizer}}
                 isChecked={this.state.scoring.enableCalendarOrganizer}
                 rightText='Enable Calendar Organizer hashing'
             />
             <CheckBox
-                ref={(c) => this.enableCalendarDisplayName = c}
                 style={{flex: 1, padding: 10}}
-                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableCalendarDisplayName = !this.state.scoring.enableCalendarDisplayName}}
                 isChecked={this.state.scoring.enableCalendarDisplayName}
                 rightText='Enable Calendar Display Name hashing'
             />
             <CheckBox
-                ref={(c) => this.enableCalendarEmail = c}
                 style={{flex: 1, padding: 10}}
-                disabled={!this.state.enabled}
                 onClick={() => {this.state.scoring.enableCalendarEmail = !this.state.scoring.enableCalendarEmail}}
                 isChecked={this.state.scoring.enableCalendarEmail}
                 rightText='Enable Calendar Email hashing'
@@ -447,7 +444,6 @@ export default class RNDataSDKDemo extends PureComponent {
             <View style = {styles.container}>
                  <Text style={{fontWeight: 'bold', marginTop: 20}}>Providers:</Text>
                 <Picker
-                  ref={(c) => this.provider = c}
                   selectedValue={this.state.provider}
                   onValueChange={(itemValue, itemIndex) => this.setState({provider : itemValue})}>
                   <Picker.Item label='facebook' value='facebook' />
@@ -524,16 +520,17 @@ export default class RNDataSDKDemo extends PureComponent {
   }
 
   startAndroidData() {
-        RNDataSdkWrapper.setup(this.state.gatewayUrl, this.state.scoring.wifiOnly,
-        this.state.scoring.enableLogDisplay, this.state.scoring.enableSms,
-        this.state.scoring.enableCallLog, this.state.scoring.enableContact,
-        this.state.scoring.enableCalendarEvent, this.state.scoring.enableInstalledApp,
-        this.state.scoring.enableBrowserHistory, this.state.scoring.enableLocation,
-        this.state.scoring.enableBattCharge, this.state.scoring.enableGalleryMetaData,
-        this.state.scoring.enableSmsBody, this.state.scoring.enablePhoneNumber,
-        this.state.scoring.enableContactsName, this.state.scoring.enableContactsEmail,
-        this.state.scoring.enableCalendarOrganizer, this.state.scoring.enableCalendarDisplayName,
-        this.state.scoring.enableCalendarEmail,
+        RNDataSdkWrapper.setup(this.state.gatewayUrl,
+        this.state.scoring.wifiOnly, this.state.scoring.enableCallLog,
+        this.state.scoring.enableContact,this.state.scoring.enableLogDisplay,
+        this.state.scoring.enableSms,this.state.scoring.enableCalendarEvent,
+        this.state.scoring.enableInstalledApp, this.state.scoring.enableBrowserHistory,
+        this.state.scoring.enableLocation, this.state.scoring.enableBattCharge,
+        this.state.scoring.enableGalleryMetaData, this.state.scoring.enableSmsBody,
+        this.state.scoring.enablePhoneNumber, this.state.scoring.enableContactsName,
+        this.state.scoring.enableContactsEmail,  this.state.scoring.enableCalendarOrganizer,
+        this.state.scoring.enableCalendarDisplayName, this.state.scoring.enableCalendarEmail,
+
         (result, logMsg, statusCode) => {console.log('result: ' + result);
             console.log('logMsg: ' + logMsg);
             console.log('statusCode: ' + statusCode);
@@ -552,37 +549,19 @@ export default class RNDataSDKDemo extends PureComponent {
         RNDataSdkWrapper.startAndroidData(this.state.scoring.applicationId);
   }
 
-
-
   onPressStartData() {
        if (this.state.startDataText.toUpperCase() === 'START DATA SDK'.toUpperCase()) {
 
            if(this.state.scoring.applicationId == null || this.state.scoring.applicationId.trim() === "") {
              this.setState({errorApplicationId: 'This field is mandatory!'})
-             this.setState({enabled: true});
            } else {
-             this.setState({enabled: false});
              this.setState({errorApplicationId: null})
              this.setState({applicationIdDebugInfo: this.state.scoring.applicationId});
+
              this.setState({startDataText : 'STOP&CLEAR DATA SDK'})
-              console.log('gatewayUrl: ' + this.state.gatewayUrl)
-              if (this.state.gatewayUrl != null) {
-                  if (this.state.gatewayUrl === ("https://gateway.partner-service.link")) {
-                     RNDataSdkWrapper.setPartnerScriptId(0);
-                     RNDataSdkWrapper.setApiSecret(0);
-                  } else {
-                     RNDataSdkWrapper.setPartnerScriptId(1);
-                     RNDataSdkWrapper.setApiSecret(1);
-                  }
-              } else {
-                RNDataSdkWrapper.setPartnerScriptId(0);
-                RNDataSdkWrapper.setApiSecret(0);
-              }
 
              RNDataSdkWrapper.setApplicationId(this.state.scoring.applicationId);
-
              this.startAndroidData();
-
              this.setState({dataSendingCallback: 'process currently running'})
              if (this.state.scoring.wifiOnly){
                 this.setState({uploadMode : 'Wifi'});
@@ -604,10 +583,8 @@ export default class RNDataSDKDemo extends PureComponent {
            }
 
 
-
        } else {
            RNDataSdkWrapper.clear();
-           this.setState({enabled: true});
            this.setState({startDataText: 'START DATA SDK'})
            this.setState({dataSendingCallback: ''})
            this.setState({applicationIdDebugInfo: ''})
@@ -647,8 +624,8 @@ export default class RNDataSDKDemo extends PureComponent {
 
   showAbout() {
      Alert.alert(
-       'React Native DataSDK Demo Application',
-       'Application version: v0.0.1\nData SDK version: v2.22.1',
+       'RNDataSdkWrapper Demo Application',
+       'v0.0.1',
        [
          {text: 'OK', onPress: () => console.log('OK Pressed')},
        ],
