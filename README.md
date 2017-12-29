@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # RNDataSDKWrapperDemo
 
 A sample app to demonstrate RNDataSdkWrapper
@@ -56,7 +55,7 @@ package lenddo.com.lenddoconnect;
 
 import android.app.Application;
 import android.content.Context;
-import android.support.multidex.MultiDex; 
+import android.support.multidex.MultiDex;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
@@ -64,6 +63,10 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.lenddo.data.RNDataSdkWrapperPackage; //<--- import
+import com.rncollapsingtoolbar.RNCollapsingToolbarPackage;
+import com.rnnestedscrollview.RNNestedScrollViewPackage;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -79,8 +82,9 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
-                    new RNDataSdkWrapperPackage(getResources().getString(R.string.partner_script_id), 
-                    getResources().getString(R.string.api_secret)) //<--- add here
+                    new RNCollapsingToolbarPackage(),
+                    new RNNestedScrollViewPackage(),
+                    new RNDataSdkWrapperPackage(getPartnerScriptIds(), getApiSecrets()) //<--- add here
             );
         }
 
@@ -107,37 +111,20 @@ public class MainApplication extends Application implements ReactApplication {
         MultiDex.install(this);
     }
 
+    private List<String> getPartnerScriptIds() {
+        List<String> partnerScriptIds = new ArrayList<String>();
+        partnerScriptIds.add(getResources().getString(R.string.partner_script_id));
+        partnerScriptIds.add(getResources().getString(R.string.partner_script_id_kr));
+        return partnerScriptIds;
+    }
+
+    private List<String> getApiSecrets() {
+        List<String> apiSecrets = new ArrayList<String>();
+        apiSecrets.add(getResources().getString(R.string.api_secret));
+        apiSecrets.add(getResources().getString(R.string.api_secret_kr));
+        return apiSecrets;
+    }
+
 }
 
 ```
-=======
-# README #
-
-This README would normally document whatever steps are necessary to get your application up and running.
-
-### What is this repository for? ###
-
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
->>>>>>> a889f21f1e945fbcd770e6624f8abf0c7dae858f
