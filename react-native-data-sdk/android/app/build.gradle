@@ -1,0 +1,55 @@
+apply plugin: 'com.android.library'
+
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 23
+        versionCode 10
+        versionName "2.22.0"
+    }
+
+    packagingOptions {
+        exclude 'META-INF/maven/com.squareup.okhttp3/okhttp/pom.xml'
+        exclude 'META-INF/maven/com.squareup.okhttp3/okhttp/pom.properties'
+        exclude 'META-INF/maven/com.squareup.okio/okio/pom.xml'
+        exclude 'META-INF/maven/com.squareup.okio/okio/pom.properties'
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            java.srcDirs = ['src/main/java']
+            resources.srcDirs = ['src/main/res']
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:exifinterface:25.3.1'
+    compile 'org.apache.commons:commons-lang3:3.4'
+    compile 'commons-codec:commons-codec:1.10'
+    compile 'com.google.code.gson:gson:2.8.2'
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.squareup.okio:okio:1.13.0'
+    compile 'com.squareup.okhttp3:okhttp:3.9.0'
+    compile "com.facebook.react:react-native:+"  // From node_modules
+}

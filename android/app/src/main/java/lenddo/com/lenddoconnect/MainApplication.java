@@ -1,56 +1,3 @@
-# RNDataSDKWrapperDemo
-
-A sample app to demonstrate RNDataSdkWrapper
-
-
-### Installation
-
-```bash
-npm install react-native-data-sdk --save
-npm install react-native-check-box --save
-npm install react-native-material-textfield --save
-npm install react-native-tab-view --save
-npm install react-native-gesture-handler --save
-```
-
-### To run
-
-* Update `index.android.bundle` whenever you modify your code in `App.js`
-
-```bash
-react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
-```
-*  Make sure an emulator is running or a device is connected
-
-```bash
-react-native run-android
-```
-
-
-### Gradle setup
-
-* In `android/setting.gradle`
-
-```gradle
-...
-include ':app', ':react-native-data-sdk'
-project(':react-native-data-sdk').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-data-sdk/android/app')
-```
-
-* In `android/app/build.gradle`
-
-```gradle
-...
-dependencies {
-    ...
-    compile project(':react-native-data-sdk')
-}
-```
-
-
-* register module in MainApplication.java
-
-```java
 package lenddo.com.lenddoconnect;
 
 import android.app.Application;
@@ -62,7 +9,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.lenddo.data.RNDataSdkWrapperPackage; //<--- import
+import com.lenddo.data.RNDataSdkWrapperPackage;
 import com.rncollapsingtoolbar.RNCollapsingToolbarPackage;
 import com.rnnestedscrollview.RNNestedScrollViewPackage;
 
@@ -84,7 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
                     new MainReactPackage(),
                     new RNCollapsingToolbarPackage(),
                     new RNNestedScrollViewPackage(),
-                    new RNDataSdkWrapperPackage(getPartnerScriptIds(), getApiSecrets()) //<--- add here
+                    new RNDataSdkWrapperPackage(getPartnerScriptIds(), getApiSecrets())
             );
         }
 
@@ -126,5 +73,3 @@ public class MainApplication extends Application implements ReactApplication {
     }
 
 }
-
-```

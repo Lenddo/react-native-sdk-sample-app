@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "455547289293",
+    "firebase_url": "https://fir-simple-loan.firebaseio.com",
+    "project_id": "firebase-simple-loan",
+    "storage_bucket": "firebase-simple-loan.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455547289293:android:40d8670c251d977b",
+        "android_client_info": {
+          "package_name": "lenddo.com.lenddoconnect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "455547289293-gee5iv7cfpknlgbhrv0qog5knhng6ebs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "lenddo.com.lenddoconnect",
+            "certificate_hash": "15444f1b4fac8978b16894ff3d0cc8a3beed0c0d"
+          }
+        },
+        {
+          "client_id": "455547289293-f376ciamgqrmsvr34a8p7oeqelofgekl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "lenddo.com.lenddoconnect",
+            "certificate_hash": "c111f6a8ee9977c9c4e184d5e09a76423ee8a709"
+          }
+        },
+        {
+          "client_id": "455547289293-8gng1h62cgb4cfbb0ll37qgfag3kji90.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "455547289293-m1u325c8cvj7bomrq2gg0agkmaugkf7c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJURslGi1QiX2fvrkd3BpwBflSxprVLak"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
