@@ -128,22 +128,6 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
         AndroidData.clear(reactContext);
     }
 
-//    @ReactMethod
-//    public void getProfileType(Callback callback) {
-//        Log.d(TAG, "getProfileType");
-//        try {
-//            callback.invoke(AndroidData.getProfileType(reactContext));
-//        } catch (Exception e) {
-//
-//        }
-//    }
-
-//    @ReactMethod
-//    public void addFormFillingAnalytics(ReadableMap object) {
-//        FormFillingAnalytics.getInstance(reactContext).add(object);
-//    }
-
-
     @ReactMethod
     public void sendPartnerApplicationData(String firstName, String middleName, String lastName,
                                            String dateOfBirth, String mobile, String home,
