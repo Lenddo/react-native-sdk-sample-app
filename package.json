@@ -1,31 +1,31 @@
 {
-	"name": "RNDataSdkWrapperDemo",
-	"version": "0.0.1",
-	"private": true,
-	"scripts": {
-		"start": "node node_modules/react-native/local-cli/cli.js start",
-		"test": "jest"
-	},
-	"dependencies": {
-		"buffer": "^5.0.8",
-		"prop-types": "^15.6.0",
-		"react": "16.0.0",
-		"react-native": "^0.50.4",
-		"react-native-check-box": "^2.0.2",
-		"react-native-collapsing-toolbar": "^1.0.0-beta.7",
-		"react-native-data-sdk": "file:react-native-data-sdk",
-		"react-native-gesture-handler": "^1.0.0-alpha.35",
-		"react-native-material-textfield": "^0.11.0",
-		"react-native-nested-scroll-view": "^5.0.2",
-		"react-native-tab-view": "0.0.72"
-	},
-	"devDependencies": {
-		"babel-jest": "21.2.0",
-		"babel-preset-react-native": "4.0.0",
-		"jest": "21.2.1",
-		"react-test-renderer": "16.0.0"
-	},
-	"jest": {
-		"preset": "react-native"
-	}
+  "name": "RNDataSdkWrapperDemo",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "buffer": "^5.0.8",
+    "prop-types": "^15.6.0",
+    "react": "16.0.0",
+    "react-native": "^0.50.4",
+    "react-native-check-box": "^2.0.2",
+    "react-native-collapsing-toolbar": "^1.0.0-beta.7",
+    "react-native-data-sdk": "git@github.com:Lenddo/react-native-sdk.git#develop",
+    "react-native-gesture-handler": "^1.0.0-alpha.35",
+    "react-native-material-textfield": "^0.11.0",
+    "react-native-nested-scroll-view": "^5.0.2",
+    "react-native-tab-view": "0.0.72"
+  },
+  "devDependencies": {
+    "babel-jest": "21.2.0",
+    "babel-preset-react-native": "4.0.0",
+    "jest": "21.2.1",
+    "react-test-renderer": "16.0.0"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
 }
