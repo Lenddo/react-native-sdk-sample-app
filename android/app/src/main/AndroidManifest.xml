@@ -28,6 +28,9 @@
             </intent-filter>
         </activity>
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+
+        <meta-data android:name="partnerScriptId" android:value="@string/partner_script_id" />
+        <meta-data android:name="partnerApiSecret" android:value="@string/api_secret" />
     </application>
 
 </manifest>

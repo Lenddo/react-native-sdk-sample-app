@@ -27,7 +27,7 @@
             android:textColor="#ffffff"
             android:textSize="18sp" />
 
-        <com.lenddo.data.utils.JustifyTextView
+        <com.lenddo.mobile.core.uiwidgets.JustifyTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="18dp"

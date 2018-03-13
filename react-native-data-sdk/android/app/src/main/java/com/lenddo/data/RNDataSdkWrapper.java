@@ -13,11 +13,12 @@ import com.facebook.react.bridge.UiThreadUtil;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.lenddo.data.AndroidData;
-import com.lenddo.data.listeners.OnDataSendingCompleteCallback;
-import com.lenddo.data.models.ApplicationPartnerData;
-import com.lenddo.data.models.ClientOptions;
-import com.lenddo.data.utils.AndroidDataUtils;
+import com.lenddo.mobile.datasdk.AndroidData;
+import com.lenddo.mobile.datasdk.listeners.OnDataSendingCompleteCallback;
+import com.lenddo.mobile.datasdk.models.ApplicationPartnerData;
+import com.lenddo.mobile.datasdk.models.ClientOptions;
+import com.lenddo.mobile.datasdk.utils.AndroidDataUtils;
+import com.lenddo.mobile.core.LenddoCoreInfo;
 
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +48,7 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
     public RNDataSdkWrapper(ReactApplicationContext reactContext, List<String> partnerScriptIds, List<String> apiSecrets) {
         super(reactContext);
         Log.d(TAG, "RNDataSdkWrapper");
+        LenddoCoreInfo.initCoreInfo(reactContext);
         this.reactContext = reactContext;
         this.partnerScriptIds = partnerScriptIds;
         this.apiSecrets = apiSecrets;
@@ -125,22 +127,6 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
         Log.d(TAG, "clear");
         AndroidData.clear(reactContext);
     }
-
-    @ReactMethod
-    public void getProfileType(Callback callback) {
-        Log.d(TAG, "getProfileType");
-        try {
-            callback.invoke(AndroidData.getProfileType(reactContext));
-        } catch (Exception e) {
-
-        }
-    }
-
-//    @ReactMethod
-//    public void addFormFillingAnalytics(ReadableMap object) {
-//        FormFillingAnalytics.getInstance(reactContext).add(object);
-//    }
-
 
     @ReactMethod
     public void sendPartnerApplicationData(String firstName, String middleName, String lastName,
@@ -333,7 +319,7 @@ public class RNDataSdkWrapper extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setup() {
-        AndroidData.setup(reactContext, partnerScriptIds.get(0), apiSecrets.get(0));
+        AndroidData.setup(reactContext, partnerScriptIds.get(0), apiSecrets.get(0), null);
     }
 
     @ReactMethod
