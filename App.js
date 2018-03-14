@@ -5,9 +5,7 @@ import { View, StyleSheet, Dimensions, Text, TouchableHighlight, ScrollView, Too
 import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 import { TextField } from 'react-native-material-textfield';
 import CheckBox from 'react-native-check-box';
-import RNDataSdkWrapper from 'react-native-data-sdk';
-
-
+import RNDataSdkWrapper from '@lenddo/react-native-sdk';
 
 const initialLayout = {
   height: 0,
