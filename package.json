@@ -7,13 +7,13 @@
     "test": "jest"
   },
   "dependencies": {
+    "@lenddo/react-native-sdk": "^1.4.2",
     "buffer": "^5.0.8",
     "prop-types": "^15.6.0",
     "react": "16.0.0",
     "react-native": "^0.50.4",
     "react-native-check-box": "^2.0.2",
     "react-native-collapsing-toolbar": "^1.0.0-beta.7",
-    "react-native-data-sdk": "git@github.com:Lenddo/react-native-sdk.git#develop",
     "react-native-gesture-handler": "^1.0.0-alpha.35",
     "react-native-material-textfield": "^0.11.0",
     "react-native-nested-scroll-view": "^5.0.2",
