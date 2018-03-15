@@ -409,6 +409,13 @@ export default class RNDataSDKDemo extends PureComponent {
   onPressStartData() {
        if (this.state.startDataText.toUpperCase() === 'START DATA SDK'.toUpperCase()) {
 
+	       RNDataSdkWrapper.clear();
+	       this.setState({enabled: true});
+	       this.setState({dataSendingCallback: ''})
+	       this.setState({applicationIdDebugInfo: ''})
+	       this.setState({deviceIdDebugInfo: ''})
+	       this.setState({serviceTokenDebugInfo: ''})
+
            if(this.state.scoring.applicationId == null || this.state.scoring.applicationId.trim() === "") {
              this.setState({errorApplicationId: 'This field is mandatory!'})
              this.setState({enabled: true});
