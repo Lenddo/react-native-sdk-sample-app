@@ -5,7 +5,7 @@ import { View, StyleSheet, Dimensions, Text, TouchableHighlight, ScrollView, Too
 import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 import { TextField } from 'react-native-material-textfield';
 import CheckBox from 'react-native-check-box';
-import {RNDataSdkWrapper, RNClientOptions} from '@lenddo/react-native-sdk';
+import RNDataSdkWrapper from '@lenddo/react-native-sdk';
 
 const initialLayout = {
   height: 0,
@@ -396,7 +396,7 @@ export default class RNDataSDKDemo extends PureComponent {
   }
 
   startAndroidDataWithClientOptions() {
-        var clientOptions = new RNClientOptions()
+        var clientOptions = new RNDataSdkWrapper.RNClientOptions()
         clientOptions.setApiGatewayUrl(this.state.gatewayUrl);
         clientOptions.setWifiOnly(this.state.scoring.wifiOnly);
         clientOptions.enableLogDisplay(this.state.scoring.enableLogDisplay);
