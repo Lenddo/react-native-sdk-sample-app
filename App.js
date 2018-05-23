@@ -5,7 +5,7 @@ import { View, StyleSheet, Dimensions, Text, TouchableHighlight, ScrollView, Too
 import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 import { TextField } from 'react-native-material-textfield';
 import CheckBox from 'react-native-check-box';
-import RNDataSdkWrapper from '@lenddo/react-native-sdk';
+import {RNDataSdkWrapper, RNClientOptions} from '@lenddo/react-native-sdk';
 
 const initialLayout = {
   height: 0,
@@ -376,19 +376,54 @@ export default class RNDataSDKDemo extends PureComponent {
   }
 
   startAndroidData() {
-        RNDataSdkWrapper.setup(this.state.gatewayUrl, this.state.scoring.wifiOnly,
-        this.state.scoring.enableLogDisplay, this.state.scoring.enableSms,
-        this.state.scoring.enableCallLog, this.state.scoring.enableContact,
-        this.state.scoring.enableCalendarEvent, this.state.scoring.enableInstalledApp,
-        this.state.scoring.enableBrowserHistory, this.state.scoring.enableLocation,
-        this.state.scoring.enableBattCharge, this.state.scoring.enableGalleryMetaData,
-        this.state.scoring.enableSmsBody, this.state.scoring.enablePhoneNumber,
-        this.state.scoring.enableContactsName, this.state.scoring.enableContactsEmail,
-        this.state.scoring.enableCalendarOrganizer, this.state.scoring.enableCalendarDisplayName,
-        this.state.scoring.enableCalendarEmail,
+        RNDataSdkWrapper.setupWithCallback(
         (result, logMsg, statusCode) => {console.log('result: ' + result);
             console.log('logMsg: ' + logMsg);
             console.log('statusCode: ' + statusCode);
+
+        this.setState({dataSendingCallback: logMsg});
+        RNDataSdkWrapper.statisticsEnabled(
+        (statisticsEnabled) => {
+            if(statisticsEnabled){
+                this.setState({startDataText : 'STOP&CLEAR DATA SDK'})
+            } else{
+                this.setState({startDataText: 'START DATA SDK'})
+            }
+        });
+
+        });
+        RNDataSdkWrapper.startAndroidData(this.state.scoring.applicationId);
+  }
+
+  startAndroidDataWithClientOptions() {
+        var clientOptions = new RNClientOptions()
+        clientOptions.setApiGatewayUrl(this.state.gatewayUrl);
+        clientOptions.setWifiOnly(this.state.scoring.wifiOnly);
+        clientOptions.enableLogDisplay(this.state.scoring.enableLogDisplay);
+        if (!this.state.scoring.enableSms) clientOptions.disableSMSDataCollection();
+        if (!this.state.scoring.enableCallLog) clientOptions.disableCallLogDataCollection();
+        if (!this.state.scoring.enableContact) clientOptions.disableContactDataCollection();
+        if (!this.state.scoring.enableCalendarEvent) clientOptions.disableCalendarEventDataCollection();
+        if (!this.state.scoring.enableInstalledApp) clientOptions.disableInstalledAppDataCollection();
+        if (!this.state.scoring.enableBrowserHistory) clientOptions.disableBrowserHistoryDataCollection();
+        if (!this.state.scoring.enableLocation) clientOptions.disableLocationDataCollection();
+        if (!this.state.scoring.enableBattCharge) clientOptions.disableBattChargeDataCollection();
+        if (!this.state.scoring.enableLocation) clientOptions.disableLocationDataCollection();
+        if (!this.state.scoring.enableGalleryMetaData) clientOptions.disableGalleryMetaDataCollection();
+        if (!this.state.scoring.enableSmsBody) clientOptions.disableSMSBodyCollection();
+        if (!this.state.scoring.enablePhoneNumber) clientOptions.enablePhoneNumberHashing();
+        if (!this.state.scoring.enableContactsName) clientOptions.enableContactsNameHashing();
+        if (!this.state.scoring.enableContactsEmail) clientOptions.enableContactsEmailHashing();
+        if (!this.state.scoring.enableCalendarOrganizer) clientOptions.enableCalendarOrganizerHashing();
+        if (!this.state.scoring.enableCalendarDisplayName) clientOptions.enableCalendarDisplayNameHashing();
+        if (!this.state.scoring.enableCalendarEmail) clientOptions.enableCalendarEmailHashing();
+
+        clientOptions.setReactNativeCallback(
+        (result, logMsg, statusCode) => {console.log('result: ' + result);
+                    console.log('logMsg: ' + logMsg);
+                    console.log('statusCode: ' + statusCode);
+
+        RNDataSdkWrapper.setupWithClientOptions(clientOptions);
 
         this.setState({dataSendingCallback: logMsg});
         RNDataSdkWrapper.statisticsEnabled(
@@ -440,7 +475,7 @@ export default class RNDataSDKDemo extends PureComponent {
 
              RNDataSdkWrapper.setApplicationId(this.state.scoring.applicationId);
 
-             this.startAndroidData();
+             this.startAndroidDataWithClientOptions();
 
              this.setState({dataSendingCallback: 'process currently running'})
              if (this.state.scoring.wifiOnly){
