@@ -12,6 +12,9 @@ import com.facebook.soloader.SoLoader;
 import com.lenddo.data.RNDataSdkWrapperPackage;
 import com.rncollapsingtoolbar.RNCollapsingToolbarPackage;
 import com.rnnestedscrollview.RNNestedScrollViewPackage;
+import com.lenddo.mobile.core.LenddoCoreInfo;
+import com.lenddo.mobile.datasdk.AndroidData;
+import com.lenddo.mobile.datasdk.models.ClientOptions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +34,7 @@ public class MainApplication extends Application implements ReactApplication {
                     new MainReactPackage(),
                     new RNCollapsingToolbarPackage(),
                     new RNNestedScrollViewPackage(),
-                    new RNDataSdkWrapperPackage(getPartnerScriptIds(), getApiSecrets())
+                    new RNDataSdkWrapperPackage()
             );
         }
 
@@ -50,6 +53,16 @@ public class MainApplication extends Application implements ReactApplication {
     public void onCreate() {
         super.onCreate();
         SoLoader.init(this, /* native exopackage */ false);
+
+        LenddoCoreInfo.initCoreInfo(getApplicationContext());
+
+        ClientOptions clientOptions = new ClientOptions();
+        clientOptions.enableLogDisplay(true);
+
+        AndroidData.setup(getApplicationContext(), clientOptions);
+
+        // Default android setup
+        // AndroidData.setup(getApplicationContext());
     }
 
     @Override
@@ -57,19 +70,4 @@ public class MainApplication extends Application implements ReactApplication {
         super.attachBaseContext(base);
         MultiDex.install(this);
     }
-
-    private List<String> getPartnerScriptIds() {
-        List<String> partnerScriptIds = new ArrayList<String>();
-        partnerScriptIds.add(getResources().getString(R.string.partner_script_id));
-        partnerScriptIds.add(getResources().getString(R.string.partner_script_id_kr));
-        return partnerScriptIds;
-    }
-
-    private List<String> getApiSecrets() {
-        List<String> apiSecrets = new ArrayList<String>();
-        apiSecrets.add(getResources().getString(R.string.api_secret));
-        apiSecrets.add(getResources().getString(R.string.api_secret_kr));
-        return apiSecrets;
-    }
-
 }

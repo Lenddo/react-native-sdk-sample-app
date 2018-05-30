@@ -5,7 +5,7 @@ import { View, StyleSheet, Dimensions, Text, TouchableHighlight, ScrollView, Too
 import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 import { TextField } from 'react-native-material-textfield';
 import CheckBox from 'react-native-check-box';
-import RNDataSdkWrapper from '@lenddo/react-native-sdk';
+import { RNDataSdkWrapper , RNClientOptions } from '@lenddo/react-native-sdk';
 
 const initialLayout = {
   height: 0,
@@ -112,7 +112,6 @@ export default class RNDataSDKDemo extends PureComponent {
              onValueChange={(itemValue, itemIndex) => {this.setState({gatewayUrl: itemValue})}}
              enabled={this.state.enabled}>
              <Picker.Item label="https://gateway.partner-service.link" value='https://gateway.partner-service.link' />
-             <Picker.Item label="https://gateway-kr.partner-service.link" value='https://gateway-kr.partner-service.link' />
            </Picker>
            <Picker
              ref={(c) => this.uploadMode = c}
@@ -376,29 +375,62 @@ export default class RNDataSDKDemo extends PureComponent {
   }
 
   startAndroidData() {
-        RNDataSdkWrapper.setup(this.state.gatewayUrl, this.state.scoring.wifiOnly,
-        this.state.scoring.enableLogDisplay, this.state.scoring.enableSms,
-        this.state.scoring.enableCallLog, this.state.scoring.enableContact,
-        this.state.scoring.enableCalendarEvent, this.state.scoring.enableInstalledApp,
-        this.state.scoring.enableBrowserHistory, this.state.scoring.enableLocation,
-        this.state.scoring.enableBattCharge, this.state.scoring.enableGalleryMetaData,
-        this.state.scoring.enableSmsBody, this.state.scoring.enablePhoneNumber,
-        this.state.scoring.enableContactsName, this.state.scoring.enableContactsEmail,
-        this.state.scoring.enableCalendarOrganizer, this.state.scoring.enableCalendarDisplayName,
-        this.state.scoring.enableCalendarEmail,
+        RNDataSdkWrapper.setupWithCallback(
         (result, logMsg, statusCode) => {console.log('result: ' + result);
             console.log('logMsg: ' + logMsg);
             console.log('statusCode: ' + statusCode);
 
-        this.setState({dataSendingCallback: logMsg});
-        RNDataSdkWrapper.statisticsEnabled(
-        (statisticsEnabled) => {
-            if(statisticsEnabled){
-                this.setState({startDataText : 'STOP&CLEAR DATA SDK'})
-            } else{
-                this.setState({startDataText: 'START DATA SDK'})
-            }
+            this.setState({dataSendingCallback: logMsg});
+            RNDataSdkWrapper.statisticsEnabled(
+            (statisticsEnabled) => {
+                if(statisticsEnabled){
+                    this.setState({startDataText : 'STOP&CLEAR DATA SDK'})
+                } else{
+                    this.setState({startDataText: 'START DATA SDK'})
+                }
+            });
+
         });
+        RNDataSdkWrapper.startAndroidData(this.state.scoring.applicationId);
+  }
+
+  startAndroidDataWithClientOptions() {
+        RNClientOptions.setApiGatewayUrl(this.state.gatewayUrl);
+        RNClientOptions.setWifiOnly(this.state.scoring.wifiOnly);
+        RNClientOptions.enableLogDisplay(this.state.scoring.enableLogDisplay);
+        if (!this.state.scoring.enableSms) RNClientOptions.disableSMSDataCollection();
+        if (!this.state.scoring.enableCallLog) RNClientOptions.disableCallLogDataCollection();
+        if (!this.state.scoring.enableContact) RNClientOptions.disableContactDataCollection();
+        if (!this.state.scoring.enableCalendarEvent) RNClientOptions.disableCalendarEventDataCollection();
+        if (!this.state.scoring.enableInstalledApp) RNClientOptions.disableInstalledAppDataCollection();
+        if (!this.state.scoring.enableBrowserHistory) RNClientOptions.disableBrowserHistoryDataCollection();
+        if (!this.state.scoring.enableLocation) RNClientOptions.disableLocationDataCollection();
+        if (!this.state.scoring.enableBattCharge) RNClientOptions.disableBattChargeDataCollection();
+        if (!this.state.scoring.enableLocation) RNClientOptions.disableLocationDataCollection();
+        if (!this.state.scoring.enableGalleryMetaData) RNClientOptions.disableGalleryMetaDataCollection();
+        if (!this.state.scoring.enableSmsBody) RNClientOptions.disableSMSBodyCollection();
+        if (!this.state.scoring.enablePhoneNumber) RNClientOptions.enablePhoneNumberHashing();
+        if (!this.state.scoring.enableContactsName) RNClientOptions.enableContactsNameHashing();
+        if (!this.state.scoring.enableContactsEmail) RNClientOptions.enableContactsEmailHashing();
+        if (!this.state.scoring.enableCalendarOrganizer) RNClientOptions.enableCalendarOrganizerHashing();
+        if (!this.state.scoring.enableCalendarDisplayName) RNClientOptions.enableCalendarDisplayNameHashing();
+        if (!this.state.scoring.enableCalendarEmail) RNClientOptions.enableCalendarEmailHashing();
+
+        RNDataSdkWrapper.setupWithClientOptions();
+        RNDataSdkWrapper.setupWithCallback(
+        (result, logMsg, statusCode) => {console.log('result: ' + result);
+            console.log('logMsg: ' + logMsg);
+            console.log('statusCode: ' + statusCode);
+
+            this.setState({dataSendingCallback: logMsg});
+            RNDataSdkWrapper.statisticsEnabled(
+            (statisticsEnabled) => {
+                if(statisticsEnabled){
+                    this.setState({startDataText : 'STOP&CLEAR DATA SDK'})
+                } else{
+                    this.setState({startDataText: 'START DATA SDK'})
+                }
+            });
 
         });
         RNDataSdkWrapper.startAndroidData(this.state.scoring.applicationId);
@@ -425,22 +457,10 @@ export default class RNDataSDKDemo extends PureComponent {
              this.setState({applicationIdDebugInfo: this.state.scoring.applicationId});
              this.setState({startDataText : 'STOP&CLEAR DATA SDK'})
               console.log('gatewayUrl: ' + this.state.gatewayUrl)
-              if (this.state.gatewayUrl != null) {
-                  if (this.state.gatewayUrl === ("https://gateway.partner-service.link")) {
-                     RNDataSdkWrapper.setPartnerScriptId(0);
-                     RNDataSdkWrapper.setApiSecret(0);
-                  } else {
-                     RNDataSdkWrapper.setPartnerScriptId(1);
-                     RNDataSdkWrapper.setApiSecret(1);
-                  }
-              } else {
-                RNDataSdkWrapper.setPartnerScriptId(0);
-                RNDataSdkWrapper.setApiSecret(0);
-              }
 
              RNDataSdkWrapper.setApplicationId(this.state.scoring.applicationId);
 
-             this.startAndroidData();
+             this.startAndroidDataWithClientOptions();
 
              this.setState({dataSendingCallback: 'process currently running'})
              if (this.state.scoring.wifiOnly){
