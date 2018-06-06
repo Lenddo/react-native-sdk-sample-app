@@ -1,8 +1,28 @@
+
 # RNDataSDKWrapperDemo
 
-An android sample app to demonstrate Lenddo SDK that allows you to collect information in order for Lenddo to verify the user's information and enhance its scoring capabilities. 
+An android sample app to demonstrate react-native Lenddo data sdk that allows you to collect information in order for Lenddo to verify the user's information and enhance its scoring capabilities. And with implementation instruction for new react-native application.
 
-## Installation
+Table of Contents
+=================
+<!-- TOC -->
+
+- [RNDataSDKWrapperDemo](#rndatasdkwrapperdemo)
+    - [Pre-requisites](#pre-requisites)
+    - [To run Sample App](#to-run-sample-app)
+        - [Installing nodejs dependecies for Sample App](#installing-nodejs-dependecies-for-sample-app)
+    - [Implementation imstruction](#implementation-imstruction)
+        - [Adding Lenddo react-native-sdk into your react-native dependencies](#adding-lenddo-react-native-sdk-into-your-react-native-dependencies)
+        - [Gradle setup](#gradle-setup)
+        - [Adding the Lenddo Credentials](#adding-the-lenddo-credentials)
+        - [Required Permissions](#required-permissions)
+        - [Initializing React-Native Data SDK](#initializing-react-native-data-sdk)
+        - [Register native module in Application class in your android project](#register-native-module-in-application-class-in-your-android-project)
+        - [Registering data gathering callback](#registering-data-gathering-callback)
+
+<!-- /TOC -->
+
+## Pre-requisites
 
 Before incorporating the React-Native Data SDK into your app, you should be provided with the following information:
 
@@ -13,17 +33,7 @@ Please ask for the information above from your Lenddo representative. If you hav
 
 There may be also other partner specific values that you are required to set.
 
-### Installing nodejs dependecies for Sample App
-
-```bash
-npm install react-native-data-sdk --save
-npm install react-native-check-box --save
-npm install react-native-material-textfield --save
-npm install react-native-tab-view --save
-npm install react-native-gesture-handler --save
-```
-
-### To run Sample App
+## To run Sample App
 
 * Update `index.android.bundle` whenever you modify your code in `App.js`
 
@@ -36,14 +46,33 @@ react-native bundle --platform android --dev false --entry-file index.js --bundl
 react-native run-android
 ```
 
+### Installing nodejs dependecies for Sample App
+
+```bash
+npm install @lenddo/react-native-sdk --save
+npm install react-native-check-box --save
+npm install react-native-material-textfield --save
+npm install react-native-tab-view --save
+npm install react-native-gesture-handler --save
+```
+
+## Implementation imstruction
+
+### Adding Lenddo react-native-sdk into your react-native dependencies
+
+```bash
+npm install @lenddo/react-native-sdk --save
+```
+
 ### Gradle setup
 
 * In `android/setting.gradle`
 
 ```gradle
 ...
+
 include ':app', ':react-native-data-sdk'
-project(':react-native-data-sdk').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-data-sdk/android/app')
+project(':react-native-data-sdk').projectDir = new File(rootProject.projectDir, '../node_modules/@lenddo/react-native-sdk/android/app')
 ```
 
 * In `android/app/build.gradle`
@@ -55,8 +84,10 @@ dependencies {
     compile project(':react-native-data-sdk')
 }
 ```
+
 ### Adding the Lenddo Credentials
 In your applications AndroidManifest.xml file, inside the application key, add the following metadata:
+
 ```xml
 <!-- partner script id is mandatory -->
 <meta-data android:name="partnerScriptId" android:value="@string/partner_script_id" />
@@ -64,6 +95,7 @@ In your applications AndroidManifest.xml file, inside the application key, add t
 <!-- api secret can be optional -->
 <meta-data android:name="partnerApiSecret" android:value="@string/api_secret" />
 ```
+
 ### Required Permissions
 React-Native Data Sdk will use information stored on the users' android phone. It is advisable for all permissions to be added to your app to enable LenddoData to extract the necessary information for verification and scoring. The optimal permissions are already defined for you in the Libraries’ AndroidManifest.xml and are automatically added to your app using gradle when you rebuild the app after adding our SDK.
 
@@ -94,7 +126,7 @@ If you do not want the all default permissions added, you manually have to remov
 It is also important that these permissions are consistent with the privacy policy of your app.
 
 ### Initializing React-Native Data SDK
-In your Application class initialize Lenddo core info as shown below
+In your Application class initialize Lenddo core info as shown below (RNDataSDKWrapperDemo demo app).
 
 ```java
 package lenddo.com.lenddoconnect;
@@ -115,7 +147,6 @@ public class MainApplication extends Application implements ReactApplication {
         ClientOptions clientOptions = new ClientOptions();
         clientOptions.enableLogDisplay(true);
 
-        LenddoCoreInfo.initCoreInfo(getApplicationContext());
         AndroidData.setup(getApplicationContext(), clientOptions);
 
         // ... Or use the below to have a default client options
@@ -127,7 +158,7 @@ public class MainApplication extends Application implements ReactApplication {
 
 ```
 
-### Register Native Module in MainApplication.java
+### Register native module in Application class in your android project
 
 ```java
 package lenddo.com.lenddoconnect;
@@ -183,9 +214,9 @@ public class MainApplication extends Application implements ReactApplication {
 
 ```
 
-### Registering data gathering callback  
+### Registering data gathering callback
 
-On App.js, setup Lenddo sdk with callback to capture response from gathering of data and sending data into our api. You should call RNDataSdkWrapper's ```setupWithCallback``` before ```startAndroidData```. As shown in RNDataSDKDemo app.
+On your App.js, setup Lenddo sdk with callback to capture response from gathering of data and sending data into our api. You should call RNDataSdkWrapper's ```setupWithCallback``` before ```startAndroidData```. As shown in RNDataSDKDemo app.
 
 ```javascript
 import { RNDataSdkWrapper , RNClientOptions } from '@lenddo/react-native-sdk';
@@ -213,6 +244,6 @@ export default class RNDataSDKDemo extends PureComponent {
     }
 
 ```
-Other setup method available are ```setupWithClientOptions``` and the default ```setup``` method (please refer to the RNDataSdkDemo)
+Other setup method available are ```setupWithClientOptions``` and the default ```setup``` method (please refer to the RNDataSDKWrapperDemo demo app)
 
 Note whenever you desire to use ```setupWithClientOptions``` and ```setupWithCallback``` at the same time, make sure you call ```setupWithClientOptions``` first. And make sure to call setup methods just once.
