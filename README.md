@@ -93,6 +93,30 @@ If you do not want the all default permissions added, you manually have to remov
 ```
 It is also important that these permissions are consistent with the privacy policy of your app.
 
+### Required gradle declaration
+1. In your app-level build.gradle file, it a good practice to set/ use targetSdkVersion, compileSdkVersion and buildToolsVersion of api 26:
+```gradle
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
+
+    defaultConfig {
+        applicationId "com.your.reverse.domain.sample-app"
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0.0"
+        multiDexEnabled true
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
+        }
+    }
+}
+```
+
+
 ### Initializing React-Native Data SDK
 In your Application class initialize Lenddo core info as shown below
 
@@ -132,7 +156,7 @@ public class MainApplication extends Application implements ReactApplication {
 ```java
 package lenddo.com.lenddoconnect;
 
-import com.lenddo.data.RNDataSdkWrapperPackage; // << import react-module package
+import com.lenddo.mobile.data.RNDataSdkWrapperPackage; // << import react-module package
 // ... other imports
 
 public class MainApplication extends Application implements ReactApplication {
