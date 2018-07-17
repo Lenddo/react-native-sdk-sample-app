@@ -1,4 +1,3 @@
-
 # Lenddo React-Native Demo
 
 An android sample app to demonstrate react-native Lenddo data sdk that allows you to collect information in order for Lenddo to verify the user's information and enhance its scoring capabilities. And with implementation instruction for new react-native application.
@@ -239,8 +238,7 @@ public class MainApplication extends Application implements ReactApplication {
 ```
 
 ### Registering data gathering callback
-
-On your App.js, setup Lenddo sdk with callback to capture response from gathering of data and sending data into our api. You should call RNDataSdkWrapper's ```setupWithCallback``` before ```startAndroidData```. As shown in Lendd app.
+On your App.js, setup Lenddo sdk with callback to capture response from gathering of data and sending data into our api. You should call RNDataSdkWrapper's ```setupWithCallback``` before ```startAndroidData```. As shown in Lenddo React-Native Demo app.
 
 ```javascript
 import { RNDataSdkWrapper , RNClientOptions } from '@lenddo/react-native-sdk';
@@ -268,6 +266,7 @@ export default class RNDataSDKDemo extends PureComponent {
     }
 
 ```
+
 Other setup method available are ```setupWithClientOptions``` and the default ```setup``` method (please refer to the Lenddo React-Native Demo app)
 
 Note whenever you desire to use ```setupWithClientOptions``` and ```setupWithCallback``` at the same time, make sure you call ```setupWithClientOptions``` first. And make sure to call setup methods just once.
