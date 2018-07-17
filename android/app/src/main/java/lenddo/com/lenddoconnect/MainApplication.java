@@ -9,7 +9,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.lenddo.data.RNDataSdkWrapperPackage;
+import com.lenddo.mobile.data.RNDataSdkWrapperPackage;
 import com.rncollapsingtoolbar.RNCollapsingToolbarPackage;
 import com.rnnestedscrollview.RNNestedScrollViewPackage;
 import com.lenddo.mobile.core.LenddoCoreInfo;

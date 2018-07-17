@@ -1,5 +1,4 @@
-
-# RNDataSDKWrapperDemo
+# Lenddo React-Native Demo
 
 An android sample app to demonstrate react-native Lenddo data sdk that allows you to collect information in order for Lenddo to verify the user's information and enhance its scoring capabilities. And with implementation instruction for new react-native application.
 
@@ -7,7 +6,7 @@ Table of Contents
 =================
 <!-- TOC -->
 
-- [RNDataSDKWrapperDemo](#rndatasdkwrapperdemo)
+- [Lenddo React-Native Demo](#lenddo-react-native-demo)
     - [Pre-requisites](#pre-requisites)
     - [To run Sample App](#to-run-sample-app)
         - [Installing nodejs dependecies for Sample App](#installing-nodejs-dependecies-for-sample-app)
@@ -16,6 +15,7 @@ Table of Contents
         - [Gradle setup](#gradle-setup)
         - [Adding the Lenddo Credentials](#adding-the-lenddo-credentials)
         - [Required Permissions](#required-permissions)
+        - [Required gradle declaration](#required-gradle-declaration)
         - [Initializing React-Native Data SDK](#initializing-react-native-data-sdk)
         - [Register native module in Application class in your android project](#register-native-module-in-application-class-in-your-android-project)
         - [Registering data gathering callback](#registering-data-gathering-callback)
@@ -125,8 +125,31 @@ If you do not want the all default permissions added, you manually have to remov
 ```
 It is also important that these permissions are consistent with the privacy policy of your app.
 
+### Required gradle declaration
+In your app-level build.gradle file, it is a good practice to set/ use targetSdkVersion, compileSdkVersion and buildToolsVersion of api 26:
+```gradle
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
+
+    defaultConfig {
+        applicationId "com.your.reverse.domain.sample-app"
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0.0"
+        multiDexEnabled true
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
+        }
+    }
+}
+```
+
 ### Initializing React-Native Data SDK
-In your Application class initialize Lenddo core info as shown below (RNDataSDKWrapperDemo demo app).
+In your Application class initialize Lenddo core info as shown below (Lenddo React-Native Demo app).
 
 ```java
 package lenddo.com.lenddoconnect;
@@ -215,8 +238,7 @@ public class MainApplication extends Application implements ReactApplication {
 ```
 
 ### Registering data gathering callback
-
-On your App.js, setup Lenddo sdk with callback to capture response from gathering of data and sending data into our api. You should call RNDataSdkWrapper's ```setupWithCallback``` before ```startAndroidData```. As shown in RNDataSDKDemo app.
+On your App.js, setup Lenddo sdk with callback to capture response from gathering of data and sending data into our api. You should call RNDataSdkWrapper's ```setupWithCallback``` before ```startAndroidData```. As shown in Lenddo React-Native Demo app.
 
 ```javascript
 import { RNDataSdkWrapper , RNClientOptions } from '@lenddo/react-native-sdk';
@@ -244,6 +266,7 @@ export default class RNDataSDKDemo extends PureComponent {
     }
 
 ```
-Other setup method available are ```setupWithClientOptions``` and the default ```setup``` method (please refer to the RNDataSDKWrapperDemo demo app)
+
+Other setup method available are ```setupWithClientOptions``` and the default ```setup``` method (please refer to the Lenddo React-Native Demo app)
 
 Note whenever you desire to use ```setupWithClientOptions``` and ```setupWithCallback``` at the same time, make sure you call ```setupWithClientOptions``` first. And make sure to call setup methods just once.
