@@ -187,7 +187,7 @@ public class MainApplication extends Application implements ReactApplication {
 ```java
 package lenddo.com.lenddoconnect;
 
-import com.lenddo.data.RNDataSdkWrapperPackage; // << import react-module package
+import com.lenddo.mobile.data.RNDataSdkWrapperPackage; // << import react-module package
 // ... other imports
 
 public class MainApplication extends Application implements ReactApplication {
