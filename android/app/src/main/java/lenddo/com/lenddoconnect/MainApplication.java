@@ -10,6 +10,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.lenddo.mobile.data.RNDataSdkWrapperPackage;
+import com.lenddo.mobile.onboarding.RNOnboardingSdkWrapperPackage;
 import com.rncollapsingtoolbar.RNCollapsingToolbarPackage;
 import com.rnnestedscrollview.RNNestedScrollViewPackage;
 import com.lenddo.mobile.core.LenddoCoreInfo;
@@ -30,10 +31,15 @@ public class MainApplication extends Application implements ReactApplication {
 
         @Override
         protected List<ReactPackage> getPackages() {
+            RNOnboardingSdkWrapperPackage rnOnboardingSdkWrapperPackage = new RNOnboardingSdkWrapperPackage();
+            // rnOnboardingSdkWrapperPackage.setGoogleSignInHelper(new GoogleSignInHelper());
+            // rnOnboardingSdkWrapperPackage.setFacebookSignInHelper(new FacebookSignInHelper());
+
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
                     new RNCollapsingToolbarPackage(),
                     new RNNestedScrollViewPackage(),
+                    rnOnboardingSdkWrapperPackage,
                     new RNDataSdkWrapperPackage()
             );
         }
