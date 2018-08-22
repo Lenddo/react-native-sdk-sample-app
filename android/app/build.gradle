@@ -165,14 +165,14 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.google.android.gms:play-services-auth:12.0.1'
+    compile 'com.google.android.gms:play-services-auth:15.0.1'
     compile 'com.facebook.android:facebook-android-sdk:4.23.0'
     compile 'com.google.code.gson:gson:2.8.2'
     compile 'com.android.support:multidex:1.0.1'
     compile 'net.danlew:android.joda:2.9.1'
     compile 'com.googlecode.libphonenumber:libphonenumber:8.8.3'
     compile "com.facebook.react:react-native:+"  // From node_modules
-    compile project(':react-native-data-sdk')
+    compile project(':react-native-sdk')
     compile project(':react-native-collapsing-toolbar')
     compile project(':react-native-nested-scroll-view')
 }

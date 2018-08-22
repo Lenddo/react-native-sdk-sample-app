@@ -1,8 +1,8 @@
 rootProject.name = 'RNDataSdkWrapperDemo'
 include ':app'
 
-include ':react-native-data-sdk'
-project(':react-native-data-sdk').projectDir = new File(rootProject.projectDir, '../node_modules/@lenddo/react-native-sdk/android/app')
+include ':react-native-sdk'
+project(':react-native-sdk').projectDir = new File(rootProject.projectDir, '../node_modules/@lenddo/react-native-sdk/android/app')
 
 include ':react-native-nested-scroll-view'
 project(':react-native-nested-scroll-view').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-nested-scroll-view/android')
