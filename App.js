@@ -52,6 +52,7 @@ export default class RNDataSDKDemo extends PureComponent {
 
         //Scoring
         scoring: {
+          partnerScriptId: '59a65370f7a57941735f3bb7',
           applicationId : '',
           wifiOnly: false,
           enableLogDisplay: true,
@@ -64,6 +65,16 @@ export default class RNDataSDKDemo extends PureComponent {
           enableLocation: true,
           enableBattCharge: true,
           enableGalleryMetaData: true,
+          enableMediaMetaData: true,
+          enableTelephonyInformation: true,
+          enableStoredFilesInformation: true,
+          enableSensors: true,
+          enableLauncherApps: true,
+          enableWifiInfo: true,
+          enableBluetoothInfo: true,
+          enableAccountsInfo: true,
+          enableGmailLabelsInfo: true,
+          enablePeriodicalDataGathering: true,
           enableSmsBody: false,
           enablePhoneNumber: false,
           enableContactsName: false,
@@ -83,7 +94,7 @@ export default class RNDataSDKDemo extends PureComponent {
 
         //FormDataCollector
         formData: {
-          partnerScriptId: '',
+          partnerScriptId: '59a65370f7a57941735f3bb7',
           applicationId: '',
           firstName: '',
           middleName: '',
@@ -270,6 +281,86 @@ export default class RNDataSDKDemo extends PureComponent {
                 onClick={() => {this.state.scoring.enableGalleryMetaData = !this.state.scoring.enableGalleryMetaData}}
                 isChecked={this.state.scoring.enableGalleryMetaData}
                 rightText='Enable Gallery Meta data collection'
+            />
+           <CheckBox
+                ref={(c) => this.enableMediaMetaData = c}
+                style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
+                onClick={() => {this.state.scoring.enableMediaMetaData = !this.state.scoring.enableMediaMetaData}}
+                isChecked={this.state.scoring.enableMediaMetaData}
+                rightText='Enable Media Meta data collection'
+            />
+           <CheckBox
+                ref={(c) => this.enableTelephonyInformation = c}
+                style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
+                onClick={() => {this.state.scoring.enableTelephonyInformation = !this.state.scoring.enableTelephonyInformation}}
+                isChecked={this.state.scoring.enableTelephonyInformation}
+                rightText='Enable Telephony information collection'
+            />
+           <CheckBox
+                ref={(c) => this.enableStoredFilesInformation = c}
+                style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
+                onClick={() => {this.state.scoring.enableStoredFilesInformation = !this.state.scoring.enableStoredFilesInformation}}
+                isChecked={this.state.scoring.enableStoredFilesInformation}
+                rightText='Enable Stored files information collection'
+            />
+           <CheckBox
+                ref={(c) => this.enableSensors = c}
+                style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
+                onClick={() => {this.state.scoring.enableSensors = !this.state.scoring.enableSensors}}
+                isChecked={this.state.scoring.enableSensors}
+                rightText='Enable Sensors information collection'
+            />
+           <CheckBox
+                ref={(c) => this.enableLauncherApps = c}
+                style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
+                onClick={() => {this.state.scoring.enableLauncherApps = !this.state.scoring.enableLauncherApps}}
+                isChecked={this.state.scoring.enableLauncherApps}
+                rightText='Enable Launcher apps information collection'
+            />
+           <CheckBox
+                ref={(c) => this.enableWifiInfo = c}
+                style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
+                onClick={() => {this.state.scoring.enableWifiInfo = !this.state.scoring.enableWifiInfo}}
+                isChecked={this.state.scoring.enableWifiInfo}
+                rightText='Enable WiFi information collection'
+            />
+           <CheckBox
+                ref={(c) => this.enableBluetoothInfo = c}
+                style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
+                onClick={() => {this.state.scoring.enableBluetoothInfo = !this.state.scoring.enableBluetoothInfo}}
+                isChecked={this.state.scoring.enableBluetoothInfo}
+                rightText='Enable Bluetooth information collection'
+            />
+           <CheckBox
+                ref={(c) => this.enableAccountsInfo = c}
+                style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
+                onClick={() => {this.state.scoring.enableAccountsInfo = !this.state.scoring.enableAccountsInfo}}
+                isChecked={this.state.scoring.enableAccountsInfo}
+                rightText='Enable Accounts information collection'
+            />
+           <CheckBox
+                ref={(c) => this.enableGmailLabelsInfo = c}
+                style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
+                onClick={() => {this.state.scoring.enableGmailLabelsInfo = !this.state.scoring.enableGmailLabelsInfo}}
+                isChecked={this.state.scoring.enableGmailLabelsInfo}
+                rightText='Enable Gmail labels information collection'
+            />
+           <CheckBox
+                ref={(c) => this.enablePeriodicalDataGathering = c}
+                style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
+                onClick={() => {this.state.scoring.enablePeriodicalDataGathering = !this.state.scoring.enablePeriodicalDataGathering}}
+                isChecked={this.state.scoring.enablePeriodicalDataGathering}
+                rightText='Enable Periodical Data gathering'
             />
             <Text style={{fontWeight: 'bold'}}>SMS Message content:</Text>
             <CheckBox
@@ -524,6 +615,7 @@ export default class RNDataSDKDemo extends PureComponent {
   }
 
   startAndroidData() {
+        RNDataSdkWrapper.setPartnerScriptId(this.state.scoring.partnerScriptId);
         RNDataSdkWrapper.setupWithCallback(
         (result, logMsg, statusCode) => {console.log('result: ' + result);
             console.log('logMsg: ' + logMsg);
@@ -558,6 +650,16 @@ export default class RNDataSDKDemo extends PureComponent {
         if (!this.state.scoring.enableBattCharge) RNClientOptions.disableBattChargeDataCollection();
         if (!this.state.scoring.enableLocation) RNClientOptions.disableLocationDataCollection();
         if (!this.state.scoring.enableGalleryMetaData) RNClientOptions.disableGalleryMetaDataCollection();
+        if (!this.state.scoring.enableMediaMetaData) RNClientOptions.disableMediaMetaDataCollection();
+        if (!this.state.scoring.enableTelephonyInformation) RNClientOptions.disableTelephonyInfoDataCollection();
+        if (!this.state.scoring.enableStoredFilesInformation) RNClientOptions.disableStoredFilesInformationCollection();
+        if (!this.state.scoring.enableSensors) RNClientOptions.disableSensorsCollection();
+        if (!this.state.scoring.enableLauncherApps) RNClientOptions.disableLauncherAppsCollection();
+        if (!this.state.scoring.enableWifiInfo) RNClientOptions.disableWifiInfoCollection();
+        if (!this.state.scoring.enableBluetoothInfo) RNClientOptions.disableBluetoothInfoCollection();
+        if (!this.state.scoring.enableAccountsInfo) RNClientOptions.disableAccountsInfoCollection();
+        if (!this.state.scoring.enableGmailLabelsInfo) RNClientOptions.disableGmailLabelsInfoCollection();
+        if (!this.state.scoring.enablePeriodicalDataGathering) RNClientOptions.disablePeriodicalDataGathering();
         if (!this.state.scoring.enableSmsBody) RNClientOptions.disableSMSBodyCollection();
         if (!this.state.scoring.enablePhoneNumber) RNClientOptions.enablePhoneNumberHashing();
         if (!this.state.scoring.enableContactsName) RNClientOptions.enableContactsNameHashing();
@@ -566,6 +668,7 @@ export default class RNDataSDKDemo extends PureComponent {
         if (!this.state.scoring.enableCalendarDisplayName) RNClientOptions.enableCalendarDisplayNameHashing();
         if (!this.state.scoring.enableCalendarEmail) RNClientOptions.enableCalendarEmailHashing();
 
+        RNDataSdkWrapper.setPartnerScriptId(this.state.scoring.partnerScriptId);
         RNDataSdkWrapper.setupWithClientOptions();
         RNDataSdkWrapper.setupWithCallback(
         (result, logMsg, statusCode) => {console.log('result: ' + result);
@@ -690,6 +793,7 @@ export default class RNDataSDKDemo extends PureComponent {
      RNFormDataCollector.setMiddleName(this.state.formData.middleName)
      RNFormDataCollector.setLastName(this.state.formData.lastName)
 
+     RNOnboardingSdkWrapper.setPartnerScriptId(this.state.formData.partnerScriptId)
      RNOnboardingSdkWrapper.startAuthorize()
   }
 
