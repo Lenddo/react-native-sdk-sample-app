@@ -1,11 +1,11 @@
 'use strict';
 
 import React, { PureComponent } from 'react';
-import { View, StyleSheet, Dimensions, Text, TouchableHighlight, ScrollView, ToolbarAndroid, Picker, Alert} from 'react-native';
+import { View, StyleSheet, Dimensions, Text, TouchableHighlight, ScrollView, ToolbarAndroid, Picker, Alert, BackHandler, DeviceEventEmitter} from 'react-native';
 import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 import { TextField } from 'react-native-material-textfield';
 import CheckBox from 'react-native-check-box';
-import { RNDataSdkWrapper , RNClientOptions } from '@lenddo/react-native-sdk';
+import { RNDataSdkWrapper , RNClientOptions, RNOnboardingSdkWrapper, RNFormDataCollector } from '@lenddo/react-native-sdk';
 
 const initialLayout = {
   height: 0,
@@ -19,12 +19,14 @@ export default class RNDataSDKDemo extends PureComponent {
     super(props);
     this.onPressStartData = this.onPressStartData.bind(this);
     this.onPressSendProviderAccessToken = this.onPressSendProviderAccessToken.bind(this);
+    this.onPressStartOnboarding = this.onPressStartOnboarding.bind(this);
     this.focusNextField = this.focusNextField.bind(this);
     this.onActionSelected = this.onActionSelected.bind(this);
     this.inputs = {};
     this.state = {
         startDataText: 'START DATA SDK',
         sendProviderAccessTokenText: 'SEND PROVIDER ACCESS TOKEN',
+        startOnboardingText: 'START ONBOARDING SDK',
 
         index: 0,
 
@@ -33,6 +35,7 @@ export default class RNDataSDKDemo extends PureComponent {
         routes: [
           { key: 'scoring', title: 'Scoring' },
           { key: 'verification', title: 'Verification' },
+          { key: 'onboarding', title: 'Onboarding' },
         ],
 
         applicationIdDebugInfo : '',
@@ -49,6 +52,7 @@ export default class RNDataSDKDemo extends PureComponent {
 
         //Scoring
         scoring: {
+          partnerScriptId: '59a65370f7a57941735f3bb7',
           applicationId : '',
           wifiOnly: false,
           enableLogDisplay: true,
@@ -61,6 +65,16 @@ export default class RNDataSDKDemo extends PureComponent {
           enableLocation: true,
           enableBattCharge: true,
           enableGalleryMetaData: true,
+          enableMediaMetaData: true,
+          enableTelephonyInformation: true,
+          enableStoredFilesInformation: true,
+          enableSensors: true,
+          enableLauncherApps: true,
+          enableWifiInfo: true,
+          enableBluetoothInfo: true,
+          enableAccountsInfo: true,
+          enableGmailLabelsInfo: true,
+          enablePeriodicalDataGathering: true,
           enableSmsBody: false,
           enablePhoneNumber: false,
           enableContactsName: false,
@@ -76,10 +90,70 @@ export default class RNDataSDKDemo extends PureComponent {
           providerID: '',
           extra_data: '',
           expiration: '',
-        }
+        },
+
+        //FormDataCollector
+        formData: {
+          partnerScriptId: '59a65370f7a57941735f3bb7',
+          applicationId: '',
+          firstName: '',
+          middleName: '',
+          lastName: '',
+          dateOfBirth: '',
+          mobilePhone: '',
+          homePhone: '',
+          email: '',
+          workEmail: '',
+          homeNumber: '',
+          employerName: '',
+          startEmploymentDate: '',
+          endEmploymentDate: '',
+          university: '',
+        },
     }
   }
 
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  componentWillMount() {
+    DeviceEventEmitter.addListener('onAuthorizeStarted',(params) => {
+         console.log("onAuthorizeStarted")
+         console.log(params)
+         }
+    )
+    DeviceEventEmitter.addListener('onAuthorizeComplete',(params) => {
+              console.log("onAuthorizeComplete")
+              console.log(params)
+         }
+    )
+    DeviceEventEmitter.addListener('onAuthorizeCanceled',(params) => {
+              console.log("onAuthorizeCanceled")
+             console.log(params)
+         }
+    )
+    DeviceEventEmitter.addListener('onAuthorizeError',(params) => {
+              console.log("onAuthorizeError")
+              console.log(params)
+         }
+    )
+    DeviceEventEmitter.addListener('onAuthorizeFailure',(params) => {
+            console.log("onAuthorizeFailure")
+            console.log(params)
+       }
+    )
+  }
+
+
+  handleBackPress = () => {
+    RNOnboardingSdkWrapper.onBackPressed()
+    return true;
+  }
 
   _handleIndexChange = index => this.setState({ index });
 
@@ -208,6 +282,86 @@ export default class RNDataSDKDemo extends PureComponent {
                 isChecked={this.state.scoring.enableGalleryMetaData}
                 rightText='Enable Gallery Meta data collection'
             />
+           <CheckBox
+                ref={(c) => this.enableMediaMetaData = c}
+                style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
+                onClick={() => {this.state.scoring.enableMediaMetaData = !this.state.scoring.enableMediaMetaData}}
+                isChecked={this.state.scoring.enableMediaMetaData}
+                rightText='Enable Media Meta data collection'
+            />
+           <CheckBox
+                ref={(c) => this.enableTelephonyInformation = c}
+                style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
+                onClick={() => {this.state.scoring.enableTelephonyInformation = !this.state.scoring.enableTelephonyInformation}}
+                isChecked={this.state.scoring.enableTelephonyInformation}
+                rightText='Enable Telephony information collection'
+            />
+           <CheckBox
+                ref={(c) => this.enableStoredFilesInformation = c}
+                style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
+                onClick={() => {this.state.scoring.enableStoredFilesInformation = !this.state.scoring.enableStoredFilesInformation}}
+                isChecked={this.state.scoring.enableStoredFilesInformation}
+                rightText='Enable Stored files information collection'
+            />
+           <CheckBox
+                ref={(c) => this.enableSensors = c}
+                style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
+                onClick={() => {this.state.scoring.enableSensors = !this.state.scoring.enableSensors}}
+                isChecked={this.state.scoring.enableSensors}
+                rightText='Enable Sensors information collection'
+            />
+           <CheckBox
+                ref={(c) => this.enableLauncherApps = c}
+                style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
+                onClick={() => {this.state.scoring.enableLauncherApps = !this.state.scoring.enableLauncherApps}}
+                isChecked={this.state.scoring.enableLauncherApps}
+                rightText='Enable Launcher apps information collection'
+            />
+           <CheckBox
+                ref={(c) => this.enableWifiInfo = c}
+                style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
+                onClick={() => {this.state.scoring.enableWifiInfo = !this.state.scoring.enableWifiInfo}}
+                isChecked={this.state.scoring.enableWifiInfo}
+                rightText='Enable WiFi information collection'
+            />
+           <CheckBox
+                ref={(c) => this.enableBluetoothInfo = c}
+                style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
+                onClick={() => {this.state.scoring.enableBluetoothInfo = !this.state.scoring.enableBluetoothInfo}}
+                isChecked={this.state.scoring.enableBluetoothInfo}
+                rightText='Enable Bluetooth information collection'
+            />
+           <CheckBox
+                ref={(c) => this.enableAccountsInfo = c}
+                style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
+                onClick={() => {this.state.scoring.enableAccountsInfo = !this.state.scoring.enableAccountsInfo}}
+                isChecked={this.state.scoring.enableAccountsInfo}
+                rightText='Enable Accounts information collection'
+            />
+           <CheckBox
+                ref={(c) => this.enableGmailLabelsInfo = c}
+                style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
+                onClick={() => {this.state.scoring.enableGmailLabelsInfo = !this.state.scoring.enableGmailLabelsInfo}}
+                isChecked={this.state.scoring.enableGmailLabelsInfo}
+                rightText='Enable Gmail labels information collection'
+            />
+           <CheckBox
+                ref={(c) => this.enablePeriodicalDataGathering = c}
+                style={{flex: 1, padding: 10}}
+                disabled={!this.state.enabled}
+                onClick={() => {this.state.scoring.enablePeriodicalDataGathering = !this.state.scoring.enablePeriodicalDataGathering}}
+                isChecked={this.state.scoring.enablePeriodicalDataGathering}
+                rightText='Enable Periodical Data gathering'
+            />
             <Text style={{fontWeight: 'bold'}}>SMS Message content:</Text>
             <CheckBox
                 ref={(c) => this.enableSmsBody = c}
@@ -293,88 +447,175 @@ export default class RNDataSDKDemo extends PureComponent {
         </ScrollView>
       );
       case 'verification':
-      return(
-         <ScrollView>
-            <View style = {styles.container}>
-                 <Text style={{fontWeight: 'bold', marginTop: 20}}>Providers:</Text>
-                <Picker
-                  ref={(c) => this.provider = c}
-                  selectedValue={this.state.provider}
-                  onValueChange={(itemValue, itemIndex) => this.setState({provider : itemValue})}>
-                  <Picker.Item label='facebook' value='facebook' />
-                  <Picker.Item label='linkedin' value='linkedin' />
-                  <Picker.Item label='yahoo' value='yahoo' />
-                  <Picker.Item label='windowslive' value='windowslive' />
-                  <Picker.Item label='google' value='google' />
-                  <Picker.Item label='kakaostory' value='kakaostory' />
-                  <Picker.Item label='twitter' value='twitter' />
-                </Picker>
-                 <TextField
-                  ref={ input => {
-                    this.inputs['providerID'] = input;
-                  }}
-                   label='Provider Id'
-                   value={this.state.providerAccess.providerID}
-                   onChangeText={ (providerID) => {this.state.providerAccess.providerID = providerID}}
-                   returnKeyType = {"next"}
-                   blurOnSubmit={ false }
-                  onSubmitEditing={() => {
-                    this.focusNextField('accessToken');
-                  }}
-                 />
-                 <TextField
-                  ref={ input => {
-                    this.inputs['accessToken'] = input;
-                  }}
-                   label='Provider Access Token'
-                   value={this.state.providerAccess.accessToken}
-                   onChangeText={ (accessToken) => {this.state.providerAccess.accessToken = accessToken}}
-                   returnKeyType = {"next"}
-                   blurOnSubmit={ false }
-                  onSubmitEditing={() => {
-                    this.focusNextField('extra_data');
-                  }}
-                 />
-                 <TextField
-                  ref={ input => {
-                    this.inputs['extra_data'] = input;
-                  }}
-                   label='Provider Extra Data (optional)'
-                   value={this.state.providerAccess.extra_data}
-                   onChangeText={ (extra_data) => {this.state.providerAccess.extra_data = extra_data}}
-                   returnKeyType = {"next"}
-                   blurOnSubmit={ false }
-                  onSubmitEditing={() => {
-                    this.focusNextField('expiration');
-                  }}
-                 />
-                 <TextField
-                  ref={ input => {
-                    this.inputs['expiration'] = input;
-                  }}
-                   label='Access Token Expiration'
-                   value={this.state.providerAccess.expiration}
-                   onChangeText={ (expiration) => {this.state.providerAccess.expiration = expiration.replace(/[^0-9]/g, '')}}
-                   returnKeyType = {"done"}
-                   keyboardType = 'numeric'
-                   blurOnSubmit={ true }
-                 />
-                <TouchableHighlight style={styles.button} onPress = {this.onPressSendProviderAccessToken} underlayColor='#99d9f4'>
-                  <Text style = {styles.buttonText}>{this.state.sendProviderAccessTokenText}</Text>
-                </TouchableHighlight>
+              return(
+                 <ScrollView>
+                    <View style = {styles.container}>
+                         <Text style={{fontWeight: 'bold', marginTop: 20}}>Providers:</Text>
+                        <Picker
+                          ref={(c) => this.provider = c}
+                          selectedValue={this.state.provider}
+                          onValueChange={(itemValue, itemIndex) => this.setState({provider : itemValue})}>
+                          <Picker.Item label='facebook' value='facebook' />
+                          <Picker.Item label='linkedin' value='linkedin' />
+                          <Picker.Item label='yahoo' value='yahoo' />
+                          <Picker.Item label='windowslive' value='windowslive' />
+                          <Picker.Item label='google' value='google' />
+                          <Picker.Item label='kakaostory' value='kakaostory' />
+                          <Picker.Item label='twitter' value='twitter' />
+                        </Picker>
+                         <TextField
+                          ref={ input => {
+                            this.inputs['providerID'] = input;
+                          }}
+                           label='Provider Id'
+                           value={this.state.providerAccess.providerID}
+                           onChangeText={ (providerID) => {this.state.providerAccess.providerID = providerID}}
+                           returnKeyType = {"next"}
+                           blurOnSubmit={ false }
+                          onSubmitEditing={() => {
+                            this.focusNextField('accessToken');
+                          }}
+                         />
+                         <TextField
+                          ref={ input => {
+                            this.inputs['accessToken'] = input;
+                          }}
+                           label='Provider Access Token'
+                           value={this.state.providerAccess.accessToken}
+                           onChangeText={ (accessToken) => {this.state.providerAccess.accessToken = accessToken}}
+                           returnKeyType = {"next"}
+                           blurOnSubmit={ false }
+                          onSubmitEditing={() => {
+                            this.focusNextField('extra_data');
+                          }}
+                         />
+                         <TextField
+                          ref={ input => {
+                            this.inputs['extra_data'] = input;
+                          }}
+                           label='Provider Extra Data (optional)'
+                           value={this.state.providerAccess.extra_data}
+                           onChangeText={ (extra_data) => {this.state.providerAccess.extra_data = extra_data}}
+                           returnKeyType = {"next"}
+                           blurOnSubmit={ false }
+                          onSubmitEditing={() => {
+                            this.focusNextField('expiration');
+                          }}
+                         />
+                         <TextField
+                          ref={ input => {
+                            this.inputs['expiration'] = input;
+                          }}
+                           label='Access Token Expiration'
+                           value={this.state.providerAccess.expiration}
+                           onChangeText={ (expiration) => {this.state.providerAccess.expiration = expiration.replace(/[^0-9]/g, '')}}
+                           returnKeyType = {"done"}
+                           keyboardType = 'numeric'
+                           blurOnSubmit={ true }
+                         />
+                        <TouchableHighlight style={styles.button} onPress = {this.onPressSendProviderAccessToken} underlayColor='#99d9f4'>
+                          <Text style = {styles.buttonText}>{this.state.sendProviderAccessTokenText}</Text>
+                        </TouchableHighlight>
 
-                 <Text>
-                   <Text>Send Provider Access Token Callback: </Text>
-                   <Text style={{fontWeight: 'bold'}}>{this.state.sendProviderAccessTokenCallback}</Text>
-                 </Text>
-            </View>
-         </ScrollView>
-      );
+                         <Text>
+                           <Text>Send Provider Access Token Callback: </Text>
+                           <Text style={{fontWeight: 'bold'}}>{this.state.sendProviderAccessTokenCallback}</Text>
+                         </Text>
+                    </View>
+                 </ScrollView>
+              );
+      case 'onboarding':
+            return(
+               <ScrollView>
+                  <View style = {styles.container}>
+                       <TextField
+                           ref={ input => {
+                             this.inputs['partnerScriptId'] = input;
+                           }}
+                            label='Partner Script Id'
+                            value={this.state.formData.partnerScriptId}
+                            onChangeText={ (partnerScriptId) => {this.state.formData.partnerScriptId = partnerScriptId}}
+                            returnKeyType = {"next"}
+                            blurOnSubmit={ false }
+                           onSubmitEditing={() => {
+                             this.focusNextField('applicationId');
+                           }}
+                          />
+                       <TextField
+                        ref={ input => {
+                          this.inputs['applicationId'] = input;
+                        }}
+                         label='Application Id'
+                         value={this.state.formData.applicationId}
+                         onChangeText={ (applicationId) => {this.state.formData.applicationId = applicationId}}
+                         returnKeyType = {"next"}
+                         blurOnSubmit={ false }
+                        onSubmitEditing={() => {
+                          this.focusNextField('firstName');
+                        }}
+                       />
+                       <TextField
+                        ref={ input => {
+                          this.inputs['firstName'] = input;
+                        }}
+                         label='First Name'
+                         value={this.state.formData.firstName}
+                         onChangeText={ (firstName) => {this.state.formData.firstName = firstName}}
+                         returnKeyType = {"next"}
+                         blurOnSubmit={ false }
+                        onSubmitEditing={() => {
+                          this.focusNextField('middleName');
+                        }}
+                       />
+                       <TextField
+                        ref={ input => {
+                          this.inputs['middleName'] = input;
+                        }}
+                         label='Middle Name'
+                         value={this.state.formData.middleName}
+                         onChangeText={ (middleName) => {this.state.formData.middleName = middleName}}
+                         returnKeyType = {"next"}
+                         blurOnSubmit={ false }
+                        onSubmitEditing={() => {
+                          this.focusNextField('lastName');
+                        }}
+                       />
+                       <TextField
+                           ref={ input => {
+                             this.inputs['lastName'] = input;
+                           }}
+                            label='Last Name'
+                            value={this.state.formData.lastName}
+                            onChangeText={ (lastName) => {this.state.formData.lastName = lastName}}
+                            returnKeyType = {"next"}
+                            blurOnSubmit={ false }
+                           onSubmitEditing={() => {
+                             this.focusNextField('dateOfBirth');
+                           }}
+                          />
+                       <TextField
+                        ref={ input => {
+                          this.inputs['dateOfBirth'] = input;
+                        }}
+                         label='Date of Birth (MM/dd/yyyy)'
+                         value={this.state.formData.dateOfBirth}
+                         onChangeText={ (dateOfBirth) => {this.state.formData.dateOfBirth = dateOfBirth}}
+                         returnKeyType = {"done"}
+                         keyboardType = 'numeric'
+                         blurOnSubmit={ true }
+                       />
+                      <TouchableHighlight style={styles.button} onPress = {this.onPressStartOnboarding} underlayColor='#99d9f4'>
+                        <Text style = {styles.buttonText}>{this.state.startOnboardingText}</Text>
+                      </TouchableHighlight>
+                  </View>
+               </ScrollView>
+            );
     }
 
   }
 
   startAndroidData() {
+        RNDataSdkWrapper.setPartnerScriptId(this.state.scoring.partnerScriptId);
         RNDataSdkWrapper.setupWithCallback(
         (result, logMsg, statusCode) => {console.log('result: ' + result);
             console.log('logMsg: ' + logMsg);
@@ -395,6 +636,7 @@ export default class RNDataSDKDemo extends PureComponent {
   }
 
   startAndroidDataWithClientOptions() {
+        RNClientOptions.refreshClientOptions();
         RNClientOptions.setApiGatewayUrl(this.state.gatewayUrl);
         RNClientOptions.setWifiOnly(this.state.scoring.wifiOnly);
         RNClientOptions.enableLogDisplay(this.state.scoring.enableLogDisplay);
@@ -408,6 +650,16 @@ export default class RNDataSDKDemo extends PureComponent {
         if (!this.state.scoring.enableBattCharge) RNClientOptions.disableBattChargeDataCollection();
         if (!this.state.scoring.enableLocation) RNClientOptions.disableLocationDataCollection();
         if (!this.state.scoring.enableGalleryMetaData) RNClientOptions.disableGalleryMetaDataCollection();
+        if (!this.state.scoring.enableMediaMetaData) RNClientOptions.disableMediaMetaDataCollection();
+        if (!this.state.scoring.enableTelephonyInformation) RNClientOptions.disableTelephonyInfoDataCollection();
+        if (!this.state.scoring.enableStoredFilesInformation) RNClientOptions.disableStoredFilesInformationCollection();
+        if (!this.state.scoring.enableSensors) RNClientOptions.disableSensorsCollection();
+        if (!this.state.scoring.enableLauncherApps) RNClientOptions.disableLauncherAppsCollection();
+        if (!this.state.scoring.enableWifiInfo) RNClientOptions.disableWifiInfoCollection();
+        if (!this.state.scoring.enableBluetoothInfo) RNClientOptions.disableBluetoothInfoCollection();
+        if (!this.state.scoring.enableAccountsInfo) RNClientOptions.disableAccountsInfoCollection();
+        if (!this.state.scoring.enableGmailLabelsInfo) RNClientOptions.disableGmailLabelsInfoCollection();
+        if (!this.state.scoring.enablePeriodicalDataGathering) RNClientOptions.disablePeriodicalDataGathering();
         if (!this.state.scoring.enableSmsBody) RNClientOptions.disableSMSBodyCollection();
         if (!this.state.scoring.enablePhoneNumber) RNClientOptions.enablePhoneNumberHashing();
         if (!this.state.scoring.enableContactsName) RNClientOptions.enableContactsNameHashing();
@@ -416,6 +668,7 @@ export default class RNDataSDKDemo extends PureComponent {
         if (!this.state.scoring.enableCalendarDisplayName) RNClientOptions.enableCalendarDisplayNameHashing();
         if (!this.state.scoring.enableCalendarEmail) RNClientOptions.enableCalendarEmailHashing();
 
+        RNDataSdkWrapper.setPartnerScriptId(this.state.scoring.partnerScriptId);
         RNDataSdkWrapper.setupWithClientOptions();
         RNDataSdkWrapper.setupWithCallback(
         (result, logMsg, statusCode) => {console.log('result: ' + result);
@@ -513,6 +766,37 @@ export default class RNDataSDKDemo extends PureComponent {
 
   }
 
+
+  onPressStartOnboarding() {
+     /*
+       setPartnerScriptId
+       setApplicationId
+       setFirstName
+       setLastName
+       setMiddleName
+       setHomePhone
+       setMobilePhone
+       setEmail
+       setWorkEmail
+       setDateOfBirth - dd/MM
+       setStartEmploymentDate
+       setEndEmploymentDate
+       setUniversityName
+       putField
+       addGovernmentId
+       setGovernmentIds
+       setAddress
+     */
+     RNFormDataCollector.refreshFormDataCollector()
+     RNFormDataCollector.setApplicationId(this.state.formData.applicationId)
+     RNFormDataCollector.setFirstName(this.state.formData.firstName)
+     RNFormDataCollector.setMiddleName(this.state.formData.middleName)
+     RNFormDataCollector.setLastName(this.state.formData.lastName)
+
+     RNOnboardingSdkWrapper.setPartnerScriptId(this.state.formData.partnerScriptId)
+     RNOnboardingSdkWrapper.startAuthorize()
+  }
+
   focusNextField(id) {
     this.inputs[id].focus();
   }
@@ -539,7 +823,7 @@ export default class RNDataSDKDemo extends PureComponent {
     return (
     <View style={styles.mainContainer}>
      <ToolbarAndroid
-        title='React Native DataSDK Demo'
+        title='React Native SDK Demo'
         style={styles.toolbar}
         titleColor='white'
         actions={[{title: 'About'}]}
