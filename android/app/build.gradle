@@ -85,8 +85,8 @@ def enableProguardInReleaseBuilds = true
 
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
 
 
     packagingOptions {
@@ -109,8 +109,8 @@ android {
         applicationId "lenddo.com.lenddoconnect"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 4
-        versionName "1.2.1"
+        versionCode 5
+        versionName "2.0.0"
         multiDexEnabled true
         ndk {
             abiFilters "armeabi-v7a", "x86"
@@ -163,16 +163,19 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.google.android.gms:play-services-auth:15.0.1'
-    compile 'com.facebook.android:facebook-android-sdk:4.23.0'
-    compile 'com.google.code.gson:gson:2.8.2'
-    compile 'com.android.support:multidex:1.0.1'
-    compile 'net.danlew:android.joda:2.9.1'
-    compile 'com.googlecode.libphonenumber:libphonenumber:8.8.3'
-    compile "com.facebook.react:react-native:+"  // From node_modules
-    compile project(':react-native-sdk')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation "com.android.support:appcompat-v7:27.1.1"
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.google.android.gms:play-services-auth:15.0.1'
+    implementation 'com.facebook.android:facebook-android-sdk:4.23.0'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'net.danlew:android.joda:2.9.2'
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.8.3'
+    implementation "com.facebook.react:react-native:+"  // From node_modules
+    compile project(':@lenddo/react-native-sdk')
+    compile project(':react-native-gesture-handler')
     compile project(':react-native-collapsing-toolbar')
     compile project(':react-native-nested-scroll-view')
 }

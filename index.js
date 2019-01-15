@@ -10,4 +10,4 @@ import {
 
 import App from './App';
 
-AppRegistry.registerComponent('RNDataSdkWrapperDemo', () => App);
+AppRegistry.registerComponent('RNLenddoEFLSdkWrapperDemo', () => App);

@@ -187,7 +187,7 @@ public class MainApplication extends Application implements ReactApplication {
         super.onCreate();
         LenddoCoreInfo.initCoreInfo(getApplicationContext());  // Init core info
 
-        // Setup data gathering with client options which are data settings (can be over written via RNDataSdkWrapper's setupWithClientOptions method on your App.js  (pleaser refer to RNDataSDKDemo))
+        // Setup data gathering with client options which are data settings (can be over written via RNDataSdkWrapper's setupWithClientOptions method on your App.js  (please refer to RNLenddoEFLSDKDemo))
         ClientOptions clientOptions = new ClientOptions();
         clientOptions.enableLogDisplay(true);
 
@@ -270,7 +270,7 @@ On your App.js, setup Lenddo sdk with callback to capture response from gatherin
 ```javascript
 import { RNDataSdkWrapper , RNClientOptions } from '@lenddo/react-native-sdk';
 
-export default class RNDataSDKDemo extends PureComponent {
+export default class RNLenddoEFLSDKDemo extends PureComponent {
     // Other method description
 
     startAndroidData() {
@@ -381,7 +381,7 @@ public class MainApplication extends Application implements ReactApplication {
 
         // ... Or use the below to have an alternative client options
         /*
-        // Setup data gathering with client options which are data settings (can be over written via RNDataSdkWrapper's setupWithClientOptions method on your App.js  (pleaser refer to RNDataSDKDemo))
+        // Setup data gathering with client options which are data settings (can be over written via RNDataSdkWrapper's setupWithClientOptions method on your App.js  (please refer to RNLenddoEFLSDKDemo))
         ClientOptions clientOptions = new ClientOptions();
         clientOptions.enableLogDisplay(true);
 
@@ -467,7 +467,7 @@ On your App.js, setup Lenddo onboarding sdk with callback to capture response fr
 ```javascript
 import { RNOnboardingSdkWrapper, RNFormDataCollector} from '@lenddo/react-native-sdk';
 
-export default class RNDataSDKDemo extends PureComponent {
+export default class RNLenddoEFLSDKDemo extends PureComponent {
     // Other method description
 
 componentDidMount() {

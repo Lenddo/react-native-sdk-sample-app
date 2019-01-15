@@ -1,5 +1,5 @@
 {
-  "name": "RNDataSdkWrapperDemo",
+  "name": "RNLenddoEFLSdkWrapperDemo",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -7,23 +7,23 @@
     "test": "jest"
   },
   "dependencies": {
-    "@lenddo/react-native-sdk": "^1.7.0",
+    "@lenddo/react-native-sdk": "git+ssh://git@github.com/Lenddo/react-native-sdk.git#feature/add_ios_onboarding_library",
     "buffer": "^5.0.8",
     "prop-types": "^15.6.0",
-    "react": "16.0.0",
-    "react-native": "^0.50.4",
+    "react": "16.6.3",
+    "react-native": "0.57.8",
     "react-native-check-box": "^2.1.0",
     "react-native-collapsing-toolbar": "^1.0.0-beta.7",
     "react-native-gesture-handler": "^1.0.1",
     "react-native-material-textfield": "^0.11.0",
-    "react-native-nested-scroll-view": "^5.0.2",
+    "react-native-nested-scroll-view": "8.0.0",
     "react-native-tab-view": "0.0.72"
   },
   "devDependencies": {
-    "babel-jest": "21.2.0",
-    "babel-preset-react-native": "4.0.0",
-    "jest": "21.2.1",
-    "react-test-renderer": "16.0.0"
+    "babel-jest": "23.6.0",
+    "metro-react-native-babel-preset": "0.51.1",
+    "jest": "23.6.0",
+    "react-test-renderer": "16.6.3"
   },
   "jest": {
     "preset": "react-native"
