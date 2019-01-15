@@ -82,7 +82,7 @@ export default class RNLenddoEFLSDKDemo extends PureComponent {
           enableContactsEmail: false,
           enableCalendarOrganizer: false,
           enableCalendarDisplayName: false,
-          enableCalendarEmail: false,
+          enableCalendarEmail: false
         },
 
         //Provider Access
@@ -90,26 +90,57 @@ export default class RNLenddoEFLSDKDemo extends PureComponent {
           accessToken: '',
           providerID: '',
           extra_data: '',
-          expiration: '',
+          expiration: ''
         },
 
         //FormDataCollector
         formData: {
+          authorizeApiGateway: 'https://authorize-api%@.lendqa.com',
+          binApiGateway: 'https://bin-api%@.lendqa.com',
+          region: '',
+
           partnerScriptId: '59a65370f7a57941735f3bb7',
+          secret: '',
+          installationId: '',
+          enableKYC: false,
+          enableDataCollection: false,
+
           applicationId: '',
+
+          enableAssistedPsychometrics: false,
+          psychometricsApiGateway: '',
+
           firstName: '',
           middleName: '',
           lastName: '',
-          dateOfBirth: '',
-          mobilePhone: '',
-          homePhone: '',
           email: '',
           workEmail: '',
-          homeNumber: '',
+          birthday: '',
+          mobilePhone: '',
+          homePhone: '',
+
           employerName: '',
-          startEmploymentDate: '',
-          endEmploymentDate: '',
-          university: '',
+          employmentStartDate: '',
+          employmentEndDate: '',
+          universityName: '',
+
+          motherFirstName: '',
+          motherLastName: '',
+          motherMiddleName: '',
+
+          addressLine1: '',
+          addressLine2: '',
+          city: '',
+          administrativeDivision: '',
+          countryCode: '',
+          postalCode: '',
+
+          workAddressLine1: '',
+          workAddressLine2: '',
+          workCity: '',
+          workAdministrativeDivision: '',
+          workCountryCode: '',
+          workPostalCode: ''
         },
     }
   }
