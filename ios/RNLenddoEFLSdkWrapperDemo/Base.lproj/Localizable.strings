@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  RNLenddoEFLSdkWrapperDemo
+
+  Created by Neil Mosca on 15/01/2019.
+  Copyright © 2019 Facebook. All rights reserved.
+*/
+"back" = "Back";
+
+// Cancel Dialog
+"cancel_dialog_title" = "Cancel Process";
+"cancel_dialog_message" = "Are you sure you want to cancel?";
+"cancel_dialog_ok_button_text" = "Yes";
+"cancel_dialog_cancel_button_text" = "No";
