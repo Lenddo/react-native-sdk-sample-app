@@ -95,8 +95,6 @@ export default class RNLenddoEFLSDKDemo extends PureComponent {
 
         //FormDataCollector
         formData: {
-          authorizeApiGateway: 'https://authorize-api%@.lendqa.com',
-          binApiGateway: 'https://bin-api%@.lendqa.com',
           region: '',
 
           partnerScriptId: '59a65370f7a57941735f3bb7',

@@ -11,6 +11,7 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import "RNOnboardingSdkWrapperIOS.h"
 
 @implementation AppDelegate
 
@@ -31,6 +32,12 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  
+  /*
+  GoogleProvider *googleProvider = [[GoogleProvider alloc] init];
+  NSArray *providers = [NSArray arrayWithObjects:googleProvider, nil];
+  [RNOnboardingSdkWrapperIOS setProviders:providers]
+  */
   return YES;
 }
 
