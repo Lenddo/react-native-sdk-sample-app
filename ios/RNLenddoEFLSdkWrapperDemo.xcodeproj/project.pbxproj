@@ -1335,8 +1335,8 @@
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 62LDK5E3G4;
 				FRAMEWORK_SEARCH_PATHS = (
-					"../node_modules/@lenddo/react-native-sdk/ios/Frameworks",
-					"../node_modules/@lenddo/react-native-sdk/ios",
+					"../node_modules/\\@lenddo/react-native-sdk/ios/Frameworks",
+					"../node_modules/\\@lenddo/react-native-sdk/ios",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1350,6 +1350,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.RNLenddoEFLSdkWrapperDemo;
 				PRODUCT_NAME = RNLenddoEFLSdkWrapperDemo;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1362,8 +1363,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 62LDK5E3G4;
 				FRAMEWORK_SEARCH_PATHS = (
-					"../node_modules/@lenddo/react-native-sdk/ios/Frameworks",
-					"../node_modules/@lenddo/react-native-sdk/ios",
+					"../node_modules/\\@lenddo/react-native-sdk/ios/Frameworks",
+					"../node_modules/\\@lenddo/react-native-sdk/ios",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1377,6 +1378,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.RNLenddoEFLSdkWrapperDemo;
 				PRODUCT_NAME = RNLenddoEFLSdkWrapperDemo;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
