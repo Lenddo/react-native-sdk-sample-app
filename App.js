@@ -1,19 +1,20 @@
 'use strict';
 
 import React, { PureComponent } from 'react';
-import { View, StyleSheet, Dimensions, Text, TouchableHighlight, ScrollView, ToolbarAndroid, Picker, Alert, BackHandler, DeviceEventEmitter} from 'react-native';
+import { Platform, View, StyleSheet, Dimensions, Text, TouchableHighlight, ScrollView, ToolbarAndroid, Picker, Alert, BackHandler, DeviceEventEmitter, NativeEventEmitter} from 'react-native';
 import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 import { TextField } from 'react-native-material-textfield';
 import CheckBox from 'react-native-check-box';
-import { RNDataSdkWrapper , RNClientOptions, RNOnboardingSdkWrapper, RNFormDataCollector } from '@lenddo/react-native-sdk';
+import { RNDataSdkWrapper , RNClientOptions, RNOnboardingSdkWrapper, RNFormDataCollector, RNOnboardingSdkWrapperIOS } from '@lenddo/react-native-sdk';
 
 const initialLayout = {
   height: 0,
   width: Dimensions.get('window').width,
 };
 
+const OnboardingEventEmitter = Platform.OS == 'ios' ? new NativeEventEmitter(RNOnboardingSdkWrapperIOS) : DeviceEventEmitter;
 
-export default class RNDataSDKDemo extends PureComponent {
+export default class RNLenddoEFLSDKDemo extends PureComponent {
 
   constructor(props) {
     super(props);
@@ -81,7 +82,7 @@ export default class RNDataSDKDemo extends PureComponent {
           enableContactsEmail: false,
           enableCalendarOrganizer: false,
           enableCalendarDisplayName: false,
-          enableCalendarEmail: false,
+          enableCalendarEmail: false
         },
 
         //Provider Access
@@ -89,26 +90,55 @@ export default class RNDataSDKDemo extends PureComponent {
           accessToken: '',
           providerID: '',
           extra_data: '',
-          expiration: '',
+          expiration: ''
         },
 
         //FormDataCollector
         formData: {
+          region: '',
+
           partnerScriptId: '59a65370f7a57941735f3bb7',
+          secret: '',
+          installationId: '',
+          enableKYC: false,
+          enableDataCollection: false,
+
           applicationId: '',
+
+          enableAssistedPsychometrics: false,
+          psychometricsApiGateway: '',
+
           firstName: '',
           middleName: '',
           lastName: '',
-          dateOfBirth: '',
-          mobilePhone: '',
-          homePhone: '',
           email: '',
           workEmail: '',
-          homeNumber: '',
+          birthday: '',
+          mobilePhone: '',
+          homePhone: '',
+
           employerName: '',
-          startEmploymentDate: '',
-          endEmploymentDate: '',
-          university: '',
+          employmentStartDate: '',
+          employmentEndDate: '',
+          universityName: '',
+
+          motherFirstName: '',
+          motherLastName: '',
+          motherMiddleName: '',
+
+          addressLine1: '',
+          addressLine2: '',
+          city: '',
+          administrativeDivision: '',
+          countryCode: '',
+          postalCode: '',
+
+          workAddressLine1: '',
+          workAddressLine2: '',
+          workCity: '',
+          workAdministrativeDivision: '',
+          workCountryCode: '',
+          workPostalCode: ''
         },
     }
   }
@@ -122,31 +152,33 @@ export default class RNDataSDKDemo extends PureComponent {
   }
 
   componentWillMount() {
-    DeviceEventEmitter.addListener('onAuthorizeStarted',(params) => {
+    OnboardingEventEmitter.addListener('onAuthorizeStarted',(params) => {
          console.log("onAuthorizeStarted")
          console.log(params)
          }
     )
-    DeviceEventEmitter.addListener('onAuthorizeComplete',(params) => {
+    OnboardingEventEmitter.addListener('onAuthorizeComplete',(params) => {
               console.log("onAuthorizeComplete")
               console.log(params)
          }
     )
-    DeviceEventEmitter.addListener('onAuthorizeCanceled',(params) => {
-              console.log("onAuthorizeCanceled")
+    OnboardingEventEmitter.addListener('onAuthorizeCancelled',(params) => {
+              console.log("onAuthorizeCancelled")
              console.log(params)
          }
     )
-    DeviceEventEmitter.addListener('onAuthorizeError',(params) => {
+    OnboardingEventEmitter.addListener('onAuthorizeError',(params) => {
               console.log("onAuthorizeError")
               console.log(params)
          }
     )
-    DeviceEventEmitter.addListener('onAuthorizeFailure',(params) => {
-            console.log("onAuthorizeFailure")
-            console.log(params)
-       }
-    )
+    if (Platform.OS == 'android') {
+        OnboardingEventEmitter.addListener('onAuthorizeFailure',(params) => {
+                console.log("onAuthorizeFailure")
+                console.log(params)
+           }
+        )
+    }
   }
 
 
@@ -692,109 +724,119 @@ export default class RNDataSDKDemo extends PureComponent {
 
 
   onPressStartData() {
-       if (this.state.startDataText.toUpperCase() === 'START DATA SDK'.toUpperCase()) {
+    if (Platform.OS === 'android') {
+        if (this.state.startDataText.toUpperCase() === 'START DATA SDK'.toUpperCase()) {
+            RNDataSdkWrapper.clear();
+            this.setState({enabled: true});
+            this.setState({dataSendingCallback: ''})
+            this.setState({applicationIdDebugInfo: ''})
+            this.setState({deviceIdDebugInfo: ''})
+            this.setState({serviceTokenDebugInfo: ''})
 
-	       RNDataSdkWrapper.clear();
-	       this.setState({enabled: true});
-	       this.setState({dataSendingCallback: ''})
-	       this.setState({applicationIdDebugInfo: ''})
-	       this.setState({deviceIdDebugInfo: ''})
-	       this.setState({serviceTokenDebugInfo: ''})
+            if (this.state.scoring.applicationId == null || this.state.scoring.applicationId.trim() === "") {
+                this.setState({errorApplicationId: 'This field is mandatory!'})
+                this.setState({enabled: true});
+            } else {
+                this.setState({enabled: false});
+                this.setState({errorApplicationId: null})
+                this.setState({applicationIdDebugInfo: this.state.scoring.applicationId});
+                this.setState({startDataText : 'STOP&CLEAR DATA SDK'})
+                console.log('gatewayUrl: ' + this.state.gatewayUrl)
 
-           if(this.state.scoring.applicationId == null || this.state.scoring.applicationId.trim() === "") {
-             this.setState({errorApplicationId: 'This field is mandatory!'})
-             this.setState({enabled: true});
-           } else {
-             this.setState({enabled: false});
-             this.setState({errorApplicationId: null})
-             this.setState({applicationIdDebugInfo: this.state.scoring.applicationId});
-             this.setState({startDataText : 'STOP&CLEAR DATA SDK'})
-              console.log('gatewayUrl: ' + this.state.gatewayUrl)
+                RNDataSdkWrapper.setApplicationId(this.state.scoring.applicationId);
 
-             RNDataSdkWrapper.setApplicationId(this.state.scoring.applicationId);
+                this.startAndroidDataWithClientOptions();
 
-             this.startAndroidDataWithClientOptions();
+                this.setState({dataSendingCallback: 'process currently running'})
 
-             this.setState({dataSendingCallback: 'process currently running'})
-             if (this.state.scoring.wifiOnly){
-                this.setState({uploadMode : 'Wifi'});
-             } else {
-                this.setState({uploadMode : 'Wifi + Mobile'});
-             }
+                if (this.state.scoring.wifiOnly){
+                    this.setState({uploadMode : 'Wifi'});
+                } else {
+                    this.setState({uploadMode : 'Wifi + Mobile'});
+                }
 
-             RNDataSdkWrapper.getApplicationId((applicationId) => {
-              this.setState({applicationIdDebugInfo: applicationId})
-             });
+                RNDataSdkWrapper.getApplicationId((applicationId) => {
+                    this.setState({applicationIdDebugInfo: applicationId})
+                });
 
-             RNDataSdkWrapper.getDeviceUID((deviceId) => {
-              this.setState({deviceIdDebugInfo: deviceId})
-             });
+                RNDataSdkWrapper.getDeviceUID((deviceId) => {
+                    this.setState({deviceIdDebugInfo: deviceId})
+                });
 
-             RNDataSdkWrapper.getServiceToken((serviceToken) => {
-              this.setState({serviceTokenDebugInfo: serviceToken})
-             });
-           }
+                RNDataSdkWrapper.getServiceToken((serviceToken) => {
+                    this.setState({serviceTokenDebugInfo: serviceToken})
+                });
+            }
 
-
-
-       } else {
-           RNDataSdkWrapper.clear();
-           this.setState({enabled: true});
-           this.setState({startDataText: 'START DATA SDK'})
-           this.setState({dataSendingCallback: ''})
-           this.setState({applicationIdDebugInfo: ''})
-           this.setState({deviceIdDebugInfo: ''})
-           this.setState({serviceTokenDebugInfo: ''})
-       }
-
-
+        } else {
+            RNDataSdkWrapper.clear();
+            this.setState({enabled: true});
+            this.setState({startDataText: 'START DATA SDK'})
+            this.setState({dataSendingCallback: ''})
+            this.setState({applicationIdDebugInfo: ''})
+            this.setState({deviceIdDebugInfo: ''})
+            this.setState({serviceTokenDebugInfo: ''})
+        }
+    }
   }
 
 
   onPressSendProviderAccessToken() {
-     this.setState({sendProviderAccessTokenCallback: 'process currently running'})
-     RNDataSdkWrapper.setProviderAccessToken(this.state.provider,
-     this.state.providerAccess.accessToken, this.state.providerAccess.providerID, this.state.providerAccess.extra_data,
-     String(this.state.providerAccess.expiration),
-     (result, logMsg, statusCode) => {console.log('result: ' + result);
+    if (Platform.OS === 'android') {
+        this.setState({sendProviderAccessTokenCallback: 'process currently running'})
+        RNDataSdkWrapper.setProviderAccessToken(this.state.provider,
+        this.state.providerAccess.accessToken, this.state.providerAccess.providerID, this.state.providerAccess.extra_data,
+        String(this.state.providerAccess.expiration),
+        (result, logMsg, statusCode) => {console.log('result: ' + result);
             console.log('logMsg: ' + logMsg);
             console.log('statusCode: ' + statusCode);
 
-     this.setState({sendProviderAccessTokenCallback: logMsg})
+            this.setState({sendProviderAccessTokenCallback: logMsg})
 
-     });
-
+        });
+    }
   }
 
 
   onPressStartOnboarding() {
-     /*
-       setPartnerScriptId
-       setApplicationId
-       setFirstName
-       setLastName
-       setMiddleName
-       setHomePhone
-       setMobilePhone
-       setEmail
-       setWorkEmail
-       setDateOfBirth - dd/MM
-       setStartEmploymentDate
-       setEndEmploymentDate
-       setUniversityName
-       putField
-       addGovernmentId
-       setGovernmentIds
-       setAddress
-     */
-     RNFormDataCollector.refreshFormDataCollector()
-     RNFormDataCollector.setApplicationId(this.state.formData.applicationId)
-     RNFormDataCollector.setFirstName(this.state.formData.firstName)
-     RNFormDataCollector.setMiddleName(this.state.formData.middleName)
-     RNFormDataCollector.setLastName(this.state.formData.lastName)
+     if (Platform.OS === 'ios') {
+        RNOnboardingSdkWrapperIOS.showAuthorizeWithFormData(this.state.formData, (error, events) => {
+            if (error) {
+                console.error(error);
+            } else {
+                console.log(JSON.stringify(events));
+            }
+        })
+     }
+     else if (Platform.OS === 'android') {
+         /*
+           setPartnerScriptId
+           setApplicationId
+           setFirstName
+           setLastName
+           setMiddleName
+           setHomePhone
+           setMobilePhone
+           setEmail
+           setWorkEmail
+           setDateOfBirth - dd/MM
+           setStartEmploymentDate
+           setEndEmploymentDate
+           setUniversityName
+           putField
+           addGovernmentId
+           setGovernmentIds
+           setAddress
+         */
+         RNFormDataCollector.refreshFormDataCollector()
+         RNFormDataCollector.setApplicationId(this.state.formData.applicationId)
+         RNFormDataCollector.setFirstName(this.state.formData.firstName)
+         RNFormDataCollector.setMiddleName(this.state.formData.middleName)
+         RNFormDataCollector.setLastName(this.state.formData.lastName)
 
-     RNOnboardingSdkWrapper.setPartnerScriptId(this.state.formData.partnerScriptId)
-     RNOnboardingSdkWrapper.startAuthorize()
+         RNOnboardingSdkWrapper.setPartnerScriptId(this.state.formData.partnerScriptId)
+         RNOnboardingSdkWrapper.startAuthorize()
+     }
   }
 
   focusNextField(id) {
