@@ -269,6 +269,13 @@
 			remoteGlobalIDString = EBF21BFA1FC4989A0052F4D5;
 			remoteInfo = "jsinspector-tvOS";
 		};
+		60DECB40226023AB0085B1A5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 68E930B62C9D46D48E7D19F3 /* RNGestureHandler.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B5C32A36220C603B000FFB8D;
+			remoteInfo = "RNGestureHandler-tvOS";
+		};
 		60F5DA9021ECD2F2004F185C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
@@ -624,6 +631,7 @@
 			isa = PBXGroup;
 			children = (
 				602F1E9421ECC909007765F0 /* libRNGestureHandler.a */,
+				60DECB41226023AB0085B1A5 /* libRNGestureHandler-tvOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -845,6 +853,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -1121,6 +1130,13 @@
 			fileType = archive.ar;
 			path = "libjsinspector-tvOS.a";
 			remoteRef = 6069261821EE04C60086F166 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		60DECB41226023AB0085B1A5 /* libRNGestureHandler-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libRNGestureHandler-tvOS.a";
+			remoteRef = 60DECB40226023AB0085B1A5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		60F5DA9121ECD2F2004F185C /* libthird-party.a */ = {
@@ -1594,6 +1610,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2EDE0170D72DF088654B1AFD /* Pods-RNLenddoEFLSdkWrapperDemo.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
@@ -1624,6 +1641,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1B63853174586D6E6300B783 /* Pods-RNLenddoEFLSdkWrapperDemo.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 62LDK5E3G4;
