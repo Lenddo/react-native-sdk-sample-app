@@ -7,7 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@lenddo/react-native-sdk": "git+ssh://git@github.com/Lenddo/react-native-sdk.git#feature/add_ios_onboarding_library",
+    "@lenddo/react-native-sdk": "1.8.3-android",
     "buffer": "^5.0.8",
     "prop-types": "^15.6.0",
     "react": "16.6.3",

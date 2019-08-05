@@ -5,14 +5,14 @@ import { Platform, View, StyleSheet, Dimensions, Text, TouchableHighlight, Scrol
 import { TabViewAnimated, TabBar } from 'react-native-tab-view';
 import { TextField } from 'react-native-material-textfield';
 import CheckBox from 'react-native-check-box';
-import { RNDataSdkWrapper , RNClientOptions, RNOnboardingSdkWrapper, RNFormDataCollector, RNOnboardingSdkWrapperIOS } from '@lenddo/react-native-sdk';
+import { RNDataSdkWrapper , RNClientOptions, RNOnboardingSdkWrapper, RNFormDataCollector } from '@lenddo/react-native-sdk';
 
 const initialLayout = {
   height: 0,
   width: Dimensions.get('window').width,
 };
 
-const OnboardingEventEmitter = Platform.OS == 'ios' ? new NativeEventEmitter(RNOnboardingSdkWrapperIOS) : DeviceEventEmitter;
+const OnboardingEventEmitter = DeviceEventEmitter;
 
 export default class RNLenddoEFLSDKDemo extends PureComponent {
 
@@ -800,13 +800,7 @@ export default class RNLenddoEFLSDKDemo extends PureComponent {
 
   onPressStartOnboarding() {
      if (Platform.OS === 'ios') {
-        RNOnboardingSdkWrapperIOS.showAuthorizeWithFormData(this.state.formData, (error, events) => {
-            if (error) {
-                console.error(error);
-            } else {
-                console.log(JSON.stringify(events));
-            }
-        })
+
      }
      else if (Platform.OS === 'android') {
          /*

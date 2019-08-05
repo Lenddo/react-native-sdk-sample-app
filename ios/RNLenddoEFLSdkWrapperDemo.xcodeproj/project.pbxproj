@@ -37,14 +37,9 @@
 		2D02E4C91E0B4AEC006451C7 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* RNLenddoEFLSdkWrapperDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* RNLenddoEFLSdkWrapperDemoTests.m */; };
 		54C4EC6B92F256CFAB780636 /* libPods-RNLenddoEFLSdkWrapperDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A798096FDBC5B61E49FD3640 /* libPods-RNLenddoEFLSdkWrapperDemo.a */; };
-		5559FF19AE104D768DC52C23 /* libRNLenddoEFLLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2683EA0AA710449B889F73A7 /* libRNLenddoEFLLibrary.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		606925F021EE04C50086F166 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 606925EE21EE04C50086F166 /* Localizable.strings */; };
-		60983BCB2200752A00959066 /* LenddoEFLSdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60983BC92200751400959066 /* LenddoEFLSdk.framework */; };
-		60983BCC2200752A00959066 /* LenddoEFLSdk.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 60983BC92200751400959066 /* LenddoEFLSdk.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		60983C04220076BC00959066 /* GoogleSignIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60983BDC220076BC00959066 /* GoogleSignIn.framework */; };
-		60983C072200796A00959066 /* GoogleProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 60983C062200796A00959066 /* GoogleProvider.m */; };
-		60983C092200798D00959066 /* google-service.plist in Resources */ = {isa = PBXBuildFile; fileRef = 60983C082200798D00959066 /* google-service.plist */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		97B3D4992E67054EC18E4E8F /* libPods-RNLenddoEFLSdkWrapperDemo-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58108251097E3327DF68CD0D /* libPods-RNLenddoEFLSdkWrapperDemo-tvOSTests.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
@@ -311,13 +306,6 @@
 			remoteGlobalIDString = 9936F32F1F5F2E5B0010BF04;
 			remoteInfo = "privatedata-tvOS";
 		};
-		60F5DAA021ECD2F2004F185C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 79CC1100AB594CE980C70C81 /* RNLenddoEFLLibrary.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = RNLenddoEFLLibrary;
-		};
 		78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */;
@@ -348,7 +336,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				60983BCC2200752A00959066 /* LenddoEFLSdk.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -387,15 +374,10 @@
 		5A50AC39BA644D3FA6ECAEF6 /* libRNGestureHandler.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNGestureHandler.a; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		606925EF21EE04C50086F166 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = RNLenddoEFLSdkWrapperDemo/Base.lproj/Localizable.strings; sourceTree = "<group>"; };
-		60983BC92200751400959066 /* LenddoEFLSdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LenddoEFLSdk.framework; path = "../node_modules/@lenddo/react-native-sdk/ios/Frameworks/LenddoEFLSdk.framework"; sourceTree = "<group>"; };
 		60983BDC220076BC00959066 /* GoogleSignIn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleSignIn.framework; path = Pods/GoogleSignIn/Frameworks/GoogleSignIn.framework; sourceTree = "<group>"; };
-		60983C052200796900959066 /* GoogleProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleProvider.h; sourceTree = "<group>"; };
-		60983C062200796A00959066 /* GoogleProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleProvider.m; sourceTree = "<group>"; };
-		60983C082200798D00959066 /* google-service.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "google-service.plist"; sourceTree = "<group>"; };
 		68E930B62C9D46D48E7D19F3 /* RNGestureHandler.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNGestureHandler.xcodeproj; path = "../node_modules/react-native-gesture-handler/ios/RNGestureHandler.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		79231FF5059A4681AA356347 /* Pods-RNLenddoEFLSdkWrapperDemoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNLenddoEFLSdkWrapperDemoTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RNLenddoEFLSdkWrapperDemoTests/Pods-RNLenddoEFLSdkWrapperDemoTests.release.xcconfig"; sourceTree = "<group>"; };
-		79CC1100AB594CE980C70C81 /* RNLenddoEFLLibrary.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNLenddoEFLLibrary.xcodeproj; path = "../node_modules/@lenddo/react-native-sdk/ios/RNLenddoEFLLibrary.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		A798096FDBC5B61E49FD3640 /* libPods-RNLenddoEFLSdkWrapperDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNLenddoEFLSdkWrapperDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAC965782B96FDAE16E3D59C /* libPods-RNLenddoEFLSdkWrapperDemoTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNLenddoEFLSdkWrapperDemoTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -429,13 +411,11 @@
 				60983C04220076BC00959066 /* GoogleSignIn.framework in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
-				60983BCB2200752A00959066 /* LenddoEFLSdk.framework in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				1670615F8C134422BE84E2DD /* libRNGestureHandler.a in Frameworks */,
-				5559FF19AE104D768DC52C23 /* libRNLenddoEFLLibrary.a in Frameworks */,
 				54C4EC6B92F256CFAB780636 /* libPods-RNLenddoEFLSdkWrapperDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -552,9 +532,6 @@
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
-				60983C052200796900959066 /* GoogleProvider.h */,
-				60983C062200796A00959066 /* GoogleProvider.m */,
-				60983C082200798D00959066 /* google-service.plist */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
@@ -632,21 +609,12 @@
 			isa = PBXGroup;
 			children = (
 				60983BDC220076BC00959066 /* GoogleSignIn.framework */,
-				60983BC92200751400959066 /* LenddoEFLSdk.framework */,
 				A798096FDBC5B61E49FD3640 /* libPods-RNLenddoEFLSdkWrapperDemo.a */,
 				BCEA9ADCE0B518B0B5761DD8 /* libPods-RNLenddoEFLSdkWrapperDemo-tvOS.a */,
 				58108251097E3327DF68CD0D /* libPods-RNLenddoEFLSdkWrapperDemo-tvOSTests.a */,
 				AAC965782B96FDAE16E3D59C /* libPods-RNLenddoEFLSdkWrapperDemoTests.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		60F5DA9D21ECD2F2004F185C /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				60F5DAA121ECD2F2004F185C /* libRNLenddoEFLLibrary.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
@@ -674,7 +642,6 @@
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				68E930B62C9D46D48E7D19F3 /* RNGestureHandler.xcodeproj */,
-				79CC1100AB594CE980C70C81 /* RNLenddoEFLLibrary.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -845,6 +812,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -903,10 +871,6 @@
 				{
 					ProductGroup = 602F1E9021ECC909007765F0 /* Products */;
 					ProjectRef = 68E930B62C9D46D48E7D19F3 /* RNGestureHandler.xcodeproj */;
-				},
-				{
-					ProductGroup = 60F5DA9D21ECD2F2004F185C /* Products */;
-					ProjectRef = 79CC1100AB594CE980C70C81 /* RNLenddoEFLLibrary.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1165,13 +1129,6 @@
 			remoteRef = 60F5DA9A21ECD2F2004F185C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		60F5DAA121ECD2F2004F185C /* libRNLenddoEFLLibrary.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNLenddoEFLLibrary.a;
-			remoteRef = 60F5DAA021ECD2F2004F185C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		78C398B91ACF4ADC00677621 /* libRCTLinking.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1208,7 +1165,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				60983C092200798D00959066 /* google-service.plist in Resources */,
 				606925F021EE04C50086F166 /* Localizable.strings in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);
@@ -1472,7 +1428,6 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				60983C072200796A00959066 /* GoogleProvider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1594,14 +1549,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2EDE0170D72DF088654B1AFD /* Pods-RNLenddoEFLSdkWrapperDemo.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 62LDK5E3G4;
-				FRAMEWORK_SEARCH_PATHS = (
-					"../node_modules/\\@lenddo/react-native-sdk/ios/Frameworks",
-					"$(PROJECT_DIR)/Pods/GoogleSignIn/Frameworks",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Pods/GoogleSignIn/Frameworks";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
@@ -1624,13 +1577,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1B63853174586D6E6300B783 /* Pods-RNLenddoEFLSdkWrapperDemo.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 62LDK5E3G4;
-				FRAMEWORK_SEARCH_PATHS = (
-					"../node_modules/\\@lenddo/react-native-sdk/ios/Frameworks",
-					"$(PROJECT_DIR)/Pods/GoogleSignIn/Frameworks",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Pods/GoogleSignIn/Frameworks";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
